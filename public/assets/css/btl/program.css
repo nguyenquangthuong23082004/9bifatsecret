@@ -1,0 +1,11 @@
+/* =========================================================
+   04. Program (프로그램) + tabs
+   ========================================================= */
+.program{ background:#fff; padding:80px 16px; }
+.tabs{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:24px auto 0; max-width:300px; }
+.tab{ height:36px; padding-inline:16px; border-radius:600px; border:1px solid var(--c-line); background:#fff; color:var(--c-ink);
+    font-family:var(--f-body); font-weight:500; font-size:16px; letter-spacing:-.32px; cursor:pointer; }
+.tab.is-active{ background:#454545; color:#fff; border-color:#454545; box-shadow:0 6px 5px rgba(0,0,0,.25); }
+.program__panel{ margin:24px auto 0; max-width:343px; background:#f6f0e4; border-radius:20px; padding:10px 12px 20px 19px; display:flex; flex-direction:column; align-items:center; gap:20px; }
+.program__panel img{ width:319px; max-width:100%; mix-blend-mode:darken; }
+.program__desc{ font-size:12px; line-height:1.4; letter-spacing:-.24px; color:var(--c-ink-2); text-align:center; }

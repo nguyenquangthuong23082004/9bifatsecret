@@ -1,0 +1,28 @@
+/* =========================================================
+   03. Career / awards (경력)
+   ========================================================= */
+.career{ position:relative; background:#580027; color:#fff; padding:70px 16px 0; overflow:hidden; }
+.career__bg{ position:absolute; inset:0; background:url("../../images/btl/career-curtain.webp") center/cover no-repeat; opacity:.5; pointer-events:none; }
+.career__inner{ position:relative; z-index:2; }
+.career__title{ font-family:var(--f-title); font-weight:800; text-align:center; }
+.career__title .l1{ display:block; font-size:30px; letter-spacing:-.6px; }
+.career__title .l2{ display:block; font-size:38px; letter-spacing:-.76px; color:var(--c-gold); text-shadow:0 2px 4px rgba(0,0,0,.25); }
+.career__awards{ display:grid; grid-template-columns:1fr 1fr; gap:10px 0; max-width:340px; margin:40px auto 0; }
+.award{ position:relative; height:161px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.award::before{ content:""; position:absolute; inset:0; background:url("../../images/btl/laurel.png") center/contain no-repeat; }
+.award__label{ position:relative; font-size:14px; letter-spacing:-.28px; color:#fff; }
+.award__num{ position:relative; margin-top:4px; font-family:var(--f-title); font-weight:800; font-size:26px; letter-spacing:-.52px; color:var(--c-gold); text-shadow:0 2px 4px rgba(0,0,0,.25); }
+.career__trophy{ display:block; width:200px; max-width:56%; margin:10px auto 0; filter:drop-shadow(0 12px 20px rgba(0,0,0,.35)); }
+.career__tv{ position:relative; margin-top:24px; padding-bottom:60px; text-align:center; }
+.career__tv::before{ content:""; position:absolute; left:50%; top:40px; transform:translateX(-50%); width:100%; height:427px;
+    background:url("../../images/btl/tv-bg.webp") center/cover no-repeat; mix-blend-mode:plus-lighter; opacity:.5; pointer-events:none; }
+.career__tv > *{ position:relative; }
+.career__live{ width:60px; margin:0 auto 8px; }
+.career__tv-title{ font-family:var(--f-title); font-weight:800; font-size:30px; letter-spacing:-.6px; line-height:1.4; }
+.career__tv-title .hl{ color:#ffe034; }
+.career__player{ position:relative; margin:20px auto 0; width:320px; max-width:100%; aspect-ratio:320/198; background:#000; border:4px solid #fff; border-radius:20px; display:grid; place-items:center; cursor:pointer; }
+.career__player .play{ width:60px; height:60px; }
+.career__apps{ position:absolute; inset:0; pointer-events:none; }
+.career__apps img{ position:absolute; width:80px; }
+.career__apps .app-1{ left:8px; bottom:120px; width:81px; }
+.career__apps .app-2{ right:8px; bottom:200px; width:77px; }

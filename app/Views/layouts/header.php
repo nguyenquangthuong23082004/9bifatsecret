@@ -15,8 +15,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- Swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <!-- Landing styles -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/btl.css') ?>">
+    <!-- Landing styles (modular; common first, then header/footer + sections).
+         For production these can be concatenated/minified into one file. -->
+    <?php
+    $btlCss = [
+        'common', 'header', 'footer',
+        'main-visual', 'philosophy', 'career', 'program', 'dual',
+        'ticket', 'consult', 'yoyo', 'features', 'menopause',
+    ];
+    foreach ($btlCss as $css): ?>
+    <link rel="stylesheet" href="<?= base_url('assets/css/btl/' . $css . '.css') ?>">
+    <?php endforeach; ?>
 </head>
 <body>
 <div class="btl">

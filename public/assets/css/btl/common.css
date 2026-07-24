@@ -1,0 +1,74 @@
+/* =========================================================
+   common.css — fonts, design tokens, base, shared components,
+   responsive scaling. Load FIRST (before header/section files).
+   BITIEL(비티엘) landing – Figma Frame 5 (node 457:2)
+   ========================================================= */
+
+/* ---------- Fonts (local, public/fonts) ---------- */
+@font-face { font-family:"Pretendard"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/Pretendard-Regular.otf") format("opentype"); }
+@font-face { font-family:"Pretendard"; font-weight:500; font-style:normal; font-display:swap; src:url("../../../fonts/Pretendard-Medium.otf") format("opentype"); }
+@font-face { font-family:"Pretendard"; font-weight:600; font-style:normal; font-display:swap; src:url("../../../fonts/Pretendard-SemiBold.otf") format("opentype"); }
+@font-face { font-family:"Pretendard"; font-weight:700; font-style:normal; font-display:swap; src:url("../../../fonts/Pretendard-Bold.otf") format("opentype"); }
+@font-face { font-family:"Pretendard"; font-weight:800; font-style:normal; font-display:swap; src:url("../../../fonts/Pretendard-ExtraBold.otf") format("opentype"); }
+@font-face { font-family:"NanumSquare"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/NanumSquareR.ttf") format("truetype"); }
+@font-face { font-family:"NanumSquare"; font-weight:700; font-style:normal; font-display:swap; src:url("../../../fonts/NanumSquareB.ttf") format("truetype"); }
+@font-face { font-family:"NanumSquare"; font-weight:800; font-style:normal; font-display:swap; src:url("../../../fonts/NanumSquareEB.ttf") format("truetype"); }
+/* TAEBAEK(태백체) – drop TAEBAEKfont.ttf into public/fonts to enable; falls back to NanumSquare */
+@font-face { font-family:"TAEBAEK"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/TAEBAEKfont.ttf") format("truetype"); }
+
+/* ---------- Design tokens ---------- */
+:root{
+    --f-body:"Pretendard","Apple SD Gothic Neo",system-ui,sans-serif;
+    --f-title:"NanumSquare","Pretendard",sans-serif;
+    --f-hero:"TAEBAEK","NanumSquare","Pretendard",sans-serif;
+
+    --c-ink:#252525;
+    --c-ink-2:#454545;
+    --c-muted:#999;
+    --c-primary:#c8365a;      /* section title accent */
+    --c-rose:#da4070;         /* item accent */
+    --c-rose-2:#e72c67;
+    --c-gold:#d4a565;
+    --c-line:#dbdbdb;
+
+    --design-w:375px;         /* Figma reference width */
+}
+
+/* ---------- Base ---------- */
+body{ margin:0; background:#fff; color:var(--c-ink); font-family:var(--f-body); line-height:1.4; -webkit-font-smoothing:antialiased;
+    container-type:inline-size; /* enables cqw for proportional scaling */ }
+/* The whole mobile design (authored at 375px) scales up/down to fill the
+   viewport width – elements grow proportionally, positions stay identical. */
+.btl{ width:var(--design-w); margin-inline:auto; background:#fff; position:relative; overflow-x:hidden;
+    zoom:calc(100vw / 375px);   /* fallback (includes scrollbar) */
+    zoom:calc(100cqw / 375px);  /* precise: excludes scrollbar */ }
+.btl img{ max-width:100%; }
+.btl p{ margin:0; }
+.btl a{ color:inherit; text-decoration:none; }
+
+/* ---------- Shared: section head (label + big title) ---------- */
+.sec{ position:relative; }
+.sec-head{ display:flex; flex-direction:column; gap:20px; align-items:center; text-align:center; }
+.sec-head--left{ align-items:flex-start; text-align:left; gap:16px; }
+.sec-head__label{ font-size:14px; letter-spacing:-.28px; color:var(--c-ink-2); }
+.sec-head__title{ font-family:var(--f-title); font-weight:800; font-size:30px; letter-spacing:-.6px; color:var(--c-ink); }
+.sec-head__title .accent{ color:var(--c-primary); }
+.sec-head__title--rose .line1{ color:var(--c-primary); }
+
+/* ---------- Shared: check list (used by dual solution) ---------- */
+.check-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+.check-list li{ position:relative; padding-left:24px; font-size:14px; letter-spacing:-.28px; color:var(--c-ink-2); }
+.check-list li::before{ content:""; position:absolute; left:0; top:.35em; width:16px; height:12px;
+    background:url("../../images/btl/icon-check.svg") center/contain no-repeat; }
+.check-list li.hl{ color:var(--c-rose); font-weight:600; }
+
+/* =========================================================
+   Responsive breakpoint
+   Mobile design (fluid zoom) applies only BELOW 992px.
+   From 992px up, a dedicated PC design takes over – disable the mobile
+   zoom so it no longer governs the desktop viewport.
+   ========================================================= */
+@media (min-width:992px){
+    .btl{ zoom:1; width:100%; max-width:none; }
+    /* TODO(PC ≥992px): build the desktop layout (see pc.css). */
+}

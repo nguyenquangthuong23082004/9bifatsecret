@@ -1,0 +1,10 @@
+/* =========================================================
+   header.css — GNB (global nav bar). Pairs with layouts/header.php
+   ========================================================= */
+.gnb{ position:sticky; top:0; z-index:50; background:#fff; }
+.gnb__inner{ height:50px; display:flex; align-items:center; justify-content:space-between; padding-inline:16px; }
+.gnb__logo img{ width:50px; height:21px; object-fit:contain; display:block; }
+.gnb__toggle{ width:30px; height:30px; padding:0; border:0; background:none; cursor:pointer; display:grid; place-items:center; }
+.gnb__menu{ display:flex; flex-direction:column; gap:2px; padding:8px 16px 16px; border-top:1px solid #f1f1f1; }
+.gnb__menu a{ padding:10px 4px; font-weight:500; color:var(--c-ink-2); }
+.gnb__menu[hidden]{ display:none; }

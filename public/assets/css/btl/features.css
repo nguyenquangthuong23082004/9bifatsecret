@@ -1,0 +1,22 @@
+/* =========================================================
+   09. Key features 01–03 (주요특장점)
+   ========================================================= */
+.feature{ padding:60px 16px 0; }
+.feature .sec-head__label{ color:var(--c-primary); font-weight:600; font-size:16px; }
+.feature .sec-head__title{ font-family:var(--f-title); font-weight:700; font-size:24px; letter-spacing:-.48px; }
+.feature .sec-head__title .accent{ color:var(--c-primary); }
+.feature__desc{ font-size:14px; line-height:1.4; letter-spacing:-.28px; color:var(--c-ink-2); }
+.feature__media{ margin-top:16px; }
+.feature--01 .feature__media{ position:relative; border-radius:20px; overflow:hidden; }
+.feature--01 .feature__media img{ width:100%; display:block; }
+.thermal{ position:relative; margin-top:24px; display:flex; border-radius:20px; overflow:hidden; }
+.thermal img{ width:50%; height:240px; object-fit:cover; }
+.thermal__badge{ position:absolute; left:50%; top:87px; transform:translateX(-50%); width:60px; height:60px; border-radius:50%;
+    background:var(--c-primary); border:2px solid #fff; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    box-shadow:0 0 2px rgba(0,0,0,.25); text-align:center; }
+.thermal__badge small{ font-size:10px; line-height:1.2; font-weight:400; }
+.thermal__badge b{ font-size:12px; line-height:1.2; font-weight:700; }
+.thermal__tag{ position:absolute; top:153px; height:20px; padding:3px 8px; border-radius:500px; color:#fff; font-size:10px; font-weight:700; display:flex; align-items:center; }
+.thermal__tag--before{ left:57px; background:#646464; }
+.thermal__tag--after{ right:57px; background:var(--c-primary); }
+.feature--03 .feature__media img{ width:100%; height:240px; object-fit:cover; border-radius:20px; }

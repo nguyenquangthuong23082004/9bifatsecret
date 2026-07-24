@@ -1,0 +1,15 @@
+/* =========================================================
+   01. Main visual (hero) + 19 YEARS band
+   ========================================================= */
+.hero{ position:relative; background:#fdefed; padding:60px 50px 0; min-height:714px; overflow:hidden; }
+.hero__label{ position:relative; z-index:2; font-size:16px; color:var(--c-ink-2); }
+.hero__label b{ font-weight:700; }
+.hero__title{ position:relative; z-index:2; margin-top:24px; font-family:var(--f-hero); font-size:42px; line-height:1.4;
+    background-image:linear-gradient(118deg,#ff6434 5%,#e72c67 108%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero__sub{ position:relative; z-index:2; margin-top:24px; font-family:var(--f-hero); font-size:30px; line-height:1.4; color:var(--c-ink-2); white-space:nowrap; }
+.hero__sub .em{ color:#ed395b; }
+.hero__visual{ position:absolute; left:50%; transform:translateX(-50%); top:331px; width:100%; opacity:.2; pointer-events:none; }
+.hero__visual img{ width:100%; display:block; }
+
+.band{ background:#c8365a; height:58px; display:flex; align-items:center; justify-content:center; }
+.band p{ font-size:14px; letter-spacing:8.4px; color:#fff; text-align:center; }
