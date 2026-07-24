@@ -149,11 +149,9 @@ class Home extends BaseController
     public function index()
     {
         return view('home', [
-            'metaTitle' => 'Landing Page',
-            'metaDescription' => 'Một landing page sạch, tối giản và sẵn sàng sử dụng.',
-            'ogImage' => base_url('favicon.ico'),
-            'siteTitle' => 'Landing',
-            'footerText' => '© ' . date('Y') . ' Minimal Landing Page'
+            'metaTitle' => '비티엘 다이어트 (BITIEL) – 부산 프리미엄 다이어트 전문 센터',
+            'metaDescription' => '19년 노하우, 누적 1만 명의 놀라운 변화. BTL 전문가와 1:1 맞춤 체형관리로 요요 ZERO 다이어트.',
+            'ogImage' => base_url('assets/images/btl/main-visual.webp'),
         ]);
     }
 

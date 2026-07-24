@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="description" content="<?= esc($metaDescription ?? '부산 프리미엄 체험관리 다이어트 전문 센터 비티엘. 19년 노하우, BTL 전문가와 1:1 맞춤 체형관리.') ?>">
+    <meta property="og:title" content="<?= esc($metaTitle ?? '비티엘 다이어트 (BITIEL)') ?>">
+    <meta property="og:description" content="<?= esc($metaDescription ?? '부산 프리미엄 체험관리 다이어트 전문 센터') ?>">
+    <meta property="og:image" content="<?= esc($ogImage ?? base_url('assets/images/btl/main-visual.webp')) ?>">
+    <meta property="og:type" content="website">
+    <title><?= esc($metaTitle ?? '비티엘 다이어트 (BITIEL)') ?></title>
+
+    <!-- Bootstrap 5 (reboot + grid utilities) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <!-- Landing styles -->
+    <link rel="stylesheet" href="<?= base_url('assets/css/btl.css') ?>">
+</head>
+<body>
+<div class="btl">
+    <header class="gnb">
+        <div class="gnb__inner">
+            <a class="gnb__logo" href="<?= base_url() ?>" aria-label="비티엘 홈">
+                <img src="<?= base_url('assets/images/btl/logo-bitiel.png') ?>" alt="BITIEL" width="50" height="21">
+            </a>
+            <button class="gnb__toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="gnbMenu">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                    <path d="M24 22H6V20H24V22ZM24 16H6V14H24V16ZM24 10H6V8H24V10Z" fill="#252525"/>
+                </svg>
+            </button>
+        </div>
+        <nav id="gnbMenu" class="gnb__menu" aria-label="주요 메뉴" hidden>
+            <a href="#program">프로그램</a>
+            <a href="#dual">듀얼 솔루션</a>
+            <a href="#ticket">체험권</a>
+            <a href="#features">주요특장점</a>
+        </nav>
+    </header>
+
+    <main class="btl-page">
