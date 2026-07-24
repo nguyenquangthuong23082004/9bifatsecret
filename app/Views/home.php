@@ -1,11 +1,12 @@
 <?php
 /**
  * BITIEL(비티엘) diet landing – Frame 5.
- * Layout split: layouts/header · section partials · layouts/footer.
+ * Layout: layouts/main (head + header + footer) · section partials.
  */
 ?>
-<?= $this->include('layouts/header') ?>
+<?= $this->extend('layouts/main') ?>
 
+<?= $this->section('content') ?>
 <?= $this->include('partials/btl/main_visual') ?>
 <?= $this->include('partials/btl/philosophy') ?>
 <?= $this->include('partials/btl/career') ?>
@@ -16,5 +17,4 @@
 <?= $this->include('partials/btl/yoyo') ?>
 <?= $this->include('partials/btl/features') ?>
 <?= $this->include('partials/btl/menopause') ?>
-
-<?= $this->include('layouts/footer') ?>
+<?= $this->endSection() ?>
