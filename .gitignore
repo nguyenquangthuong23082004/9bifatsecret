@@ -1,0 +1,13 @@
+# CodeIgniter 4 Git Ignore
+/vendor/
+/writable/*
+!/writable/index.html
+!/writable/.gitkeep
+.env
+*.env
+
+/public/uploads/*
+!/public/uploads/index.html
+/public/data/*
+!/public/data/index.html
+/public/adm_assets/_images/*

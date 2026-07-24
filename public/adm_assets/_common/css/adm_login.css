@@ -1,0 +1,58 @@
+@charset "utf-8";
+
+/* Font Import */
+@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
+/*@import url('http://fonts.googleapis.com/css?family=Lato:300,400,700');*/
+/*@font-face {font-family:'NanumBarunGothic';src: url('font/NanumBarunGothic.eot');src: url('font/NanumBarunGothic.eot?#iefix') format('embedded-opentype'),url('font/NanumBarunGothic.woff') format('woff'),url('font/NanumBarunGothic.ttf') format('truetype');font-weight: normal;font-style: normal; }*/
+/*@font-face {font-family:'NanumBarunGothicBold';src: url('font/NanumBarunGothicBold.eot');src: url('font/NanumBarunGothicBold.eot?#iefix') format('embedded-opentype'),url('font/NanumBarunGothicBold.woff') format('woff'),url('font/NanumBarunGothicBold.ttf') format('truetype');font-weight: normal;font-style: normal; }*/
+/**/
+/*@font-face {font-family:'Nanum Gothic';src: url('font/NanumGothic.eot');src: url('font/NanumGothic.eot?#iefix') format('embedded-opentype'),url('font/NanumGothic.woff') format('woff'),url('font/NanumGothic.ttf') format('truetype');font-weight: normal;font-style: normal; }*/
+/*@font-face {font-family:'Nanum Gothic Bold';src: url('font/NanumGothicBold.eot');src: url('font/NanumGothicBold.eot?#iefix') format('embedded-opentype'),url('font/NanumGothicBold.woff') format('woff'),url('font/NanumGothicBold.ttf') format('truetype');font-weight: normal;font-style: normal; }*/
+
+/* reset */
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video {margin:0; padding:0;}
+
+/* html5 */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+
+
+
+body {font-size: 0.75em;font-family:/*'Lato','NanumBarunGothic',*/'Nanum Gothic','NanumGothic','Malgun Gothic','돋움','dotum','AppleGothic','Apple SD Gothic Neo Medium',Helvetica,Arial,Sans-Serif; line-height: 1.5em;font-weight:normal;font-style:normal;background:#fff;color:#8b8b8b;}
+
+div.bk_box {background: url(../../_images/login/bk.jpg) no-repeat center top #f0f0f0; width:100%; min-height:840px; height:840px; padding-top:120px;} 
+p.adm_logo { width:500px; margin:0 auto; }
+
+div.bk_box dl { width:500px; margin:140px auto 0;  }
+div.bk_box dt { text-align:center; font-size:70px; font-weight:bold; color:#fff; line-height:100%; }
+div.bk_box dd { text-align:center; font-size:14px; font-weight:normal; color:#fff;}
+
+div.log_box { width:455px; margin:80px auto 0; }
+div.log_box:after{content:"";display:block;clear:both;} 
+
+ul.log_cont { }
+ul.log_cont:after{content:"";display:block;clear:both;} 
+ul.log_cont li.left {  float:left; width:330px;  }
+ul.log_cont li.right { float:right; width:125px;  }
+ul.log_cont span {display:block; margin-top:4px; }
+ul.log_cont input { width:90%; height:36px; line-height:36px; font-size:15px; font-weight:bold; padding-left:10px; color:#666; font-family:/*'Lato','NanumBarunGothic',*/'Nanum Gothic','NanumGothic','Malgun Gothic','돋움','dotum','AppleGothic','Apple SD Gothic Neo Medium',Helvetica,Arial,Sans-Serif;   }
+ul.log_cont input::-webkit-input-placeholder{color:#666;} /* 웹킷 전용 속성 */
+ul.log_cont input:-moz-placeholder{color:#666;} /* 파이어폭스 전용 속성 */
+
+
+p.btn_log {display:block; }
+p.btn_log a, p.btn_log a:hover {display:block; text-align:center; width:125px; height:92px;  line-height:92px; background:#5e5e5e; color:#fff; font-size:20px; font-weight:bold;  }
+p.btn_log a:active, p.btn_log a:hover { background:#2c7cbf; color:#fff;}
+
+
+div.log_box p.save { clear:both; margin-top:10px; color:#333; font-size:14px; font-weight:bold; }
+div.log_box p.save:after{content:"";display:block;clear:both;} 
+div.log_box  input.input_checkbox {width:18px; height:18px; margin-right:4px; vertical-align:middle;} 
+
+
+
+
+div.btm { width:455px; margin:30px auto 80px; }
+div.btm:after{content:"";display:block;clear:both;} 
+
+ul.btm_guide { margin-top:20px; }
+ul.btm_guide li { font-size:12px; color:#888; margin-top:3px; }

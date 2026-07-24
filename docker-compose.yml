@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  # PHP-FPM Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fatsecret_php
+    restart: always
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    environment:
+      - database_default_hostname=db
+      - database_default_database=fatsecret
+      - database_default_username=fatsecret_user
+      - database_default_password=fatsecret_password
+    depends_on:
+      - db
+    networks:
+      - fatsecret_network
+    command: bash -c "mkdir -p writable/cache writable/logs writable/session writable/debugbar && chmod -R 777 writable && mkdir -p public/data/partner public/data/product public/data/member && chmod -R 777 public/data && php-fpm"
+
+  # Nginx Web Server Service
+  web:
+    image: nginx:alpine
+    container_name: fatsecret_nginx
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - fatsecret_network
+
+  # MariaDB Database Service
+  db:
+    build:
+      context: .
+      dockerfile: docker/db/Dockerfile
+    container_name: fatsecret_db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: fatsecret
+      MYSQL_USER: fatsecret_user
+      MYSQL_PASSWORD: "fatsecret_password"
+      MYSQL_ROOT_PASSWORD: "root_password_here"
+    volumes:
+      - db_data:/var/lib/mysql
+      # Automatically import the SQL backup during database container initialization
+      - ./backup/fatsecret.sql:/docker-entrypoint-initdb.d/fatsecret.sql
+    networks:
+      - fatsecret_network
+
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: fatsecret_phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=fatsecret_user
+      - PMA_PASSWORD=fatsecret_password
+      - UPLOAD_LIMIT=300M
+    depends_on:
+      - db
+    networks:
+      - fatsecret_network
+
+networks:
+  fatsecret_network:
+    driver: bridge
+
+volumes:
+  db_data:
