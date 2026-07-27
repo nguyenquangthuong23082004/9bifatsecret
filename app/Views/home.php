@@ -17,4 +17,9 @@
 <?= $this->include('partials/btl/yoyo') ?>
 <?= $this->include('partials/btl/features') ?>
 <?= $this->include('partials/btl/menopause') ?>
+<?= $this->include('partials/btl/thermo') ?>
+<?= $this->include('partials/btl/results') ?>
+<?= $this->include('partials/btl/turn') ?>
+<?= $this->include('partials/btl/faq') ?>
+<?= $this->include('partials/btl/contact') ?>
 <?= $this->endSection() ?>

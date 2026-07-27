@@ -20,6 +20,7 @@
         'common', 'header', 'footer',
         'main-visual', 'philosophy', 'career', 'program', 'dual',
         'ticket', 'consult', 'yoyo', 'features', 'menopause',
+        'thermo', 'results', 'turn', 'faq', 'contact',
     ];
     foreach ($btlCss as $css):
         $cssPath = FCPATH . 'assets/css/btl/' . $css . '.css';

@@ -60,6 +60,58 @@
       });
     });
 
+    /* ---- FAQ accordion (single-open) ---- */
+    var faqItems = document.querySelectorAll('.faq__item');
+    faqItems.forEach(function (item) {
+      var q = item.querySelector('.faq__q');
+      if (!q) return;
+      q.addEventListener('click', function () {
+        var isOpen = item.classList.contains('is-open');
+        faqItems.forEach(function (i) {
+          i.classList.remove('is-open');
+          var b = i.querySelector('.faq__q');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('is-open');
+          q.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    /* ---- Results: main tabs (전신/체형/부분/일상) ---- */
+    var rtabs = document.querySelectorAll('.results .rtab');
+    rtabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        rtabs.forEach(function (t) {
+          t.classList.remove('is-active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+        document.querySelectorAll('.results .rpanel').forEach(function (p) {
+          p.classList.remove('is-active');
+        });
+        var panel = document.getElementById(tab.getAttribute('data-panel'));
+        if (panel) panel.classList.add('is-active');
+      });
+    });
+
+    /* ---- Results: sub tabs (전면 · 측면 / 복부 · 허벅지) ---- */
+    document.querySelectorAll('.results .subtabs').forEach(function (group) {
+      var panel = group.closest('.rpanel');
+      group.querySelectorAll('.subtab').forEach(function (sub) {
+        sub.addEventListener('click', function () {
+          group.querySelectorAll('.subtab').forEach(function (s) { s.classList.remove('is-active'); });
+          sub.classList.add('is-active');
+          if (!panel) return;
+          panel.querySelectorAll('.rview').forEach(function (v) { v.classList.remove('is-active'); });
+          var view = panel.querySelector('#' + sub.getAttribute('data-view'));
+          if (view) view.classList.add('is-active');
+        });
+      });
+    });
+
     /* ---- Device carousel (Swiper) ---- */
     if (window.Swiper && document.querySelector('.dual__devices')) {
       new window.Swiper('.dual__devices', {

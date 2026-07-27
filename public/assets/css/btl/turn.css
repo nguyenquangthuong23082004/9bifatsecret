@@ -1,0 +1,39 @@
+/* =========================================================
+   13. Your turn (이제 당신 차례) — Figma 529:80
+   ========================================================= */
+.turn{ background:linear-gradient(180deg,#f6efef 34.163%,#fed0cd 100%); padding:100px 0 106px; }
+.turn__head{ width:282px; margin-inline:auto; }
+.turn .sec-head__title .line2{ color:var(--c-primary); }
+
+/* pagination dots (static, matches Figma 516:458) */
+.turn__dots{ list-style:none; display:flex; justify-content:center; gap:10px; margin:36px 0 0; padding:0; }
+.turn__dots li{ width:10px; height:10px; border-radius:50%; background:#e8d5d5; }
+.turn__dots li.is-on{ background:var(--c-primary); }
+
+/* ---------- before / after cards ---------- */
+.turn__cards{ position:relative; margin-top:39px; display:flex; flex-direction:column; align-items:center; gap:20px; }
+.ba-card{ position:relative; width:310px; height:405px; margin:0; padding:41px 2px 0;
+    background:#fff; border:2px solid var(--c-line); border-radius:20px; }
+.ba-card--after{ border-color:var(--c-primary); }
+.ba-card__label{ position:absolute; left:19px; top:14px; font-family:"Inter",var(--f-body); font-weight:700;
+    font-size:10px; color:var(--c-ink); }
+.ba-card__photo{ width:306px; height:321px; overflow:hidden; background:#f1f1f1; }
+.ba-card--after .ba-card__photo{ background:#f8f1eb; }
+.ba-card__photo img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+.ba-card--after .ba-card__photo img{ object-position:center top; }
+.ba-card__react{ position:absolute; left:19px; bottom:12px; width:64px; height:23px; object-fit:contain; }
+
+/* result badge sitting between the two cards */
+.turn__badge{ position:absolute; left:50%; top:365px; transform:translateX(-50%); z-index:2;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    width:60px; height:60px; border-radius:500px; background:var(--c-primary); border:2px solid #fff;
+    filter:drop-shadow(0 0 2px rgba(0,0,0,.25)); color:#fff; text-align:center; }
+.turn__badge strong{ font-size:12px; font-weight:700; line-height:1.2; letter-spacing:-.24px; }
+.turn__badge span{ font-size:10px; line-height:1.2; letter-spacing:-.24px; }
+
+/* ---------- testimonial ---------- */
+.turn__quote{ position:relative; width:310px; margin:36px auto 0; padding:40px 24px 0; height:188px;
+    background:var(--c-ink-2); border-radius:16px; box-sizing:border-box; }
+.turn__quote::before{ content:"\201C"; position:absolute; left:24px; top:0; font-family:var(--f-title);
+    font-size:60px; line-height:1.4; letter-spacing:-1.2px; color:#fff; opacity:.05; }
+.turn__quote p{ position:relative; font-size:14px; line-height:1.4; letter-spacing:-.28px; color:#fff; }
