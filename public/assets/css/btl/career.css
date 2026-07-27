@@ -113,8 +113,11 @@
 /* -- trophy 288x432 (460:165) + 꽃가루 (460:166 / 460:167) -- */
 .career__trophy-wrap {
     position: relative;
+    /* z-index:0 tạo stacking context riêng: glow / confetti / trophy bên trong
+       không "lọt" ra ngoài nữa, nhờ đó khối .career__tv nằm đè lên được */
+    z-index: 0;
     left: 9px;
-    width: min(76.8vw, 288px);
+    width: 288px;
     margin: -7px auto 0;
 }
 
@@ -160,6 +163,8 @@
 /* -- khối tối phía dưới (460:163) + nền TV (463:175) -- */
 .career__tv {
     position: relative;
+    /* nằm trên .career__trophy-wrap để ::before (khối #7B1B35) đè lên đáy cúp */
+    z-index: 1;
     margin-top: -11px;
     padding-bottom: 86px;
     text-align: center;
@@ -171,7 +176,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 100vw;
+    width: var(--design-w);
     pointer-events: none;
 }
 
@@ -240,7 +245,7 @@
     left: 50%;
     top: 0;
     transform: translateX(-50%);
-    width: 100vw;
+    width: var(--design-w);
     height: 100%;
     pointer-events: none;
 }
