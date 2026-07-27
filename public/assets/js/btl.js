@@ -98,10 +98,14 @@
     });
 
     /* ---- Device carousel (Swiper) ---- */
-    if (window.Swiper && document.querySelector('.dual__devices')) {
-      new window.Swiper('.dual__devices', {
+    var devices = document.querySelector('.dual__devices');
+    if (window.Swiper && devices) {
+      var deviceCount = devices.querySelectorAll('.swiper-slide').length;
+      new window.Swiper(devices, {
         slidesPerView: 'auto',
         centeredSlides: true,
+        // mở trang là dải slide đã nằm giữa (slide ở chính giữa được chọn sẵn)
+        initialSlide: Math.floor((deviceCount - 1) / 2),
         spaceBetween: 20,
         grabCursor: true
       });

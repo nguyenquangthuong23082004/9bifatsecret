@@ -1,10 +1,52 @@
 /* =========================================================
    06. Ticket (체험권)
    ========================================================= */
-.ticket{ position:relative; background:#e86382; color:#fff; padding:100px 16px; overflow:hidden; }
-.ticket__head{ text-align:center; display:flex; flex-direction:column; gap:20px; align-items:center; }
-.ticket__label{ font-size:14px; letter-spacing:-.28px; }
-.ticket__title{ font-family:var(--f-title); font-weight:800; font-size:30px; line-height:1.4; letter-spacing:-.6px; }
-.ticket__visual{ position:relative; margin:40px auto 0; max-width:343px; }
-.ticket__visual .ticket-img{ width:279px; max-width:82%; display:block; }
-.ticket__visual .ticket-circle{ position:absolute; right:0; top:-5px; width:109px; }
+.ticket {
+   position: relative;
+   background: #e86382;
+   color: #fff;
+   padding: 100px 16px;
+   overflow: hidden;
+}
+
+.ticket__head {
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+   align-items: center;
+}
+
+.ticket__label {
+   font-size: 14px;
+   letter-spacing: -.28px;
+}
+
+.ticket__title {
+   font-family: var(--f-title);
+   font-weight: 800;
+   font-size: 30px;
+   line-height: 1.4;
+   letter-spacing: -.6px;
+}
+
+.ticket__visual {
+   position: relative;
+   margin: 40px auto 0;
+   max-width: 343px;
+   display: flex;
+   justify-content: center;
+}
+
+.ticket__visual .ticket-img {
+   width: 279px;
+   max-width: 82%;
+   display: block;
+}
+
+.ticket__visual .ticket-circle {
+   position: absolute;
+   right: 0;
+   top: -5px;
+   width: 109px;
+}

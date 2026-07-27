@@ -56,9 +56,12 @@ body{ margin:0; background:#fff; color:var(--c-ink); font-family:var(--f-body); 
 .sec-head__title--rose .line1{ color:var(--c-primary); }
 
 /* ---------- Shared: check list (used by dual solution) ---------- */
-.check-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
-.check-list li{ position:relative; padding-left:24px; font-size:14px; letter-spacing:-.28px; color:var(--c-ink-2); }
-.check-list li::before{ content:""; position:absolute; left:0; top:.35em; width:16px; height:12px;
+/* Figma 466:11 / 466:22 — mỗi dòng canh giữa, dấu check nằm ngay trước chữ đầu tiên
+   (nên các dấu check lệch bậc thang theo độ dài từng dòng, không thẳng cột) */
+.check-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+.check-list li{ display:flex; align-items:center; justify-content:center; gap:2.65px;
+    font-size:14px; line-height:1.4; letter-spacing:-.28px; color:var(--c-ink-2); white-space:nowrap; }
+.check-list li::before{ content:""; flex:0 0 auto; width:17.25px; height:12.61px;
     background:url("../../images/btl/icon-check.svg") center/contain no-repeat; }
 .check-list li.hl{ color:var(--c-rose); font-weight:600; }
 
