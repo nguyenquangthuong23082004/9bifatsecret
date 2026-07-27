@@ -67,6 +67,8 @@ $photo = function (?array $fill) use ($img) {
     <div class="turn__dots" aria-hidden="true"></div>
 
     <div class="turn__swiper swiper">
+        <button type="button" class="turn__nav turn__nav--prev only-pc" aria-label="이전"></button>
+        <button type="button" class="turn__nav turn__nav--next only-pc" aria-label="다음"></button>
         <div class="swiper-wrapper">
             <?php foreach ($slides as $n => $s): ?>
             <div class="swiper-slide">
@@ -87,7 +89,7 @@ $photo = function (?array $fill) use ($img) {
                 </div>
 
                 <blockquote class="turn__quote">
-                    <p><?= nl2br(esc($s['quote'])) ?></p>
+                    <p><?= str_replace(['<br />', '<br>', '<br/>'], '<br class="only-mo">', nl2br(esc($s['quote']))) ?></p>
                 </blockquote>
             </div>
             <?php endforeach; ?>

@@ -117,7 +117,11 @@
         slidesPerView: 1,     // one case per screen — no neighbour peeking
         spaceBetween: 0,
         grabCursor: true,
-        pagination: { el: '.turn__dots', clickable: true }
+        pagination: { el: '.turn__dots', clickable: true },
+        navigation: {
+          nextEl: '.turn__nav--next',
+          prevEl: '.turn__nav--prev'
+        }
       });
     }
 
