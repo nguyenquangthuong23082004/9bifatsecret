@@ -65,6 +65,12 @@ body{ margin:0; background:#fff; color:var(--c-ink); font-family:var(--f-body); 
     background:url("../../images/btl/icon-check.svg") center/contain no-repeat; }
 .check-list li.hl{ color:var(--c-rose); font-weight:600; }
 
+/* Utility classes for responsive visibility */
+.only-pc,
+.only_pc {
+    display: none !important;
+}
+
 /* =========================================================
    Responsive breakpoint
    Mobile design (fluid zoom) applies only BELOW 992px.

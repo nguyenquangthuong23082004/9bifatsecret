@@ -14,7 +14,7 @@ $chips = [
     <div class="sec-head thermo__head">
         <p class="sec-head__label">요요를 막고, 갱년기 지방을 녹이는 가장 확실한 방법</p>
         <h2 class="sec-head__title">
-            <span class="line1">대사 <em>UP</em>, 감량속도 <em>UP</em></span><br>
+            <span class="line1">대사 <em>UP</em>, 감량속도 <em>UP</em></span><br class="only-mo">
             <span class="line2">체온 다이어트</span>
         </h2>
     </div>
@@ -29,23 +29,23 @@ $chips = [
     </ul>
 
     <div class="thermo__stage">
-        <!-- bubbles above the player -->
+        <!-- left bubbles -->
         <p class="bubble bubble--a">지방연소능력 강화</p>
-        <p class="bubble bubble--b">자연 식용 감퇴</p>
+        <p class="bubble bubble--b">자연 식욕 감퇴</p>
         <p class="bubble bubble--c">타입별 전문기기 관리</p>
 
         <div class="thermo__player" role="button" tabindex="0" aria-label="체온 다이어트 영상 재생" data-video="">
             <img class="thermo__play" src="<?= $img('thermo-play.svg') ?>" alt="" aria-hidden="true">
         </div>
 
-        <!-- bubbles below the player -->
-        <p class="bubble bubble--d">신진대사 촉진</p>
-        <p class="bubble bubble--e">기초대사량 증진</p>
+        <!-- right bubbles -->
+        <p class="bubble bubble--d">기초대사량 증진</p>
+        <p class="bubble bubble--e">신진대사 촉진</p>
         <p class="bubble bubble--f">체내 노폐물 배출</p>
     </div>
 
     <div class="thermo__claim">
-        <h3><span class="mark">비티엘 관리 1회시 평균 약</span><br><span class="mark">700kcal소모</span></h3>
-        <p>누워서 관리 1회<br>=빠르게 걷기 1시간<br>=러닝머신 1시간</p>
+        <h3><span class="mark">비티엘 관리 1회시 평균 약</span><br class="only-mo"><span class="mark">700kcal소모</span></h3>
+        <p>누워서 관리 1회<br class="only-mo">=빠르게 걷기 1시간<br class="only-mo">=러닝머신 1시간</p>
     </div>
 </section>

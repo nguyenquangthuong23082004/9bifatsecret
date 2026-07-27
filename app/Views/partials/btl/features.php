@@ -15,35 +15,38 @@
         </div>
     </div>
 
-    <!-- 02 -->
-    <div class="feature feature--02">
-        <div class="thermal">
-            <div class="thermal__col thermal__col--before">
-                <img src="<?= $img('thermal-before.png') ?>" alt="관리 전 체온 33.5도" loading="lazy">
+    <!-- 02 & 03 Row -->
+    <div class="features__row">
+        <!-- 02 -->
+        <div class="feature feature--02">
+            <div class="thermal">
+                <div class="thermal__col thermal__col--before">
+                    <img src="<?= $img('thermal-before.png') ?>" alt="관리 전 체온 33.5도" loading="lazy">
+                </div>
+                <div class="thermal__col thermal__col--after">
+                    <img src="<?= $img('thermal-after.png') ?>" alt="관리 후 체온 36.8도" loading="lazy">
+                </div>
+                <span class="thermal__tag thermal__tag--before">관리전 33.5℃</span>
+                <span class="thermal__tag thermal__tag--after">관리후 36.8℃</span>
+                <span class="thermal__badge"><small>평균체온</small><b>+3.3℃</b></span>
             </div>
-            <div class="thermal__col thermal__col--after">
-                <img src="<?= $img('thermal-after.png') ?>" alt="관리 후 체온 36.8도" loading="lazy">
+            <div class="sec-head sec-head--left">
+                <p class="sec-head__label">주요특장점 02</p>
+                <h3 class="sec-head__title">기초대사량 증진기술</h3>
+                <p class="feature__desc">체온온도를 36.5℃에 맞춰 체내해독 및 면역시스템 활성화<br>기초대사량을 높여 지방연소에 최적화된 살이 찌지 않는 체질로 개선</p>
             </div>
-            <span class="thermal__tag thermal__tag--before">관리전 33.5℃</span>
-            <span class="thermal__tag thermal__tag--after">관리후 36.8℃</span>
-            <span class="thermal__badge"><small>평균체온</small><b>+3.3℃</b></span>
         </div>
-        <div class="sec-head sec-head--left">
-            <p class="sec-head__label">주요특장점 02</p>
-            <h3 class="sec-head__title">기초대사량 증진기술</h3>
-            <p class="feature__desc">체온온도를 36.5℃에 맞춰 체내해독 및 면역시스템 활성화<br>기초대사량을 높여 지방연소에 최적화된 살이 찌지 않는 체질로 개선</p>
-        </div>
-    </div>
 
-    <!-- 03 -->
-    <div class="feature feature--03">
-        <div class="feature__media">
-            <img src="<?= $img('consult-pt.webp') ?>" alt="1대1 초개인화 생활습관 PT 상담" loading="lazy">
-        </div>
-        <div class="sec-head sec-head--left">
-            <p class="sec-head__label">주요특장점 03</p>
-            <h3 class="sec-head__title">1대1 초개인화 생활습관 PT</h3>
-            <p class="feature__desc">식습관/생활패턴개선 + 스트레스 및 심리관리</p>
+        <!-- 03 -->
+        <div class="feature feature--03">
+            <div class="feature__media">
+                <img src="<?= $img('consult-pt.webp') ?>" alt="1대1 초개인화 생활습관 PT 상담" loading="lazy">
+            </div>
+            <div class="sec-head sec-head--left">
+                <p class="sec-head__label">주요특장점 03</p>
+                <h3 class="sec-head__title">1대1 초개인화 생활습관 PT</h3>
+                <p class="feature__desc">식습관/생활패턴개선 + 스트레스 및 심리관리</p>
+            </div>
         </div>
     </div>
 </section>

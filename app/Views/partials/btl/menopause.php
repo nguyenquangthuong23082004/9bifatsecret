@@ -15,7 +15,7 @@ $open = 2; // 림프 순환 저하 open by default (matches Figma)
 <section class="sec meno" id="menopause">
     <div class="sec-head">
         <p class="sec-head__label">다시 가벼워질 나를 만나는 시간</p>
-        <h2 class="sec-head__title"><span class="line1">비티엘 맞춤</span><br><span class="line2">갱년기 다이어트</span></h2>
+        <h2 class="sec-head__title"><span class="line1">비티엘 맞춤</span><br class="only-mo"><span class="line2">갱년기 다이어트</span></h2>
     </div>
 
     <div class="meno__box">
@@ -30,11 +30,12 @@ $open = 2; // 림프 순환 저하 open by default (matches Figma)
                     <div class="acc__detail">
                         <h4><?= esc($careTitle) ?></h4>
                         <p><?= nl2br(esc($careDesc)) ?></p>
-                        <img src="<?= $img('menopause-woman.png') ?>" alt="" aria-hidden="true" loading="lazy">
+                        <img class="only-mo" src="<?= $img('menopause-woman.png') ?>" alt="" aria-hidden="true" loading="lazy">
                     </div>
                 </div>
             </li>
             <?php endforeach; ?>
         </ul>
+        <img class="meno__woman-pc only-pc" src="<?= $img('menopause-woman.png') ?>" alt="" aria-hidden="true" loading="lazy">
     </div>
 </section>
