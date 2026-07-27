@@ -3,7 +3,12 @@
    ========================================================= */
 .gnb{ position:sticky; top:0; z-index:50; background:#fff; }
 .gnb__inner{ height:50px; display:flex; align-items:center; justify-content:space-between; padding-inline:16px; }
-.gnb__logo img{ width:50px; height:21px; object-fit:contain; display:block; }
+/* Figma 457:3 — the 50x21 box CROPS into the PNG (which has whitespace around
+   the wordmark): w 151.28% / h 117.39% at left -29.37% / top -8.7%.
+   Using object-fit:contain on the raw PNG instead makes the logo look tiny. */
+.gnb__logo{ display:block; position:relative; width:50px; height:21px; overflow:hidden; }
+.gnb__logo img{ position:absolute; display:block; max-width:none;
+    width:151.28%; height:117.39%; left:-29.37%; top:-8.7%; }
 .gnb__toggle{ width:30px; height:30px; padding:0; border:0; background:none; cursor:pointer; display:grid; place-items:center; }
 .gnb__menu{ display:flex; flex-direction:column; gap:2px; padding:8px 16px 16px; border-top:1px solid #f1f1f1; }
 .gnb__menu a{ padding:10px 4px; font-weight:500; color:var(--c-ink-2); }

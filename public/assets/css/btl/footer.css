@@ -1,7 +1,31 @@
 /* =========================================================
-   footer.css — site footer. Pairs with layouts/footer.php
-   Frame 5 has no visual footer (trailing whitespace only), so this file
-   is a placeholder for footer styles added later (copyright, links, etc.).
+   16. Site footer — Figma 529:183 (logo) / 529:184 (business info)
+   Logo 50x21 at (16, 18509); info text 337 wide at (16, 18545).
+   The 문의 section ends at 18479 → 30px top padding, 15px logo→text gap.
    ========================================================= */
+.site-footer {
+    padding: 30px 16px;
+    background: #fff;
+}
 
-/* .site-footer{ } */
+.site-footer__logo {
+    display: block;
+    width: 50px;
+    height: 21px;
+    object-fit: contain;
+}
+
+.site-footer__info {
+    margin-top: 15px !important;
+    width: 337px;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: -.28px;
+    color: var(--c-muted);
+    white-space: pre-wrap;
+}
+
+.site-footer__info a {
+    color: inherit;
+}

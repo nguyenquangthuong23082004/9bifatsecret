@@ -110,9 +110,8 @@
     /* ---- Your turn: before/after case carousel (Swiper) ---- */
     if (window.Swiper && document.querySelector('.turn__swiper')) {
       new window.Swiper('.turn__swiper', {
-        slidesPerView: 'auto',
-        centeredSlides: true,
-        spaceBetween: 20,
+        slidesPerView: 1,     // one case per screen — no neighbour peeking
+        spaceBetween: 0,
         grabCursor: true,
         pagination: { el: '.turn__dots', clickable: true }
       });

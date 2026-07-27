@@ -1,7 +1,7 @@
 <header class="gnb">
     <div class="gnb__inner">
         <a class="gnb__logo" href="<?= base_url() ?>" aria-label="비티엘 홈">
-            <img src="<?= base_url('assets/images/btl/logo-bitiel.png') ?>" alt="BITIEL" width="50" height="21">
+            <img src="<?= base_url('assets/images/btl/logo-bitiel.png') ?>" alt="BITIEL">
         </a>
         <button class="gnb__toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="gnbMenu">
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">

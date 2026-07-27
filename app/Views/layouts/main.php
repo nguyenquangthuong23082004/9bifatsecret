@@ -8,6 +8,8 @@
     <main class="btl-page">
         <?= $this->renderSection('content') ?>
     </main><!-- /.btl-page -->
+
+    <?= $this->include('partials/btl/footer') ?>
 </div><!-- /.btl -->
 
 <?= $this->include('layouts/footer') ?>

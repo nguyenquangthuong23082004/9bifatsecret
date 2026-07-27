@@ -43,8 +43,9 @@
     overflow: hidden;
 }
 
+/* one slide = one full screen; the 310px card is centred inside it */
 .turn__swiper .swiper-slide {
-    width: 310px;
+    width: 100%;
     height: auto;
 }
 
@@ -68,6 +69,9 @@
     background: #fff;
     border: 2px solid var(--c-line);
     border-radius: 20px;
+    /* clips to the padding box, so a sub-pixel rounding of the 306px photo
+       under .btl's fractional zoom can never eat into the 2px border */
+    overflow: hidden;
 }
 
 .ba-card--after {
@@ -91,7 +95,7 @@
    the right border and hides it. */
 .ba-card__photo {
     position: relative;
-    width: 307px;
+    width: 306px;
     height: 321px;
     overflow: hidden;
     background: #f1f1f1;
