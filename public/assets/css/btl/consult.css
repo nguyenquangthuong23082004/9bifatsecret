@@ -1,21 +1,99 @@
 /* =========================================================
    07. Consult status (상담현황)
    ========================================================= */
-.consult{ background:#fafafa; padding:74px 16px; }
-.consult .sec-head__title{ color:var(--c-ink); }
-.consult__list{ display:flex; flex-direction:column; gap:10px; max-width:343px; margin:40px auto 0; }
-.consult__row{ height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 20px; border-radius:10px;
-    border:1px solid var(--c-line); background:#fff; }
-.consult__row .info{ display:flex; align-items:center; gap:10px; }
-.consult__row .state{ font-weight:700; font-size:16px; letter-spacing:-.32px; }
-.consult__row .name{ font-size:14px; letter-spacing:-.28px; color:var(--c-ink-2); }
-.consult__row .time{ font-size:14px; letter-spacing:-.28px; color:var(--c-muted); }
-.consult__row--wait{ border-color:var(--c-rose); box-shadow:0 10px 5px rgba(0,0,0,.06); }
-.consult__row--wait .state{ color:var(--c-primary); }
-.consult__row--active{ background:var(--c-rose); border-color:var(--c-rose); box-shadow:0 10px 5px rgba(0,0,0,.06); color:#fff; }
-.consult__row--active .state,.consult__row--active .name{ color:#fff; }
-.consult__row--active .time{ color:#db96a7; }
-.consult__row--done{ box-shadow:0 12px 5px rgba(0,0,0,.06); }
-.consult__row--done .state{ color:var(--c-muted); }
-.consult__row--muted{ opacity:.6; color:var(--c-muted); }
-.consult__row--muted .state,.consult__row--muted .name,.consult__row--muted .time{ color:var(--c-muted); }
+.consult {
+    background: #fafafa;
+    padding: 74px 16px;
+}
+
+.consult .sec-head__title {
+    color: var(--c-ink);
+}
+
+.consult__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 343px;
+    margin: 40px auto 0;
+    padding-left: 0;
+}
+
+.consult__row {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-radius: 10px;
+    border: 1px solid var(--c-line);
+    background: #fff;
+}
+
+.consult__row .info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.consult__row .state {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -.32px;
+}
+
+.consult__row .name {
+    font-size: 14px;
+    letter-spacing: -.28px;
+    color: var(--c-ink-2);
+}
+
+.consult__row .time {
+    font-size: 14px;
+    letter-spacing: -.28px;
+    color: var(--c-muted);
+}
+
+.consult__row--wait {
+    border-color: var(--c-rose);
+    box-shadow: 0 10px 5px rgba(0, 0, 0, .06);
+}
+
+.consult__row--wait .state {
+    color: var(--c-primary);
+}
+
+.consult__row--active {
+    background: var(--c-rose);
+    border-color: var(--c-rose);
+    box-shadow: 0 10px 5px rgba(0, 0, 0, .06);
+    color: #fff;
+}
+
+.consult__row--active .state,
+.consult__row--active .name {
+    color: #fff;
+}
+
+.consult__row--active .time {
+    color: #db96a7;
+}
+
+.consult__row--done {
+    box-shadow: 0 12px 5px rgba(0, 0, 0, .06);
+}
+
+.consult__row--done .state {
+    color: var(--c-muted);
+}
+
+.consult__row--muted {
+    opacity: .6;
+    color: var(--c-muted);
+}
+
+.consult__row--muted .state,
+.consult__row--muted .name,
+.consult__row--muted .time {
+    color: var(--c-muted);
+}

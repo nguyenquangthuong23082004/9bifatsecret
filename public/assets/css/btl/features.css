@@ -2,7 +2,7 @@
    09. Key features 01–03 (주요특장점)
    ========================================================= */
 .feature {
-    padding: 60px 16px 0;
+    padding: 30px 16px 0;
 }
 
 .feature .sec-head__label {
@@ -33,23 +33,33 @@
     margin-top: 16px;
 }
 
+/* Figma 481:351 : khung ảnh rộng 358 (tràn 7px trái / 8px phải khỏi vùng 343),
+   cao 265 = ảnh nền 233 ở trên + vé 203 chạm đáy */
 .feature--01 .feature__media {
     position: relative;
-    border-radius: 20px;
-    /* overflow: hidden; */
+    margin-left: -7px;
+    margin-right: -8px;
+    aspect-ratio: 358/265;
 }
 
+/* 480:314 : ảnh 16:9 phóng 115.71% rồi cắt hai bên (không bo góc) */
 .feature--01 .feature__media .feature__bg {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
+    height: 87.925%;
     display: block;
+    object-fit: cover;
+    object-position: 47.1% center;
 }
 
+/* 481:316 : 273x203 tại x=56, chạm đáy khung */
 .feature--01 .feature__media .feature__ticket {
     position: absolute;
-    left: 50%;
+    left: 15.64%;
     bottom: 0;
-    transform: translateX(-50%);
-    width: 76.3%;
+    width: 76.26%;
     display: block;
 }
 
@@ -149,6 +159,16 @@
 .thermal__tag--after {
     right: 42px;
     background: var(--c-primary);
+}
+
+/* 02 & 03 (481:350 / 481:353) : ảnh nằm TRƯỚC, tiêu đề cách ảnh 30px */
+.feature--02 .sec-head,
+.feature--03 .sec-head {
+    margin-top: 30px;
+}
+
+.feature--03 .feature__media {
+    margin-top: 0;
 }
 
 .feature--03 .feature__media img {
