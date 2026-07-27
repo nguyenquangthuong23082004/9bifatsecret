@@ -10,15 +10,20 @@
             <p class="feature__desc">30여종 전문기기 중 특정부위군살, 셀루라이트, 기초대사저하 등 본인 요요케이스에 맞춰 직접선택가능</p>
         </div>
         <div class="feature__media">
-            <img src="<?= $img('feature1-bg.webp') ?>" alt="30여종 전문기기와 요요방지 애프터케어 1년권" loading="lazy">
+            <img class="feature__bg" src="<?= $img('feature1-bg.webp') ?>" alt="30여종 전문기기" loading="lazy">
+            <img class="feature__ticket" src="<?= $img('feature1-ticket.png') ?>" alt="요요방지 애프터케어 1년권" loading="lazy">
         </div>
     </div>
 
     <!-- 02 -->
     <div class="feature feature--02" style="margin-top:64px">
         <div class="thermal">
-            <img src="<?= $img('thermal-before.png') ?>" alt="관리 전 체온 33.5도" loading="lazy">
-            <img src="<?= $img('thermal-after.png') ?>" alt="관리 후 체온 36.8도" loading="lazy">
+            <div class="thermal__col thermal__col--before">
+                <img src="<?= $img('thermal-before.png') ?>" alt="관리 전 체온 33.5도" loading="lazy">
+            </div>
+            <div class="thermal__col thermal__col--after">
+                <img src="<?= $img('thermal-after.png') ?>" alt="관리 후 체온 36.8도" loading="lazy">
+            </div>
             <span class="thermal__tag thermal__tag--before">관리전 33.5℃</span>
             <span class="thermal__tag thermal__tag--after">관리후 36.8℃</span>
             <span class="thermal__badge"><small>평균체온</small><b>+3.3℃</b></span>
