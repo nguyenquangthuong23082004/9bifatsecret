@@ -2,57 +2,234 @@
    11. Thermo diet (체온 다이어트) — Figma 503:189
    Full-bleed rose section, 375px design grid.
    ========================================================= */
-.thermo{ background:var(--c-primary); padding:99px 0 106px; color:#fff; }
-.thermo__head{ width:328px; margin-inline:auto; }
-.thermo__head .sec-head__label{ color:#fff; }
-.thermo__head .sec-head__title{ color:#fff; }
-.thermo__head .sec-head__title em{ font-style:normal; color:#f1ff0e; }
+.thermo {
+    background: var(--c-primary);
+    padding: 99px 0 106px;
+    color: #fff;
+}
+
+.thermo__head {
+    width: 328px;
+    margin-inline: auto;
+}
+
+.thermo__head .sec-head__label {
+    color: #fff;
+}
+
+.thermo__head .sec-head__title {
+    color: #fff;
+}
+
+.thermo__head .sec-head__title em {
+    font-style: normal;
+    color: #f1ff0e;
+}
 
 /* ---------- hashtag chips ---------- */
-.thermo__chips{ list-style:none; margin:41px 0 0; padding:0; display:flex; flex-direction:column; align-items:center; gap:11px; }
-.thermo__chips .chip{ display:inline-flex; align-items:center; gap:2px; height:48px; padding:0 16px;
-    border:1px solid rgba(255,255,255,.2); border-radius:560px; }
-.thermo__chips .chip img{ width:26px; height:27px; object-fit:contain; filter:drop-shadow(0 4px 4px rgba(0,0,0,.25)); }
-.thermo__chips .chip span{ font-size:14px; letter-spacing:-.28px; color:#fff; white-space:nowrap; }
+.thermo__chips {
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 11px;
+}
 
-/* ---------- stage: player + speech bubbles ---------- */
-.thermo__stage{ position:relative; height:740px; margin-top:60px; }
-.thermo__player{ position:absolute; left:48px; top:116px; width:280px; height:499px;
-    background:#2b2b2b; border-radius:20px; cursor:pointer; }
-.thermo__play{ position:absolute; left:110px; top:226px; width:60px; height:60px; border-radius:50%;
-    border:1px solid rgba(255,255,255,.6); }
-.thermo__play::after{ content:""; position:absolute; left:50%; top:50%; transform:translate(-42%,-50%);
-    border-style:solid; border-width:9px 0 9px 16px; border-color:transparent transparent transparent #fff; }
+.thermo__chips .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    height: 48px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 560px;
+}
 
-/* speech bubble: white body + tail pointing at the player */
-.thermo .bubble{ position:absolute; display:flex; align-items:center; justify-content:center; height:61px;
-    background:#fff; border-radius:12px; color:var(--c-ink); font-size:18px; letter-spacing:-.36px;
-    white-space:nowrap; box-shadow:0 4px 10px rgba(0,0,0,.08); }
-.thermo .bubble::after{ content:""; position:absolute; border-style:solid; border-width:0 10px 14px 10px;
-    border-color:transparent transparent #fff transparent; }
-/* bubbles above the player → tail points down */
-.thermo .bubble--a::after,.thermo .bubble--b::after,.thermo .bubble--c::after{
-    bottom:-13px; transform:rotate(180deg); }
-.thermo .bubble--a{ left:27px;  top:0;   width:169px; }
-.thermo .bubble--a::after{ right:28px; }
-.thermo .bubble--b{ left:206px; top:30px; width:143px; }
-.thermo .bubble--b::after{ left:28px; }
-.thermo .bubble--c{ left:26px;  top:95px; width:185px; }
-.thermo .bubble--c::after{ right:28px; }
-/* bubbles below the player → tail points up */
-.thermo .bubble--d::after,.thermo .bubble--e::after,.thermo .bubble--f::after{ top:-13px; }
-.thermo .bubble--d{ left:24px;  top:602px; width:149px; }
-.thermo .bubble--d::after{ right:28px; }
-.thermo .bubble--e{ left:193px; top:584px; width:158px; }
-.thermo .bubble--e::after{ left:28px; }
-.thermo .bubble--f{ left:144px; top:674px; width:162px; }
-.thermo .bubble--f::after{ left:28px; }
+.thermo__chips .chip img {
+    width: 26px;
+    height: 27px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, .25));
+}
+
+.thermo__chips .chip span {
+    font-size: 14px;
+    letter-spacing: -.28px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+/* ---------- stage: player + speech bubbles (Figma 503:145 / 503:181 / 503:182)
+   Coordinates are stage-relative; the stage origin is the top bubble row
+   (design y=10482 → 0). Player 503:142 sits at y=10604 → 122.            ---------- */
+.thermo__stage {
+    position: relative;
+    height: 757px;
+    margin-top: 59px;
+}
+
+.thermo__player {
+    position: absolute;
+    left: 48px;
+    top: 122px;
+    width: 280px;
+    height: 499px;
+    background: #2b2b2b;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.thermo__play {
+    position: absolute;
+    left: 110px;
+    top: 220px;
+    width: 60px;
+    height: 60px;
+    display: block;
+}
+
+/* Speech bubble = pill body + right-angled tail, matching the Figma
+   "Union" shapes exactly (body 60/63 tall, radius = half height,
+   tail 17.17x16.5 top row / 20.3x19.5 bottom row, shadow 0 10 10 / 10%). */
+.thermo .bubble {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    color: var(--c-ink);
+    font-size: 18px;
+    line-height: 1.4;
+    letter-spacing: -.36px;
+    white-space: nowrap;
+    filter: drop-shadow(0 10px 10px rgba(0, 0, 0, .1));
+    z-index: 99;
+}
+
+.thermo .bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+/* --- top row (503:181): body 60px, text right-aligned, tail bottom-right --- */
+.thermo .bubble--a,
+.thermo .bubble--b,
+.thermo .bubble--c {
+    height: 60px;
+    border-radius: 30px;
+    justify-content: flex-end;
+    padding-right: 22px;
+}
+
+.thermo .bubble--a::after,
+.thermo .bubble--b::after,
+.thermo .bubble--c::after {
+    border-width: 16.5px 0 0 17.17px;
+    border-color: #fff transparent transparent transparent;
+}
+
+.thermo .bubble--a {
+    left: 27px;
+    top: 0;
+    width: 169px;
+}
+
+.thermo .bubble--a::after {
+    right: 36.5px;
+}
+
+.thermo .bubble--b {
+    left: 206px;
+    top: 30px;
+    width: 143px;
+}
+
+.thermo .bubble--b::after {
+    right: 34px;
+}
+
+.thermo .bubble--c {
+    left: 26px;
+    top: 95px;
+    width: 185px;
+}
+
+.thermo .bubble--c::after {
+    right: 34px;
+}
+
+/* --- bottom row (503:182): body 63px, text left-aligned, tail bottom-left --- */
+.thermo .bubble--d,
+.thermo .bubble--e,
+.thermo .bubble--f {
+    height: 63px;
+    border-radius: 31.5px;
+    justify-content: flex-start;
+    padding-left: 24px;
+}
+
+.thermo .bubble--d::after,
+.thermo .bubble--e::after,
+.thermo .bubble--f::after {
+    left: 34px;
+    border-width: 19.5px 20.3px 0 0;
+    border-color: #fff transparent transparent transparent;
+}
+
+.thermo .bubble--d {
+    left: 24px;
+    top: 602px;
+    width: 149px;
+}
+
+.thermo .bubble--e {
+    left: 193px;
+    top: 584px;
+    width: 158px;
+}
+
+.thermo .bubble--f {
+    left: 144px;
+    top: 674px;
+    width: 162px;
+}
 
 /* ---------- kcal claim ---------- */
-.thermo__claim{ margin-top:77px; text-align:center; }
-.thermo__claim h3{ margin:0; font-family:var(--f-title); font-weight:800; font-size:30px; line-height:1.4;
-    letter-spacing:-.6px; color:#fff; }
-.thermo__claim h3 .mark{ background:#0f1520; padding:0 8px; box-decoration-break:clone;
-    -webkit-box-decoration-break:clone; }
-.thermo__claim p{ margin-top:23px; font-family:var(--f-title); font-weight:800; font-size:30px;
-    line-height:1.4; letter-spacing:-.6px; color:#fff; }
+.thermo__claim {
+    margin-top: 54px;
+    text-align: center;
+}
+
+.thermo__claim h3 {
+    margin: 0;
+    font-family: var(--f-title);
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.4;
+    letter-spacing: -.6px;
+    color: #fff;
+}
+
+.thermo__claim h3 .mark {
+    background: #0f1520;
+    padding: 0 8px;
+    line-height: 38px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    color: #fff;
+}
+
+.thermo__claim p {
+    margin-top: 23px;
+    font-family: var(--f-title);
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.4;
+    letter-spacing: -.6px;
+    color: #fff;
+}

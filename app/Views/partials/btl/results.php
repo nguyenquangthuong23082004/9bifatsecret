@@ -15,7 +15,7 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
     <!-- ============ CASE 01 ============ -->
     <div class="case">
         <p class="case__who">
-            <img class="case__avatar" src="<?= $img('res-avatar-1.png') ?>" alt="" aria-hidden="true" loading="lazy">
+            <span class="case__avatar" aria-hidden="true"></span>
             <span class="case__badge">CASE 01</span>
             <span class="case__name">강**회원님의 실제 사례</span>
         </p>
@@ -27,15 +27,10 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
             <?php endforeach; ?>
         </div>
 
-        <!-- 전신관리 -->
+        <!-- 전신관리 (516:399) — 전면 block + 측면 block are BOTH shown, stacked -->
         <div class="rpanel is-active" id="rp0">
-            <div class="subtabs">
-                <button type="button" class="subtab is-active" data-view="v0a">전면 비포 애프터</button>
-                <span class="subtabs__dot" aria-hidden="true">·</span>
-                <button type="button" class="subtab" data-view="v0b">측면 비포 애프터</button>
-            </div>
-
-            <div class="rview is-active" id="v0a">
+            <div class="rblock">
+                <p class="subhead"><span class="is-on">전면 비포 애프터</span><i>·</i><span>측면 비포 애프터</span></p>
                 <div class="ba-row">
                     <div class="ba-shot"><img src="<?= $img('res-c1-front-before.png') ?>" alt="전신관리 전면 비포" loading="lazy"></div>
                     <div class="ba-shot"><img src="<?= $img('res-c1-front-after.png') ?>" alt="전신관리 전면 애프터" loading="lazy"></div>
@@ -44,12 +39,14 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
                 <p class="ba-caption">체중 -15.5kg / 체지방 -13.5kg / 내장지방 4레벨</p>
             </div>
 
-            <div class="rview" id="v0b">
+            <!-- 02_측면비포애프터 (503:225) — 3 shots, wider than the 375 grid → swipe -->
+            <div class="rblock">
+                <p class="subhead"><span>전면 비포 애프터</span><i>·</i><span class="is-on">측면 비포 애프터</span></p>
                 <div class="ba-row ba-row--scroll">
                     <?php for ($i = 1; $i <= 3; $i++): ?>
-                    <div class="ba-shot ba-shot--plain">
+                    <div class="ba-shot">
                         <img src="<?= $img('res-c1-side-' . $i . '.png') ?>" alt="전신관리 측면 <?= $i ?>" loading="lazy">
-                        <img class="ba-shot__ring" src="<?= $img('res-focus-ring.png') ?>" alt="" aria-hidden="true" loading="lazy">
+                        <span class="ba-shot__ring" aria-hidden="true"></span>
                     </div>
                     <?php endfor; ?>
                 </div>
@@ -57,14 +54,10 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
             </div>
         </div>
 
-        <!-- 체형관리 -->
+        <!-- 체형관리 (516:398) — only the 전면 block exists in the design -->
         <div class="rpanel" id="rp1">
-            <div class="subtabs">
-                <button type="button" class="subtab is-active" data-view="v1a">전면 비포 애프터</button>
-                <span class="subtabs__dot" aria-hidden="true">·</span>
-                <button type="button" class="subtab" data-view="v1a">측면 비포 애프터</button>
-            </div>
-            <div class="rview is-active" id="v1a">
+            <div class="rblock">
+                <p class="subhead"><span class="is-on">전면 비포 애프터</span><i>·</i><span>측면 비포 애프터</span></p>
                 <div class="ba-row">
                     <div class="ba-shot"><img src="<?= $img('res-c1-shape-before.png') ?>" alt="체형관리 비포" loading="lazy"></div>
                     <div class="ba-shot"><img src="<?= $img('res-c1-shape-after.png') ?>" alt="체형관리 애프터" loading="lazy"></div>
@@ -74,15 +67,10 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
             </div>
         </div>
 
-        <!-- 부분관리 -->
+        <!-- 부분관리 (516:397) — 복부 block + 허벅지 block, both shown -->
         <div class="rpanel" id="rp2">
-            <div class="subtabs">
-                <button type="button" class="subtab is-active" data-view="v2a">복부 비포 애프터</button>
-                <span class="subtabs__dot" aria-hidden="true">·</span>
-                <button type="button" class="subtab" data-view="v2b">허벅지 비포 애프터</button>
-            </div>
-
-            <div class="rview is-active" id="v2a">
+            <div class="rblock rblock--gap40">
+                <p class="subhead"><span class="is-on">복부 비포 애프터</span><i>·</i><span>허벅지 비포 애프터</span></p>
                 <div class="ba-row ba-row--dark ba-row--h90">
                     <div class="ba-shot">
                         <img src="<?= $img('res-c1-belly-before.png') ?>" alt="복부 비포" loading="lazy">
@@ -96,7 +84,8 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
                 <p class="ba-caption">-6.5인치 감소<br>(3개월차)</p>
             </div>
 
-            <div class="rview" id="v2b">
+            <div class="rblock rblock--gap40">
+                <p class="subhead"><span>복부 비포 애프터</span><i>·</i><span class="is-on">허벅지 비포 애프터</span></p>
                 <div class="ba-row ba-row--dark ba-row--h161">
                     <div class="ba-shot">
                         <img src="<?= $img('res-c1-thigh-before.png') ?>" alt="허벅지 비포" loading="lazy">
@@ -107,13 +96,13 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
                         <span class="ba-zoom ba-zoom--low"><img src="<?= $img('res-c1-thigh-after.png') ?>" alt="" aria-hidden="true"><em>70.2</em></span>
                     </div>
                 </div>
-                <p class="ba-caption">-1.6인치 감소<br>(단 1주차)</p>
+                <p class="ba-caption ba-caption--gap30">-1.6인치 감소<br>(단 1주차)</p>
             </div>
         </div>
 
-        <!-- 일상 -->
+        <!-- 일상 (516:388) — no sub-heading in the design -->
         <div class="rpanel" id="rp3">
-            <div class="rview is-active">
+            <div class="rblock rblock--nohead">
                 <div class="ba-row">
                     <div class="ba-shot ba-shot--gray">
                         <img src="<?= $img('res-c1-daily-before.png') ?>" alt="일상 비포" loading="lazy">
@@ -134,7 +123,7 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
     <!-- ============ CASE 02 ============ -->
     <div class="case case--simple">
         <p class="case__who">
-            <img class="case__avatar" src="<?= $img('res-avatar-2.png') ?>" alt="" aria-hidden="true" loading="lazy">
+            <span class="case__avatar" aria-hidden="true"></span>
             <span class="case__badge">CASE 02</span>
             <span class="case__name">예비신부 김** 님의 실제 사례</span>
         </p>
@@ -146,7 +135,7 @@ $tabs = ['전신관리', '체형관리', '부분관리', '일상'];
     <!-- ============ CASE 03 ============ -->
     <div class="case case--simple">
         <p class="case__who">
-            <img class="case__avatar" src="<?= $img('res-avatar-3.png') ?>" alt="" aria-hidden="true" loading="lazy">
+            <span class="case__avatar" aria-hidden="true"></span>
             <span class="case__badge">CASE 03</span>
             <span class="case__name">갱년기 임** 님의 실제사례</span>
         </p>

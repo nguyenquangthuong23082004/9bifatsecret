@@ -1,85 +1,366 @@
 /* =========================================================
    12. Results (결과로 증명) — Figma 516:446
    ========================================================= */
-.results{ padding:100px 0 94px; }
-.results__head{ width:282px; margin-inline:auto; }
-.results .sec-head__title .line2{ color:var(--c-primary); }
+.results {
+    padding: 100px 0 94px;
+}
+
+.results__head {
+    width: 282px;
+    margin-inline: auto;
+}
+
+.results .sec-head__title .line2 {
+    color: var(--c-primary);
+}
 
 /* ---------- case header (avatar + CASE pill + name) ---------- */
-.case{ margin-top:40px; }
-.case--simple{ margin-top:60px; }
-.case__who{ display:flex; align-items:center; justify-content:center; height:36px; }
-.case__avatar{ width:36px; height:36px; border-radius:50%; object-fit:cover; position:relative; z-index:2; }
-.case__badge{ margin-left:-11px; padding:0 14px 0 25px; height:36px; display:inline-flex; align-items:center;
-    background:#f5f5f5; border-radius:50px; font-size:14px; font-weight:600; letter-spacing:-.28px;
-    color:var(--c-primary); }
-.case__name{ margin-left:10px; font-size:14px; letter-spacing:-.28px; color:var(--c-ink); }
+.case {
+    margin-top: 40px;
+}
+
+.case--simple {
+    margin-top: 60px;
+}
+
+.case__who {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+}
+
+/* Figma 503:193 "Ellipse 3" is just a flat 36px circle (#C8365A) — no asset needed.
+   Per Figma 503:199 the grey pill (Rectangle 34, x=90) paints OVER the circle
+   (x=65, 36 wide) → 11px overlap, so only the left half-moon stays visible. */
+.case__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--c-primary);
+    flex: none;
+    position: relative;
+    z-index: 1;
+}
+
+.case__badge {
+    position: relative;
+    z-index: 2;
+    margin-left: -11px;
+    width: 85px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -.28px;
+    color: var(--c-primary);
+}
+
+.case__name {
+    margin-left: 10px;
+    font-size: 14px;
+    letter-spacing: -.28px;
+    color: var(--c-ink);
+}
 
 /* ---------- main tabs ---------- */
-.results__tabs{ display:flex; justify-content:center; gap:6px; margin-top:40px; }
-.rtab{ height:36px; padding:0 16px; border:1px solid var(--c-line); border-radius:600px; background:#fff;
-    font-family:inherit; font-size:16px; font-weight:500; letter-spacing:-.32px; color:var(--c-ink);
-    cursor:pointer; white-space:nowrap; }
-.rtab.is-active{ background:var(--c-ink-2); border-color:var(--c-ink-2); color:#fff;
-    filter:drop-shadow(0 6px 5px rgba(0,0,0,.25)); }
+.results__tabs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 40px;
+}
 
-.rpanel{ display:none; }
-.rpanel.is-active{ display:block; }
+.rtab {
+    height: 36px;
+    padding: 0 16px;
+    border: 1px solid var(--c-line);
+    border-radius: 600px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -.32px;
+    color: var(--c-ink);
+    cursor: pointer;
+    white-space: nowrap;
+}
 
-/* ---------- sub tabs (A · B) ---------- */
-.subtabs{ display:flex; align-items:center; justify-content:center; gap:8px; margin-top:40px; height:22px; }
-.subtabs .subtab{ padding:0; border:0; background:none; font-family:inherit; font-size:16px;
-    letter-spacing:-.32px; color:var(--c-muted); cursor:pointer; }
-.subtabs .subtab.is-active{ color:var(--c-ink); }
-.subtabs__dot{ color:var(--c-ink); font-size:16px; }
+.rtab.is-active {
+    background: var(--c-ink-2);
+    border-color: var(--c-ink-2);
+    color: #fff;
+    filter: drop-shadow(0 6px 5px rgba(0, 0, 0, .25));
+}
 
-.rview{ display:none; }
-.rview.is-active{ display:block; }
+.rpanel {
+    display: none;
+}
+
+.rpanel.is-active {
+    display: block;
+}
+
+/* ---------- block heading "A · B" (label, not a switcher — see 516:399) ---------- */
+.subhead {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    height: 22px;
+    margin-top: 40px !important;
+    font-size: 16px;
+    line-height: 1.4;
+    letter-spacing: -.32px;
+    color: var(--c-muted);
+}
+
+.subhead .is-on {
+    color: var(--c-ink);
+}
+
+.subhead i {
+    font-style: normal;
+    color: var(--c-ink);
+}
+
+/* second and later blocks inside one tab */
+.rblock+.rblock .subhead {
+    margin-top: 39px;
+}
+
+.rblock--gap40+.rblock--gap40 .subhead {
+    margin-top: 40px;
+}
 
 /* ---------- before / after row ---------- */
-.ba-row{ position:relative; display:flex; justify-content:center; gap:7px; margin-top:34px; }
-.ba-shot{ position:relative; width:168px; height:208px; border-radius:12px; overflow:hidden; background:#f1f1f1; flex:none; }
-.ba-shot > img{ width:100%; height:100%; object-fit:cover; display:block; }
-.ba-shot--gray{ background:#f1f1f1; }
-.ba-shot--rose{ background:#dca3af; }
-.ba-row--dark .ba-shot{ background:#000; }
-.ba-row--dark .ba-shot > img{ opacity:.6; object-fit:contain; }
-.ba-row--h90 .ba-shot{ height:90px; }
-.ba-row--h161 .ba-shot{ height:161px; }
-/* 측면: 3 shots wider than the 375 grid → horizontal scroll */
-.ba-row--scroll{ justify-content:flex-start; padding-inline:16px; overflow-x:auto; scrollbar-width:none; }
-.ba-row--scroll::-webkit-scrollbar{ display:none; }
-.ba-shot--plain{ overflow:visible; }
-.ba-shot--plain > img{ border-radius:12px; }
-.ba-shot__ring{ position:absolute; left:33px; top:36px; width:69px; height:69px; }
+.ba-row {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 34px;
+}
+
+.rblock--gap40 .ba-row {
+    margin-top: 40px;
+}
+
+.rblock--nohead .ba-row {
+    margin-top: 40px;
+}
+
+.ba-shot {
+    position: relative;
+    width: 168px;
+    height: 208px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f1f1f1;
+    flex: none;
+}
+
+.ba-shot>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.ba-shot--gray {
+    background: #f1f1f1;
+}
+
+.ba-shot--rose {
+    background: #dca3af;
+}
+
+.ba-row--dark .ba-shot {
+    background: #000;
+}
+
+.ba-row--dark .ba-shot>img {
+    opacity: .6;
+    object-fit: contain;
+}
+
+.ba-row--h90 .ba-shot {
+    height: 90px;
+}
+
+.ba-row--h161 .ba-shot {
+    height: 161px;
+}
+
+/* 측면 (503:225): 3 shots span 518px, wider than the 375 grid → horizontal swipe */
+.ba-row--scroll {
+    justify-content: flex-start;
+    padding-inline: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.ba-row--scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* Figma 503:243/246/248 "Ellipse 4" — 69px dashed outline, asset-free */
+.ba-shot__ring {
+    position: absolute;
+    top: 36px;
+    width: 69px;
+    height: 69px;
+    border-radius: 50%;
+    border: 1px dashed var(--c-primary);
+    box-sizing: border-box;
+}
+
+.ba-row--scroll .ba-shot:nth-child(1) .ba-shot__ring {
+    left: 33px;
+}
+
+.ba-row--scroll .ba-shot:nth-child(2) .ba-shot__ring {
+    left: 27px;
+}
+
+.ba-row--scroll .ba-shot:nth-child(3) .ba-shot__ring {
+    left: 32px;
+}
 
 /* result badge between the two shots */
-.ba-badge{ position:absolute; left:50%; top:74px; transform:translateX(-50%); z-index:2;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    width:60px; height:60px; border-radius:500px; background:var(--c-primary); border:2px solid #fff;
-    filter:drop-shadow(0 0 2px rgba(0,0,0,.25)); color:#fff; text-align:center; }
-.ba-badge strong{ font-size:12px; font-weight:700; line-height:1.2; letter-spacing:-.2px; }
-.ba-badge span{ font-size:10px; line-height:1.2; letter-spacing:-.2px; }
+.ba-badge {
+    position: absolute;
+    left: 50%;
+    top: 74px;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 500px;
+    background: var(--c-primary);
+    border: 2px solid #fff;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, .25));
+    color: #fff;
+    text-align: center;
+}
 
-/* censor bars (일상) */
-.ba-bar{ position:absolute; left:64px; top:32px; width:39px; height:9px; background:#191919; }
+.ba-badge strong {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.2px;
+}
+
+.ba-badge span {
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: -.2px;
+}
+
+/* censor bars (일상 — 516:394 / 516:395) */
+.ba-bar {
+    position: absolute;
+    width: 39px;
+    height: 9px;
+    background: #191919;
+}
+
+.ba-shot--gray .ba-bar {
+    left: 64px;
+    top: 32px;
+}
+
+.ba-shot--rose .ba-bar {
+    left: 69px;
+    top: 34px;
+}
 
 /* zoom thumb + measurement chip (부분관리) */
-.ba-zoom{ position:absolute; right:-14px; top:11px; width:80px; display:flex; flex-direction:column;
-    align-items:center; z-index:2; }
-.ba-zoom--low{ top:78px; }
-.ba-zoom img{ width:64px; height:64px; border-radius:500px; border:2px solid #fff; object-fit:cover;
-    margin-bottom:-11px; }
-.ba-zoom em{ display:inline-flex; align-items:center; justify-content:center; width:46px; height:20px;
-    border-radius:500px; background:var(--c-rose); color:#fff; font-size:10px; font-weight:700;
-    font-style:normal; letter-spacing:-.2px; }
+.ba-zoom {
+    position: absolute;
+    right: -14px;
+    top: 11px;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+}
+
+.ba-zoom--low {
+    top: 78px;
+}
+
+.ba-zoom img {
+    width: 64px;
+    height: 64px;
+    border-radius: 500px;
+    border: 2px solid #fff;
+    object-fit: cover;
+    margin-bottom: -11px;
+}
+
+.ba-zoom em {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 20px;
+    border-radius: 500px;
+    background: var(--c-rose);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: -.2px;
+}
 
 /* ---------- captions ---------- */
-.ba-caption{ margin-top:20px; font-size:14px; font-weight:500; line-height:1.4; letter-spacing:-.28px;
-    color:var(--c-ink-2); text-align:center; }
-.ba-desc{ margin-top:10px; font-size:14px; line-height:1.4; letter-spacing:-.28px; color:var(--c-ink-2);
-    text-align:center; }
+.ba-caption {
+    margin-top: 20px !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -.28px;
+    color: var(--c-ink-2);
+    text-align: center;
+}
+
+.ba-caption--gap30 {
+    margin-top: 30px;
+}
+
+.ba-desc {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: -.28px;
+    color: var(--c-ink-2);
+    text-align: center;
+}
 
 /* ---------- simple case card (CASE 02 / 03) ---------- */
-.case__shot{ width:343px; height:220px; margin:33px auto 0; border-radius:12px; overflow:hidden; background:#f1f1f1; }
-.case__shot img{ width:100%; height:100%; object-fit:cover; display:block; }
+.case__shot {
+    width: 343px;
+    height: 220px;
+    margin: 33px auto 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f1f1f1;
+}
+
+.case__shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

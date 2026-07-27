@@ -97,21 +97,6 @@
       });
     });
 
-    /* ---- Results: sub tabs (전면 · 측면 / 복부 · 허벅지) ---- */
-    document.querySelectorAll('.results .subtabs').forEach(function (group) {
-      var panel = group.closest('.rpanel');
-      group.querySelectorAll('.subtab').forEach(function (sub) {
-        sub.addEventListener('click', function () {
-          group.querySelectorAll('.subtab').forEach(function (s) { s.classList.remove('is-active'); });
-          sub.classList.add('is-active');
-          if (!panel) return;
-          panel.querySelectorAll('.rview').forEach(function (v) { v.classList.remove('is-active'); });
-          var view = panel.querySelector('#' + sub.getAttribute('data-view'));
-          if (view) view.classList.add('is-active');
-        });
-      });
-    });
-
     /* ---- Device carousel (Swiper) ---- */
     if (window.Swiper && document.querySelector('.dual__devices')) {
       new window.Swiper('.dual__devices', {

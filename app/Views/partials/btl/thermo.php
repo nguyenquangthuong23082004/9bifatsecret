@@ -35,7 +35,7 @@ $chips = [
         <p class="bubble bubble--c">타입별 전문기기 관리</p>
 
         <div class="thermo__player" role="button" tabindex="0" aria-label="체온 다이어트 영상 재생" data-video="">
-            <span class="thermo__play" aria-hidden="true"></span>
+            <img class="thermo__play" src="<?= $img('thermo-play.svg') ?>" alt="" aria-hidden="true">
         </div>
 
         <!-- bubbles below the player -->
