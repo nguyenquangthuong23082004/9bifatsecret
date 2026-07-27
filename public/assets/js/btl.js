@@ -32,18 +32,12 @@
     tabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
         tabs.forEach(function (t) {
-          t.classList.remove('is-active');
-          t.setAttribute('aria-selected', 'false');
+          var isCurrent = t === tab;
+          t.classList.toggle('is-active', isCurrent);
+          t.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+          var target = document.getElementById(t.getAttribute('aria-controls'));
+          if (target) { target.hidden = !isCurrent; }
         });
-        tab.classList.add('is-active');
-        tab.setAttribute('aria-selected', 'true');
-        var panel = document.querySelector('.program__panel');
-        var img = panel && panel.querySelector('img');
-        var src = tab.getAttribute('data-img');
-        if (img && src) { img.src = src; }
-        var desc = tab.getAttribute('data-desc');
-        var descEl = panel && panel.querySelector('.program__desc');
-        if (descEl && desc) { descEl.innerHTML = desc; }
       });
     });
 

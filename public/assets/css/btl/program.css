@@ -1,11 +1,293 @@
 /* =========================================================
-   04. Program (프로그램) + tabs
+   04. Program (프로그램) + tabs — Figma 466:33
    ========================================================= */
-.program{ background:#fff; padding:80px 16px; }
-.tabs{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:24px auto 0; max-width:300px; }
-.tab{ height:36px; padding-inline:16px; border-radius:600px; border:1px solid var(--c-line); background:#fff; color:var(--c-ink);
-    font-family:var(--f-body); font-weight:500; font-size:16px; letter-spacing:-.32px; cursor:pointer; }
-.tab.is-active{ background:#454545; color:#fff; border-color:#454545; box-shadow:0 6px 5px rgba(0,0,0,.25); }
-.program__panel{ margin:24px auto 0; max-width:343px; background:#f6f0e4; border-radius:20px; padding:10px 12px 20px 19px; display:flex; flex-direction:column; align-items:center; gap:20px; }
-.program__panel img{ width:319px; max-width:100%; mix-blend-mode:darken; }
-.program__desc{ font-size:12px; line-height:1.4; letter-spacing:-.24px; color:var(--c-ink-2); text-align:center; }
+.program {
+    background: #fff;
+    padding: 80px 16px;
+}
+
+/* -- tab (463:203) : khung 273, 2 hàng cách 16, các nút cách 6
+      hàng 1 = 3 nút 87px, hàng 2 = 2 nút 131px (canh trái, dư 5px bên phải) -- */
+.tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 43px auto 0;
+    width: 273px;
+    max-width: 100%;
+}
+
+.tabs__row {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.tabs__row--1 .tab {
+    flex: 0 0 31.868%;
+}
+
+.tabs__row--2 .tab {
+    flex: 0 0 47.985%;
+}
+
+.tab {
+    height: 36px;
+    padding-inline: 16px;
+    border-radius: 600px;
+    border: 1px solid var(--c-line);
+    background: #fff;
+    color: var(--c-ink);
+    font-family: var(--f-body);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.4;
+    letter-spacing: -.32px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tab.is-active {
+    background: #454545;
+    color: #fff;
+    border-color: #454545;
+    box-shadow: 0 6px 5px rgba(0, 0, 0, .25);
+}
+
+/* -- panel : mọi thẻ đều cao 240, phần mô tả nằm dưới thẻ -- */
+.program__panel {
+    margin: 40px auto 0;
+    max-width: 343px;
+}
+
+.program__panel[hidden] {
+    display: none;
+}
+
+.program__card {
+    position: relative;
+    height: 240px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.program__media {
+    position: absolute;
+    overflow: hidden;
+}
+
+.program__media img {
+    position: absolute;
+    max-width: none;
+}
+
+.program__desc {
+    margin-top: 20px !important;
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: -.24px;
+    color: var(--c-ink-2);
+    text-align: center;
+}
+
+/* nhãn Before / After dùng chung (464:245, 464:281) */
+.program__tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 20px;
+    border-radius: 500px;
+    background: #da4070;
+    color: #fff;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 1.4;
+    letter-spacing: -.2px;
+}
+
+/* 01_집중관리 (463:208) : nền be, ảnh 319x230 crop từ trên */
+.program__panel--focus .program__card {
+    background: #f6f0e4;
+}
+
+.program__panel--focus .program__media {
+    left: 5.539%;
+    top: 10px;
+    width: 93.003%;
+    aspect-ratio: 319/230;
+    mix-blend-mode: darken;
+}
+
+.program__panel--focus .program__media img {
+    left: -.05%;
+    top: 0;
+    width: 100.1%;
+    height: 150.43%;
+}
+
+.program__panel--focus .program__desc {
+    max-width: 255px;
+    margin-inline: auto;
+}
+
+/* 02_체형관리 (463:224) */
+.program__panel--shape .program__card {
+    background: #f1f1f1;
+}
+
+.program__panel--shape .program__media {
+    inset: 0;
+}
+
+.program__panel--shape .program__media img {
+    left: 8.38%;
+    top: 0;
+    width: 83.29%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 03_부분관리 (464:269) */
+.program__panel--part .program__card {
+    background: #f1f1f1;
+}
+
+.program__panel--part .program__media {
+    inset: 0;
+}
+
+.program__panel--part .program__media img {
+    left: 10.61%;
+    top: .02%;
+    width: 78.82%;
+    height: 118.52%;
+}
+
+/* 04_페이스다이어트 (463:230) : nền đen, 2 ảnh before/after + avatar tròn */
+.program__panel--face .program__card {
+    background: #010101;
+}
+
+.face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+}
+
+.face__item {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.face__item--before {
+    width: 145px;
+    height: 206px;
+}
+
+.face__item--after {
+    width: 139px;
+    height: 204px;
+}
+
+.face__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.face__badge {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+}
+
+.face__item--before .face__badge {
+    left: 65px;
+    top: 133px;
+}
+
+.face__item--after .face__badge {
+    left: 59px;
+    top: 131px;
+}
+
+.face__avatar {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin-bottom: -11px;
+    border: 2px solid #fff;
+    border-radius: 500px;
+    overflow: hidden;
+}
+
+.face__avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ảnh after được crop lệch trong Figma (464:250) */
+.face__item--after .face__avatar img {
+    inset: auto;
+    left: -17.95%;
+    top: 2.34%;
+    width: 129.92%;
+    height: 86.33%;
+    max-width: none;
+    object-fit: fill;
+}
+
+.program__panel--face .program__desc {
+    color: #010101;
+}
+
+/* 05_갱년기다이어트 (464:275) : nền đen, 2 ảnh + nhãn đặt tuyệt đối (khung 343x240) */
+.program__panel--meno .program__card {
+    background: #010101;
+}
+
+.meno__img {
+    position: absolute;
+    object-fit: cover;
+}
+
+.meno__img--before {
+    left: 5.83%;
+    top: 25.83%;
+    width: 41.4%;
+    height: 42.92%;
+}
+
+.meno__img--after {
+    left: 55.1%;
+    top: 23.75%;
+    width: 40.82%;
+    height: 46.67%;
+}
+
+.meno__tag {
+    position: absolute;
+    top: 83.33%;
+}
+
+.meno__tag--before {
+    left: 19.83%;
+}
+
+.meno__tag--after {
+    left: 68.8%;
+}
+
+.program__panel--meno .program__desc {
+    color: #010101;
+}
