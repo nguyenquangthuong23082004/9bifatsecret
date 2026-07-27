@@ -11,10 +11,16 @@ $awards = [
 <section class="sec career" id="career">
     <div class="career__bg" aria-hidden="true"></div>
     <div class="career__inner">
-        <h2 class="career__title">
-            <span class="l1">19년 경력이 증명한</span>
-            <span class="l2">비티엘 다이어트</span>
-        </h2>
+        <div class="career__title-wrap">
+            <svg class="career__arc" viewBox="0 0 171 171" aria-hidden="true" focusable="false">
+                <defs><path id="careerArc" d="M 8 85.5 A 77.5 77.5 0 0 1 163 85.5" fill="none"></path></defs>
+                <text><textPath href="#careerArc" startOffset="50%" text-anchor="middle">19 YEARS OF BITIEL</textPath></text>
+            </svg>
+            <h2 class="career__title">
+                <span class="l1">19년 경력이 증명한</span>
+                <span class="l2">비티엘 다이어트</span>
+            </h2>
+        </div>
 
         <div class="career__awards">
             <?php foreach ($awards as [$label, $num]): ?>
@@ -25,7 +31,11 @@ $awards = [
             <?php endforeach; ?>
         </div>
 
-        <img class="career__trophy" src="<?= $img('trophy.webp') ?>" alt="2026 BITIEL 수상 트로피" loading="lazy">
+        <div class="career__trophy-wrap">
+            <img class="career__confetti career__confetti--l" src="<?= $img('career-confetti-1.png') ?>" alt="" aria-hidden="true" loading="lazy">
+            <img class="career__confetti career__confetti--r" src="<?= $img('career-confetti-2.png') ?>" alt="" aria-hidden="true" loading="lazy">
+            <img class="career__trophy" src="<?= $img('trophy.webp') ?>" alt="2026 BITIEL 수상 트로피" loading="lazy">
+        </div>
 
         <div class="career__tv">
             <img class="career__live" src="<?= $img('badge-live.png') ?>" alt="LIVE" loading="lazy">
@@ -36,11 +46,11 @@ $awards = [
                     <rect x="0.5" y="0.5" width="59" height="59" rx="29.5" stroke="white"/>
                     <path d="M36 28.268C37.3333 29.0378 37.3333 30.9623 36 31.7321L28.5 36.0622C27.1667 36.832 25.5 35.8697 25.5 34.3301L25.5 25.6699C25.5 24.1303 27.1667 23.168 28.5 23.9378L36 28.268Z" fill="white"/>
                 </svg>
-            </div>
 
-            <div class="career__apps" aria-hidden="true">
-                <img class="app-1" src="<?= $img('app-1.png') ?>" alt="" loading="lazy">
-                <img class="app-2" src="<?= $img('app-2.png') ?>" alt="" loading="lazy">
+                <div class="career__apps" aria-hidden="true">
+                    <img class="app-1" src="<?= $img('app-1.png') ?>" alt="" loading="lazy">
+                    <img class="app-2" src="<?= $img('app-2.png') ?>" alt="" loading="lazy">
+                </div>
             </div>
         </div>
     </div>
