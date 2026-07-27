@@ -15,25 +15,37 @@
     color: var(--c-primary);
 }
 
-/* pagination dots (static, matches Figma 516:458) */
+/* Swiper pagination — Figma 516:458 (above the cards, 4 dots of 10px, gap 10) */
 .turn__dots {
-    list-style: none;
     display: flex;
     justify-content: center;
     gap: 10px;
     margin: 36px 0 0;
     padding: 0;
+    line-height: 0;
 }
 
-.turn__dots li {
+.turn__dots .swiper-pagination-bullet {
     width: 10px;
     height: 10px;
+    margin: 0;
     border-radius: 50%;
     background: #e8d5d5;
+    opacity: 1;
 }
 
-.turn__dots li.is-on {
+.turn__dots .swiper-pagination-bullet-active {
     background: var(--c-primary);
+}
+
+/* ---------- swipe carousel ---------- */
+.turn__swiper {
+    overflow: hidden;
+}
+
+.turn__swiper .swiper-slide {
+    width: 310px;
+    height: auto;
 }
 
 /* ---------- before / after cards ---------- */
@@ -96,18 +108,14 @@
     display: block;
 }
 
-.ba-card--before .ba-card__photo img {
-    width: 96.53%;
-    height: 133.08%;
-    left: 3.47%;
-    top: -4.42%;
-}
-
-.ba-card--after .ba-card__photo img {
-    width: 82.29%;
-    height: 117.04%;
-    left: 9.24%;
+/* crops are emitted inline per slide (see $photo() in turn.php);
+   529:43 / 529:48 use a plain contain instead */
+.ba-card__photo img.is-contain {
+    width: 100%;
+    height: 100%;
+    left: 0;
     top: 0;
+    object-fit: contain;
 }
 
 .ba-card__react {
@@ -156,7 +164,7 @@
 .turn__quote {
     position: relative;
     width: 310px;
-    margin: 36px auto 0;
+    margin: 29px auto 0;
     padding: 40px 24px 0;
     height: 188px;
     background: var(--c-ink-2);

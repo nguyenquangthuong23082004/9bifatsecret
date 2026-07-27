@@ -46,8 +46,8 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <div class="rblock">
                 <p class="subhead"><span class="is-on">전면 비포 애프터</span><i>·</i><span>측면 비포 애프터</span></p>
                 <div class="ba-row">
-                    <div class="ba-shot"><?= $shot('res-c1-front-before.png', 149.4, 120.67, -25, -20.67, '전신관리 전면 비포') ?></div>
-                    <div class="ba-shot"><?= $shot('res-c1-front-after.png', 142.19, 125.89, -19.57, -25.89, '전신관리 전면 애프터') ?></div>
+                    <div class="ba-shot"><?php $shot('res-c1-front-before.png', 149.4, 120.67, -25, -20.67, '전신관리 전면 비포') ?></div>
+                    <div class="ba-shot"><?php $shot('res-c1-front-after.png', 142.19, 125.89, -19.57, -25.89, '전신관리 전면 애프터') ?></div>
                     <p class="ba-badge"><span>체지방</span><strong>-13.5kg</strong></p>
                 </div>
                 <p class="ba-caption">체중 -15.5kg / 체지방 -13.5kg / 내장지방 4레벨</p>
@@ -57,9 +57,9 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <div class="rblock">
                 <p class="subhead"><span>전면 비포 애프터</span><i>·</i><span class="is-on">측면 비포 애프터</span></p>
                 <div class="ba-row ba-row--scroll">
-                    <div class="ba-shot"><?= $shot('res-c1-side-1.png', 41.87, 97.12, 29.17, 0, '전신관리 측면 1') ?><span class="ba-shot__ring" aria-hidden="true"></span></div>
-                    <div class="ba-shot"><?= $shot('res-c1-side-2.png', 51.88, 103.37, 19.55, -3.37, '전신관리 측면 2') ?><span class="ba-shot__ring" aria-hidden="true"></span></div>
-                    <div class="ba-shot"><?= $shot('res-c1-side-3.png', 43.77, 106.93, 24.08, -6.93, '전신관리 측면 3') ?><span class="ba-shot__ring" aria-hidden="true"></span></div>
+                    <div class="ba-shot"><?php $shot('res-c1-side-1.png', 41.87, 97.12, 29.17, 0, '전신관리 측면 1') ?><span class="ba-shot__ring" aria-hidden="true"></span></div>
+                    <div class="ba-shot"><?php $shot('res-c1-side-2.png', 51.88, 103.37, 19.55, -3.37, '전신관리 측면 2') ?><span class="ba-shot__ring" aria-hidden="true"></span></div>
+                    <div class="ba-shot"><?php $shot('res-c1-side-3.png', 43.77, 106.93, 24.08, -6.93, '전신관리 측면 3') ?><span class="ba-shot__ring" aria-hidden="true"></span></div>
                 </div>
                 <p class="ba-caption">체중 -15.5kg / 체지방 -13.5kg / 내장지방 4레벨</p>
             </div>
@@ -70,8 +70,8 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <div class="rblock">
                 <p class="subhead"><span class="is-on">전면 비포 애프터</span><i>·</i><span>측면 비포 애프터</span></p>
                 <div class="ba-row">
-                    <div class="ba-shot"><?= $shot('res-c1-shape-before.png', 126.79, 102.4, -13.1, -2.16, '체형관리 비포') ?></div>
-                    <div class="ba-shot"><?= $shot('res-c1-shape-after.png', 119.64, 105.92, -9.82, -5.68, '체형관리 애프터') ?></div>
+                    <div class="ba-shot"><?php $shot('res-c1-shape-before.png', 126.79, 102.4, -13.1, -2.16, '체형관리 비포') ?></div>
+                    <div class="ba-shot"><?php $shot('res-c1-shape-after.png', 119.64, 105.92, -9.82, -5.68, '체형관리 애프터') ?></div>
                     <p class="ba-badge"><strong>-10kg</strong><span>이후</span></p>
                 </div>
                 <p class="ba-caption">-10kg부터는 없던 허리라인이 생겼어요.</p>
@@ -84,16 +84,16 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
                 <p class="subhead"><span class="is-on">복부 비포 애프터</span><i>·</i><span>허벅지 비포 애프터</span></p>
                 <div class="ba-row ba-row--dark ba-row--h90">
                     <div class="ba-shot">
-                        <?= $shot('res-c1-belly-before.png', 100, 99.03, 0, 0.49, '복부 비포') ?>
+                        <?php $shot('res-c1-belly-before.png', 100, 99.03, 0, 0.49, '복부 비포') ?>
                         <span class="ba-zoom">
-                            <span class="ba-zoom__pic"><?= $shot('res-c1-belly-before.png', 341.12, 180.97, -125.5, -52.06) ?></span>
+                            <span class="ba-zoom__pic"><?php $shot('res-c1-belly-before.png', 341.12, 180.97, -125.5, -52.06) ?></span>
                             <em>83</em>
                         </span>
                     </div>
                     <div class="ba-shot">
-                        <?= $shot('res-c1-belly-after.png', 100, 100, 0, 0, '복부 애프터', 'is-contain') ?>
+                        <?php $shot('res-c1-belly-after.png', 100, 100, 0, 0, '복부 애프터', 'is-contain') ?>
                         <span class="ba-zoom">
-                            <span class="ba-zoom__pic"><?= $shot('res-c1-belly-after-zoom.png', 375, 227.83, -142.19, -79.96) ?></span>
+                            <span class="ba-zoom__pic"><?php $shot('res-c1-belly-after-zoom.png', 375, 227.83, -142.19, -79.96) ?></span>
                             <em>77.5</em>
                         </span>
                     </div>
@@ -105,16 +105,16 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
                 <p class="subhead"><span>복부 비포 애프터</span><i>·</i><span class="is-on">허벅지 비포 애프터</span></p>
                 <div class="ba-row ba-row--dark ba-row--h161">
                     <div class="ba-shot">
-                        <?= $shot('res-c1-thigh-before.png', 100, 100, 0, 0, '허벅지 비포', 'is-contain') ?>
+                        <?php $shot('res-c1-thigh-before.png', 100, 100, 0, 0, '허벅지 비포', 'is-contain') ?>
                         <span class="ba-zoom ba-zoom--low">
-                            <span class="ba-zoom__pic"><?= $shot('res-c1-thigh-before.png', 148.5, 189.77, -48.5, 0) ?></span>
+                            <span class="ba-zoom__pic"><?php $shot('res-c1-thigh-before.png', 148.5, 189.77, -48.5, 0) ?></span>
                             <em>71.8</em>
                         </span>
                     </div>
                     <div class="ba-shot">
-                        <?= $shot('res-c1-thigh-after.png', 70.15, 100, 19.07, 0, '허벅지 애프터') ?>
+                        <?php $shot('res-c1-thigh-after.png', 70.15, 100, 19.07, 0, '허벅지 애프터') ?>
                         <span class="ba-zoom ba-zoom--low">
-                            <span class="ba-zoom__pic"><?= $shot('res-c1-thigh-after.png', 133.08, 181.81, -33.2, 3.35) ?></span>
+                            <span class="ba-zoom__pic"><?php $shot('res-c1-thigh-after.png', 133.08, 181.81, -33.2, 3.35) ?></span>
                             <em>70.2</em>
                         </span>
                     </div>
@@ -128,11 +128,11 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <div class="rblock rblock--nohead">
                 <div class="ba-row">
                     <div class="ba-shot ba-shot--gray">
-                        <?= $shot('res-c1-daily-before.png', 237.1, 143.63, -68.45, -10.58, '일상 비포') ?>
+                        <?php $shot('res-c1-daily-before.png', 237.1, 143.63, -68.45, -10.58, '일상 비포') ?>
                         <span class="ba-bar" aria-hidden="true"></span>
                     </div>
                     <div class="ba-shot ba-shot--rose">
-                        <?= $shot('res-c1-daily-after.png', 112.19, 186.7, -6.24, 4.39, '일상 애프터') ?>
+                        <?php $shot('res-c1-daily-after.png', 112.19, 186.7, -6.24, 4.39, '일상 애프터') ?>
                         <span class="ba-bar" aria-hidden="true"></span>
                     </div>
                     <p class="ba-badge"><strong>-10kg</strong><span>이후</span></p>
@@ -151,8 +151,8 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <span class="case__name">예비신부 김** 님의 실제 사례</span>
         </p>
         <div class="case__shot">
-            <?= $shot('res-c2-before.png', 76.09, 111.34, -3.69, 4.11, '', 'is-ghost-20') ?>
-            <?= $shot('res-c2-after.png', 87.9, 205.57, 10.5, -19.09, '예비신부 상체관리 비포 애프터') ?>
+            <?php $shot('res-c2-before.png', 76.09, 111.34, -3.69, 4.11, '', 'is-ghost-20') ?>
+            <?php $shot('res-c2-after.png', 87.9, 205.57, 10.5, -19.09, '예비신부 상체관리 비포 애프터') ?>
         </div>
         <p class="ba-caption">본식 2개월전 승모근 + 팔뚝살 집중관리</p>
         <p class="ba-desc">효과는 확실한데 다운타임은 적어 본식 전<br>긴급 상체관리에 너무 좋네요.</p>
@@ -166,8 +166,8 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <span class="case__name">갱년기 임** 님의 실제사례</span>
         </p>
         <div class="case__shot">
-            <?= $shot('res-c3-before.png', 43.51, 191.36, 12.19, 0, '', 'is-ghost-60') ?>
-            <?= $shot('res-c3-after.png', 42.71, 195.91, 45.63, 3.18, '갱년기 복부집중관리 비포 애프터') ?>
+            <?php $shot('res-c3-before.png', 43.51, 191.36, 12.19, 0, '', 'is-ghost-60') ?>
+            <?php $shot('res-c3-after.png', 42.71, 195.91, 45.63, 3.18, '갱년기 복부집중관리 비포 애프터') ?>
         </div>
         <p class="ba-caption">전신감량 + 갱년기 복부집중관리 3개월차</p>
         <p class="ba-desc">관절염으로 운동을 전혀 못하는데 누워서 관리 받으니 참좋네요.<br>50대 이후로 뱃살이 빠진건 처음입니다.</p>

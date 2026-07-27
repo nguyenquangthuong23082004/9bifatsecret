@@ -107,6 +107,17 @@
       });
     }
 
+    /* ---- Your turn: before/after case carousel (Swiper) ---- */
+    if (window.Swiper && document.querySelector('.turn__swiper')) {
+      new window.Swiper('.turn__swiper', {
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 20,
+        grabCursor: true,
+        pagination: { el: '.turn__dots', clickable: true }
+      });
+    }
+
     /* ---- Video placeholder play ---- */
     var player = document.querySelector('.career__player');
     if (player) {
