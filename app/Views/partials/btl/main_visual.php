@@ -5,7 +5,7 @@
     <h1 class="hero__title">누적 1만 명의<br>놀라운 변화</h1>
     <p class="hero__sub">-20만kg <span class="em">감/량/신/화</span></p>
     <div class="hero__visual">
-        <img src="<?= $img('main-visual.webp') ?>" alt="" aria-hidden="true" width="375" height="433" loading="lazy">
+        <img src="<?= $img('main-visual.webp') ?>" alt="" aria-hidden="true">
     </div>
 </section>
 

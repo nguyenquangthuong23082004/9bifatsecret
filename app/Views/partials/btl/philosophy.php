@@ -1,8 +1,6 @@
 <?php $img = fn($f) => base_url('assets/images/btl/' . $f); ?>
 <!-- 02. Philosophy (이념) -->
 <section class="sec philo" id="philosophy">
-    <p class="philo__watermark" aria-hidden="true">PREMIUM<br>BODY CARE</p>
-
     <div class="sec-head philo__head">
         <h2 class="sec-head__title sec-head__title--rose">
             <span class="line1">부산 프리미엄 체험관리</span><br>다이어트 전문 센터
@@ -11,7 +9,9 @@
     </div>
 
     <div class="philo__logo">
-        <img src="<?= $img('philosophy-triangle.png') ?>" alt="BITIEL premium body care" loading="lazy">
+        <p class="philo__watermark" aria-hidden="true">PREMIUM<br>BODY CARE</p>
+        <img class="philo__logo-mark" src="<?= $img('philosophy-triangle.png') ?>" alt="BITIEL premium body care" loading="lazy">
+        <img class="philo__logo-text" src="<?= $img('philosophy-logo-gray.png') ?>" alt="bitiel" loading="lazy">
     </div>
 
     <div class="philo__list">

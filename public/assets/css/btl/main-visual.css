@@ -8,8 +8,14 @@
     background-image:linear-gradient(118deg,#ff6434 5%,#e72c67 108%); -webkit-background-clip:text; background-clip:text; color:transparent; }
 .hero__sub{ position:relative; z-index:2; margin-top:24px; font-family:var(--f-hero); font-size:30px; line-height:1.4; color:var(--c-ink-2); white-space:nowrap; }
 .hero__sub .em{ color:#ed395b; }
-.hero__visual{ position:absolute; left:50%; transform:translateX(-50%); top:331px; width:100%; opacity:.2; pointer-events:none; }
-.hero__visual img{ width:100%; display:block; }
+/* Figma 458:45 "Frame 1" — 375x433 at y=331 absolute, i.e. 281 inside the
+   hero frame (458:44 starts at y=50) and flush with its bottom (281+433=714).
+   The photo (458:43) is CROPPED inside that box, and has NO opacity: the faded
+   "before" figure is already baked into the asset. */
+.hero__visual{ position:absolute; left:0; top:281px; width:100%; height:433px;
+    overflow:hidden; pointer-events:none; }
+.hero__visual img{ position:absolute; display:block; max-width:none;
+    width:109.24%; height:143.73%; left:-3.9%; top:2%; }
 
 .band{ background:#c8365a; height:58px; display:flex; align-items:center; justify-content:center; }
 .band p{ font-size:14px; letter-spacing:8.4px; color:#fff; text-align:center; }
