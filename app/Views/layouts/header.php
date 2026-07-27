@@ -17,6 +17,7 @@ $menu = [
 ];
 ?>
 <header class="gnb">
+  <div class="gnb__container">
     <div class="gnb__inner">
         <a class="gnb__logo" href="<?= base_url() ?>" aria-label="비티엘 홈">
             <img src="<?= base_url('assets/images/btl/logo-bitiel.png') ?>" alt="BITIEL">
@@ -40,4 +41,5 @@ $menu = [
             <?php endforeach; ?>
         </ul>
     </nav>
+  </div><!-- /.gnb__container -->
 </header>

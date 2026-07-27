@@ -1,10 +1,10 @@
 <?php
 $img = fn($f) => base_url('assets/images/btl/' . $f);
 $awards = [
-    ['다이어트 + 체형관리<br>전문운영', '19년'],
+    ['다이어트+체형관리<br>전문운영', '19년'],
     ['체중감량<br>성공률', '94.5%'],
-    ['헬스케어<br>브랜드 대상', '1년'],
-    ['요요방지율<br>유지효과입증', '94.5%'],
+    ['헬스케어<br>브랜드 대상', '1위'],
+    ['요요방지율<br>유지효과입증', '99.9%'],
 ];
 ?>
 <!-- 03. Career / awards (경력) -->
@@ -12,8 +12,8 @@ $awards = [
     <div class="career__bg" aria-hidden="true"></div>
     <div class="career__inner">
         <div class="career__title-wrap">
-            <svg class="career__arc" viewBox="0 0 171 171" aria-hidden="true" focusable="false">
-                <defs><path id="careerArc" d="M 8 85.5 A 77.5 77.5 0 0 1 163 85.5" fill="none"></path></defs>
+            <svg class="career__arc" viewBox="0 0 200 100" aria-hidden="true" focusable="false">
+                <defs><path id="careerArc" d="M 5 85 A 160 160 0 0 1 195 85" fill="none"></path></defs>
                 <text><textPath href="#careerArc" startOffset="50%" text-anchor="middle">19 YEARS OF BITIEL</textPath></text>
             </svg>
             <h2 class="career__title">

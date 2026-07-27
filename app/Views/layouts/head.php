@@ -21,6 +21,7 @@
         'main-visual', 'philosophy', 'career', 'program', 'dual',
         'ticket', 'consult', 'yoyo', 'features', 'menopause',
         'thermo', 'results', 'turn', 'faq', 'contact',
+        'pc', // luôn để cuối: ghi đè toàn bộ section cho màn >= 992px
     ];
     foreach ($btlCss as $css):
         $cssPath = FCPATH . 'assets/css/btl/' . $css . '.css';
