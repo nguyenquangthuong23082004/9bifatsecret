@@ -9,7 +9,7 @@ $stars = fn(int $n) => '<span class="stars">' . str_repeat($star, $n) . '</span>
     <h2 class="sec-head__title"><span class="line1">비티엘만의 특별한</span><br><span class="line2">요요 ZERO 다이어트</span></h2>
 </div>
 
-<section class="sec yoyo" aria-label="다이어트 방식 비교">
+<section class="sec yoyo" id="yoyo" aria-label="다이어트 방식 비교">
     <div class="compare">
         <table>
             <colgroup>

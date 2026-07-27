@@ -8,16 +8,22 @@
     var toggle = document.querySelector('.gnb__toggle');
     var menu = document.getElementById('gnbMenu');
     if (toggle && menu) {
-      toggle.addEventListener('click', function () {
-        var open = menu.hasAttribute('hidden');
+      var gnb = toggle.closest('.gnb');
+      var setMenu = function (open) {
         if (open) { menu.removeAttribute('hidden'); } else { menu.setAttribute('hidden', ''); }
         toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+        if (gnb) gnb.classList.toggle('is-open', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+      };
+      toggle.addEventListener('click', function () {
+        setMenu(menu.hasAttribute('hidden'));
       });
       menu.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          menu.setAttribute('hidden', '');
-          toggle.setAttribute('aria-expanded', 'false');
-        });
+        a.addEventListener('click', function () { setMenu(false); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !menu.hasAttribute('hidden')) { setMenu(false); }
       });
     }
 

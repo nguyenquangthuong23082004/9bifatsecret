@@ -1,15 +1,33 @@
 /* =========================================================
    header.css — GNB (global nav bar). Pairs with layouts/header.php
+   Closed: Figma 457:2 · Open drawer: Figma 529:185
    ========================================================= */
 .gnb{ position:sticky; top:0; z-index:50; background:#fff; }
 .gnb__inner{ height:50px; display:flex; align-items:center; justify-content:space-between; padding-inline:16px; }
+/* 529:186 — the bar gains a hairline border while the drawer is open */
+.gnb.is-open .gnb__inner{ border-bottom:1px solid #eee; }
+
 /* Figma 457:3 — the 50x21 box CROPS into the PNG (which has whitespace around
    the wordmark): w 151.28% / h 117.39% at left -29.37% / top -8.7%.
    Using object-fit:contain on the raw PNG instead makes the logo look tiny. */
 .gnb__logo{ display:block; position:relative; width:50px; height:21px; overflow:hidden; }
 .gnb__logo img{ position:absolute; display:block; max-width:none;
     width:151.28%; height:117.39%; left:-29.37%; top:-8.7%; }
-.gnb__toggle{ width:30px; height:30px; padding:0; border:0; background:none; cursor:pointer; display:grid; place-items:center; }
-.gnb__menu{ display:flex; flex-direction:column; gap:2px; padding:8px 16px 16px; border-top:1px solid #f1f1f1; }
-.gnb__menu a{ padding:10px 4px; font-weight:500; color:var(--c-ink-2); }
+
+.gnb__toggle{ width:30px; height:30px; padding:0; border:0; background:none; cursor:pointer;
+    display:grid; place-items:center; }
+.gnb__icon{ grid-area:1/1; display:block; }
+.gnb__icon--close{ display:none; }
+.gnb__toggle[aria-expanded="true"] .gnb__icon--open{ display:none; }
+.gnb__toggle[aria-expanded="true"] .gnb__icon--close{ display:block; }
+
+/* ---------- open drawer (529:185): white overlay below the 50px bar ---------- */
+.gnb__menu{ position:fixed; left:0; right:0; top:50px; bottom:0; z-index:40;
+    background:#fff; overflow-y:auto; padding-top:40px; }
 .gnb__menu[hidden]{ display:none; }
+/* 529:226 — 128px column centred on the screen, 11 items, 30px gaps */
+.gnb__list{ list-style:none; width:128px; margin:0 auto; padding:0;
+    display:flex; flex-direction:column; gap:30px; text-align:center; }
+.gnb__list a{ display:block; font-size:18px; line-height:1.4; letter-spacing:-.36px; color:#000; }
+/* 529:208 — 실시간상담 is struck through in the design */
+.gnb__list a.is-off{ text-decoration:line-through; }
