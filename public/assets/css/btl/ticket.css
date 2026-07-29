@@ -41,6 +41,14 @@
    letter-spacing: -.28px;
 }
 
+/* Figma 578:4 — dòng giữa, Pretendard Regular 20px */
+.ticket__sub {
+   font-size: 20px;
+   letter-spacing: -.4px;
+   line-height: 1.4;
+   white-space: nowrap;
+}
+
 .ticket__title {
    font-family: var(--f-title);
    font-weight: 800;

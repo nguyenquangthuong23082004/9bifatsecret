@@ -278,6 +278,9 @@
     /* dòng lead thứ 2 cách 1 dòng trống theo line-height của PC */
     .btl .philo__head .philo__lead-2 {
         margin-top: 30px;
+        padding: 10px;
+        border: 1px solid #da4272;
+        border-radius: 30px;
     }
 
     /* nhãn dọc cạnh tam giác chỉ có ở design mobile */
@@ -959,6 +962,17 @@
         letter-spacing: -1px;
         line-height: 30px;
         text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin: 0;
+    }
+
+    /* dòng giữa mới — scale theo tỉ lệ mobile->PC của title (30->48 = 1.6) */
+    .btl .ticket__sub {
+        font-size: 32px;
+        letter-spacing: -1px;
+        line-height: 44px;
         color: #ffffff;
         font-family: "Pretendard", sans-serif;
         text-align: center;
@@ -2167,7 +2181,7 @@
 
     .btl .contact__form {
         width: 740px;
-        height: 679px;
+        /* height: 679px; */
         border-radius: 20px;
         background-color: #ffffff;
         margin: 50px auto 0;

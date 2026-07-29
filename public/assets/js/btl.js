@@ -41,22 +41,22 @@
       });
     });
 
-    /* ---- Menopause accordion (single-open) ---- */
+    /* ---- Menopause: chọn 1 mục (chỉ đổi style is-open) ----
+       Design mới (Figma 529:580) bỏ .acc__panel mở/đóng, khối chi tiết
+       .meno__care là tĩnh — nên click chỉ chuyển trạng thái active giữa
+       các .acc__item, và luôn giữ đúng 1 mục được chọn. */
     var accItems = document.querySelectorAll('.accordion-btl .acc__item');
     accItems.forEach(function (item) {
       var head = item.querySelector('.acc__head');
       if (!head) return;
       head.addEventListener('click', function () {
-        var isOpen = item.classList.contains('is-open');
         accItems.forEach(function (i) {
           i.classList.remove('is-open');
           var h = i.querySelector('.acc__head');
           if (h) h.setAttribute('aria-expanded', 'false');
         });
-        if (!isOpen) {
-          item.classList.add('is-open');
-          head.setAttribute('aria-expanded', 'true');
-        }
+        item.classList.add('is-open');
+        head.setAttribute('aria-expanded', 'true');
       });
     });
 

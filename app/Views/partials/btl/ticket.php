@@ -2,8 +2,9 @@
 <!-- 06. Experience ticket (체험권) -->
 <section class="sec ticket" id="ticket">
     <div class="ticket__head">
-        <p class="ticket__label">19th birthday기념</p>
-        <h2 class="ticket__title">놓치면 후회,체험 후<br>결정해보세요!<br>첫 방문 체험가 혜택</h2>
+        <p class="ticket__label">19th birthday 기념</p>
+        <p class="ticket__sub">VIP전용 다이어트관리 미리보기</p>
+        <h2 class="ticket__title">다신 안올 가격,<br>첫방문 체험가 혜택</h2>
     </div>
     <div class="ticket__visual">
         <img class="ticket-img" src="<?= $img('ticket.png') ?>" alt="전신집중 다이어트 체험권 – 정가 51만원 15만원" loading="lazy">

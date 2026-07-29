@@ -26,16 +26,22 @@ $open = 2; // 림프 순환 저하 open by default (matches Figma)
                     <h3><?= esc($title) ?></h3>
                     <p><?= esc($desc) ?></p>
                 </button>
-                <div class="acc__panel">
+                <!-- <div class="acc__panel">
                     <div class="acc__detail">
                         <h4><?= esc($careTitle) ?></h4>
                         <p><?= nl2br(esc($careDesc)) ?></p>
                         <img class="only-mo" src="<?= $img('menopause-woman.png') ?>" alt="" aria-hidden="true" loading="lazy">
                     </div>
-                </div>
+                </div> -->
             </li>
             <?php endforeach; ?>
         </ul>
-        <img class="meno__woman-pc only-pc" src="<?= $img('menopause-woman.png') ?>" alt="" aria-hidden="true" loading="lazy">
+        <!-- <img class="meno__woman-pc only-pc" src="<?= $img('menopause-woman.png') ?>" alt="" aria-hidden="true" loading="lazy"> -->
+
+        <!-- Khối chi tiết TĨNH thay cho accordion cũ (Figma 529:580) -->
+        <div class="meno__care">
+            <h4>림프순환 집중케어</h4>
+            <p>림프순환을 높여 갱년기 하체지방 커팅 및<br>올곧은 등 유지</p>
+        </div>
     </div>
 </section>

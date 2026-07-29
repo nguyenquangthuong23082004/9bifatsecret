@@ -2,7 +2,7 @@
    08. Yoyo ZERO compare table (좌우로 스와이프)
    ========================================================= */
 .yoyo {
-   padding: 34px 0 0;
+   /* padding: 34px 0 0; */
 }
 
 .yoyo .sec-head {
@@ -110,4 +110,8 @@
 .swipe-hint p {
    font-size: 12px;
    letter-spacing: -.24px;
+}
+
+.sec-head__title .line2 {
+   color: #C8365A;
 }

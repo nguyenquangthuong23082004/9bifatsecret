@@ -4,11 +4,11 @@
 
     <!-- 01 -->
     <div class="feature feature--01">
-        <div class="sec-head">
+        <!-- <div class="sec-head">
             <p class="sec-head__label">주요특장점 01</p>
             <h3 class="sec-head__title">요요 케이스별 <span class="accent">전문기기 완비</span></h3>
             <p class="feature__desc">30여종 전문기기 중 특정부위군살, 셀루라이트, 기초대사저하 등 본인 요요케이스에 맞춰 직접선택가능</p>
-        </div>
+        </div> -->
         <div class="feature__media">
             <img class="feature__bg" src="<?= $img('feature1-bg.webp') ?>" alt="30여종 전문기기" loading="lazy">
             <img class="feature__ticket" src="<?= $img('feature1-ticket.png') ?>" alt="요요방지 애프터케어 1년권" loading="lazy">
