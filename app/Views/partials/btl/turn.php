@@ -30,8 +30,9 @@ $slides = [
     [
         'badge' => ['-15kg', '13주차'],
         'react' => 'turn-s4-react.png',
-        'before' => null,   // 529:56 — empty placeholder in the design
-        'after'  => null,   // 529:61
+        // thanh đen che mắt (Figma 608:5 / 608:6) đã vẽ sẵn vào ảnh -censored
+        'before' => ['turn-s4-before-censored.jpg', 'cover'],
+        'after'  => ['turn-s4-after-censored.png', 'cover'],
         'quote'  => "출산 후 초기,중기,후기에 나뉘 체계적으로\n관리받으니 정체기도 가뿐이 넘기고 15kg 감량\n성공했습니다!! 비티엘 다이어트는 감량효과도\n확실한데 산모에게 맞는 림프순환, 망가진 체형\n교정까지 건강을 같이 지킬 수 있어서 훨씬\n만족스러워요!",
     ],
 ];
@@ -40,8 +41,9 @@ $slides = [
 $photo = function (?array $fill) use ($img) {
     echo '<div class="ba-card__photo">';
     if ($fill !== null) {
-        if (($fill[1] ?? null) === 'contain') {
-            printf('<img class="is-contain" src="%s" alt="" aria-hidden="true" loading="lazy">', $img($fill[0]));
+        // ['file', 'contain'|'cover'] -> object-fit; ngược lại là crop w/h/left/top theo %
+        if (in_array($fill[1] ?? null, ['contain', 'cover'], true)) {
+            printf('<img class="is-%s" src="%s" alt="" aria-hidden="true" loading="lazy">', $fill[1], $img($fill[0]));
         } else {
             printf(
                 '<img src="%s" alt="" aria-hidden="true" loading="lazy" style="width:%s%%;height:%s%%;left:%s%%;top:%s%%">',

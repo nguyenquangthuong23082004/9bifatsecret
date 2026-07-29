@@ -114,12 +114,17 @@
 
 /* crops are emitted inline per slide (see $photo() in turn.php);
    529:43 / 529:48 use a plain contain instead */
-.ba-card__photo img.is-contain {
+.ba-card__photo img.is-contain,
+.ba-card__photo img.is-cover {
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
     object-fit: contain;
+}
+
+.ba-card__photo img.is-cover {
+    object-fit: cover;
 }
 
 .ba-card__react {
