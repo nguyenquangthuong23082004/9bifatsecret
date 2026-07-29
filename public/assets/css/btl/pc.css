@@ -220,7 +220,7 @@
         top: 114px;
     }
 
-    .btl .hero__bg > img {
+    .btl .hero__bg>img {
         display: block;
         object-position: center;
     }
@@ -1079,7 +1079,7 @@
        08. Yoyo ZERO comparison table — PC Styles
        ===================================================== */
     .btl .yoyo {
-        padding: 60px 40px 120px;
+        padding: 60px 40px 0px;
     }
 
     .btl .yoyo .sec-head__label {
@@ -1161,11 +1161,11 @@
        09. Key features 01–03 (주요특장점) — PC Styles
        ===================================================== */
     .btl .features {
-        padding: 100px 40px 120px;
+        padding: 0px 40px 120px;
     }
 
     .btl .feature {
-        padding: 60px 0;
+        padding: 60px 0 0 0;
     }
 
     .btl .feature .sec-head__label {
@@ -1384,7 +1384,7 @@
         color: #c8365a;
     }
 
-    /* Khối meno__box PC dạng 2 cột: Cột trái 4 tab card, cột phải panel chi tiết acc__detail */
+    /* Khối meno__box PC dạng 2 cột: Cột trái (544px ~ 45.2956%), Cột phải (657px ~ 54.7044%) */
     .btl .meno__box {
         max-width: 1200px;
         margin: 50px auto 0;
@@ -1392,11 +1392,15 @@
         background: #ffffff;
         border-radius: 10px;
         position: relative;
-        /* min-height: 630px; */
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 0;
     }
 
     .btl .accordion-btl {
-        width: 400px;
+        width: calc(544 / 1201 * 100%);
+        /* ~45.2956% (544px trên tổng 1201px) */
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -1413,7 +1417,7 @@
         padding: 20px 24px;
         border-radius: 16px;
         background: #ffffff;
-        border: 1px solid #eeeeee;
+        /* border: 1px solid #eeeeee; */
         text-align: left;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -1513,6 +1517,73 @@
         font-family: "Pretendard", sans-serif;
         width: 320px;
         margin: 0;
+    }
+
+    .btl .meno__care {
+        width: calc(657 / 1201 * 100%);
+        /* ~54.7044% (657px trên tổng 1201px) */
+        background: #f3f3f3;
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 0;
+        padding: 40px 40px 0;
+        position: relative;
+        height: auto;
+    }
+
+    .btl .meno__care h4,
+    .btl .meno__care p {
+        position: relative;
+        z-index: 3;
+    }
+
+    .btl .meno__care h4 {
+        font-size: 26px;
+        font-weight: bold;
+        line-height: 36px;
+        letter-spacing: -1px;
+        color: #c8365a;
+        margin: 0 0 12px;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    .btl .meno__care p {
+        font-size: 18px;
+        line-height: 28px;
+        letter-spacing: 0px;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        width: auto;
+        margin: 0;
+    }
+
+    .btl .meno__care-img {
+        width: calc(100% + 80px);
+        margin-left: -40px;
+        margin-right: -40px;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        margin-top: auto;
+        pointer-events: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Lớp phủ mờ mượt từ trên nền xuống đầu ảnh theo đúng design */
+    .btl .meno__care::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 55%;
+        background: linear-gradient(180deg, #f3f3f3 0%, #f3f3f3 58%, rgba(243, 243, 243, 0) 100%);
+        pointer-events: none;
+        z-index: 2;
     }
 
     /* Ảnh phụ nữ PC: absolute theo .meno__box — không bị cut bởi panel, dễ dàng kéo sang trái/phải */
@@ -1749,7 +1820,7 @@
         padding: 12px 28px;
         border-radius: 30px;
         /* background: #f5f5f5; */
-        border: none;
+        /* border: none; */
         cursor: pointer;
         transition: all 0.3s ease;
         width: 140px;
@@ -1766,14 +1837,24 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 15px;
+        gap: 20px;
         position: relative;
         margin-top: 20px;
     }
 
-    .btl .results .ba-shot {
-        width: 418px;
-        height: 523px;
+    .btl .results .ba-row--scroll {
+        justify-content: center;
+        overflow-x: visible;
+        padding-inline: 0;
+    }
+
+    .btl .results .ba-shot,
+    .btl .results .ba-row--h90 .ba-shot,
+    .btl .results .ba-row--h161 .ba-shot,
+    .btl .results .ba-row--scroll .ba-shot {
+        width: 410px !important;
+        height: 514px !important;
+        flex: 0 0 410px;
         position: relative;
         overflow: hidden;
         border-radius: 16px;

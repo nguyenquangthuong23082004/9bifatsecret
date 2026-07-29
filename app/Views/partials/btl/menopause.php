@@ -42,6 +42,7 @@ $open = 2; // 림프 순환 저하 open by default (matches Figma)
         <div class="meno__care">
             <h4>림프순환 집중케어</h4>
             <p>림프순환을 높여 갱년기 하체지방 커팅 및<br>올곧은 등 유지</p>
+            <img class="meno__care-img only-pc" src="<?= $img('menopause-care.webp') ?>" alt="림프순환 집중케어" loading="lazy">
         </div>
     </div>
 </section>
