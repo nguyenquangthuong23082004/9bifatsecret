@@ -1,3 +1,9 @@
+@media (min-width:1921px) {
+    .btl .gnb__container {
+        margin-inline: auto;
+    }
+}
+
 /* =========================================================
    pc.css — giao diện màn PC (>= 992px)
    Nạp CUỐI CÙNG để ghi đè các file section phía trên.
@@ -259,7 +265,6 @@
         letter-spacing: -1px;
         line-height: 68px;
         text-transform: uppercase;
-        color: #c8365a;
         font-family: "Nanum Square EB";
         text-align: center;
     }
