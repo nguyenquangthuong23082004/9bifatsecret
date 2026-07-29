@@ -2,9 +2,11 @@
    01. Main visual (hero) + 19 YEARS band
    ========================================================= */
 .hero{ position:relative; background:#fdefed; padding:60px 50px 0; min-height:714px; overflow:hidden; }
-/* Lớp nền trang trí (vòng tròn mờ + bóng "before"). Ảnh nền gắn sau. */
-.hero__bg{ position:absolute; inset:0; z-index:0; pointer-events:none;
-    background-repeat:no-repeat; background-position:right bottom; background-size:cover; }
+/* Lớp nền trang trí (vòng tròn mờ + bóng "before").
+   Ảnh nền đi bằng thẻ <img> bên trong để backend render động được. */
+.hero__bg{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.hero__bg > img{ position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:right bottom; display:none; }
 /* Mobile: wrapper trong suốt về layout — giữ nguyên hành vi bản cũ
    (hero__visual vẫn tham chiếu .hero). PC sẽ bật flex ở pc.css. */
 .hero__inner,
@@ -21,6 +23,7 @@
    "before" figure is already baked into the asset. */
 .hero__visual{ position:absolute; left:0; top:281px; width:100%; height:433px;
     overflow:hidden; pointer-events:none; }
+.hero__visual picture{ display:block; }
 .hero__visual img{ position:absolute; display:block; max-width:none;
     width:109.24%; height:143.73%; left:-3.9%; top:2%; }
 

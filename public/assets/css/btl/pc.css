@@ -140,7 +140,7 @@
         height: 100%;
         max-width: var(--pc-w);
         margin-inline: auto;
-        padding: 0 var(--pc-pad);
+        padding: 0 242px;
         display: flex;
         align-items: center;
     }
@@ -197,9 +197,9 @@
          bottom     -> dịch dọc (âm = tụt xuống, phần thò khỏi hero bị cắt) */
     .btl .hero__visual {
         left: auto;
-        right: 40px;
+        right: 131px;
         top: auto;
-        bottom: -284px;
+        bottom: -393px;
         width: 46%;
         max-width: 640px;
         height: auto;
@@ -216,9 +216,15 @@
         object-fit: fill;
     }
 
-    /* Lớp nền trang trí phủ cả hero (ảnh nền gắn sau) */
+    /* Lớp nền trang trí phủ cả hero — ảnh nền PC (thẻ <img> bên trong) */
     .btl .hero__bg {
         z-index: 0;
+        top: 114px;
+    }
+
+    .btl .hero__bg > img {
+        display: block;
+        object-position: center;
     }
 
     /* Band nằm ngay dưới hero, khép lại khung hình đầu tiên */
