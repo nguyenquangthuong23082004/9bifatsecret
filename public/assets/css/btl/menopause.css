@@ -14,8 +14,10 @@
 .acc__item.is-open .acc__head h3{ color:#fff; }
 .acc__item.is-open .acc__head p{ color:#fff; }
 .acc__panel{ overflow:hidden; max-height:0; transition:max-height .3s ease; }
-.acc__item.is-open .acc__panel{ max-height:520px; }
-.acc__detail{ position:relative; margin:16px 0 8px; border-radius:16px; background:#f3f3f3 url("../../images/btl/menopause-bg.webp") center/cover; padding:30px 30px 224px; min-height:320px; }
-.acc__detail h4{ margin:0 0 4px; font-size:16px; font-weight:600; letter-spacing:-.32px; color:var(--c-primary); }
-.acc__detail p{ font-size:14px; letter-spacing:-.28px; color:var(--c-muted); max-width:230px; }
-.acc__detail img{ position:absolute; left:13px; bottom:0; width:184px; }
+.acc__item.is-open .acc__panel{ max-height:600px; }
+/* Figma 499:78 — khối nền (301x320, r16, ảnh nền fill) */
+.acc__detail{ position:relative; margin:16px 0 48px; border-radius:16px; background:#f3f3f3 url("../../images/btl/menopause-bg.webp") no-repeat left -2.5px top -14.5px/131.89% 124.06%; padding:30px 30px 0; height:320px; overflow:visible; }
+.acc__detail h4{ margin:0 0 4px; font-size:16px; font-weight:600; line-height:1.4; letter-spacing:-.32px; color:var(--c-primary); }
+.acc__detail p{ font-size:14px; line-height:1.4; letter-spacing:-.28px; color:#454545; width:230px; }
+/* Figma 499:88 — ảnh tách riêng, absolute, tràn 40px xuống dưới khối nền */
+.acc__detail img{ position:absolute; left:13px; top:159px; width:184px; height:201px; object-fit:cover; pointer-events:none; }

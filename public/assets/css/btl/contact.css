@@ -1,0 +1,32 @@
+/* =========================================================
+   15. Contact form (문의) — Figma 529:182
+   ========================================================= */
+.contact{ background:#fef7f9; padding:99px 16px 80px; }
+.contact__head{ width:282px; margin-inline:auto; }
+.contact .sec-head__title .line1{ color:var(--c-primary); }
+
+.contact__form{ margin:40px auto 0; width:343px; max-width:100%; box-sizing:border-box;
+    background:#fff; border-radius:12px; padding:20px; display:flex; flex-direction:column; gap:30px; }
+.contact__fields{ display:flex; flex-direction:column; gap:20px; }
+.field{ display:flex; flex-direction:column; gap:6px; }
+.field__label{ font-size:14px; font-weight:500; letter-spacing:-.28px; color:var(--c-ink); }
+.field__input{ height:42px; padding:10px; box-sizing:border-box; border:1px solid var(--c-line);
+    border-radius:4px; background:#fff; font-family:inherit; font-size:14px; letter-spacing:-.28px;
+    color:var(--c-ink); }
+.field__input::placeholder{ color:var(--c-muted); }
+.field__input:focus{ outline:none; border-color:var(--c-primary); }
+
+.contact__btn{ height:42px; border:0; border-radius:4px; background:#f53073; color:#fff;
+    font-family:inherit; font-size:14px; font-weight:500; letter-spacing:-.28px; cursor:pointer;
+    filter:drop-shadow(0 10px 2px rgba(148,3,52,.12)); }
+.contact__btn:hover{ background:#e02766; }
+
+.contact__agree{ display:flex; align-items:center; gap:6px; cursor:pointer; }
+.contact__agree input{ position:absolute; opacity:0; width:0; height:0; }
+.contact__agree-box{ position:relative; width:28px; height:28px; border:1px solid var(--c-line);
+    border-radius:4px; background:#fff; flex:none; }
+.contact__agree-box::after{ content:""; position:absolute; left:7px; top:9px; width:14px; height:7px;
+    border-left:2px solid var(--c-primary); border-bottom:2px solid var(--c-primary);
+    transform:rotate(-45deg); opacity:0; transition:opacity .15s ease; }
+.contact__agree input:checked + .contact__agree-box::after{ opacity:1; }
+.contact__agree-text{ font-size:14px; letter-spacing:-.28px; color:var(--c-ink-2); }

@@ -1,18 +1,115 @@
 /* =========================================================
    02. Philosophy (이념)
    ========================================================= */
-.philo{ position:relative; padding:60px 16px 70px; overflow:hidden; }
-.philo__watermark{ position:absolute; left:50%; top:150px; transform:translateX(-50%); margin:0; font-family:var(--f-title); font-weight:800;
-    font-size:clamp(64px,22vw,100px); line-height:1.2; letter-spacing:-2px; color:rgba(253,236,236,.7); text-align:center; white-space:nowrap; pointer-events:none; }
-.philo__head{ position:relative; z-index:2; }
-.philo__head .sec-head__title .line1{ color:var(--c-primary); }
-.philo__head .sec-head__label{ line-height:1.4; }
-.philo__logo{ position:relative; z-index:2; display:grid; place-items:center; margin:40px auto 30px; max-width:362px; }
-.philo__logo img{ width:100%; }
-.philo__list{ position:relative; z-index:2; display:flex; flex-direction:column; gap:30px; max-width:199px; margin-inline:auto; }
-.philo__item{ display:flex; gap:10px; align-items:flex-start; }
-.philo__bullet{ flex:0 0 auto; width:10px; height:24px; display:grid; place-items:center; }
-.philo__bullet::before{ content:""; width:10px; height:10px; border-radius:50%; background:var(--c-rose-2); }
-.philo__item h3{ margin:0 0 5px; font-size:20px; font-weight:400; letter-spacing:-.4px; color:var(--c-rose); }
-.philo__item h3 .ko{ font-weight:600; }
-.philo__item p{ font-size:14px; letter-spacing:-.28px; color:var(--c-ink-2); }
+.philo {
+    position: relative;
+    padding: 60px 16px 70px;
+    overflow: hidden;
+}
+
+.philo__head {
+    position: relative;
+    z-index: 2;
+}
+
+.philo__head .sec-head__title .line1 {
+    color: var(--c-primary);
+}
+
+.philo__head .sec-head__label {
+    line-height: 1.4;
+}
+
+.philo__logo {
+    position: relative;
+    z-index: 2;
+    margin: 40px auto 30px;
+    max-width: 362px;
+}
+
+/* watermark behind the triangle, starts 13px above it (Figma 460:85) */
+.philo__watermark {
+    position: absolute;
+    left: 50%;
+    top: -13px;
+    transform: translateX(-50%);
+    z-index: 0;
+    margin: 0;
+    font-family: var(--f-title);
+    font-weight: 800;
+    font-size: 100px;
+    line-height: 1.2;
+    letter-spacing: -2px;
+    color: rgba(253, 236, 236, .46);
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.philo__logo-mark {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+}
+
+/* bitiel wordmark inside the triangle (Figma 460:80 — 82x35 @ 140,182 of 362x393) */
+.philo__logo-text {
+    position: absolute;
+    z-index: 2;
+    left: 38.67%;
+    top: 46.31%;
+    width: 22.65%;
+    height: auto;
+    pointer-events: none;
+}
+
+.philo__list {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 199px;
+    margin-inline: auto;
+}
+
+.philo__item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.philo__bullet {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+}
+
+.philo__bullet::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--c-rose-2);
+}
+
+.philo__item h3 {
+    margin: 0 0 5px;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -.4px;
+    color: var(--c-rose);
+}
+
+.philo__item h3 .ko {
+    font-weight: 600;
+}
+
+.philo__item p {
+    font-size: 14px;
+    letter-spacing: -.28px;
+    color: var(--c-ink-2);
+}

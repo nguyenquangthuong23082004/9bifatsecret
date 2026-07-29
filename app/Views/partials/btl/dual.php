@@ -1,6 +1,9 @@
 <?php
 $img = fn($f) => base_url('assets/images/btl/' . $f);
-$devices = ['device-1.webp', 'device-2.webp', 'device-3.webp'];
+$devices = [
+    'device-1.webp', 'device-2.webp', 'device-3.webp',
+    'device-1.webp', 'device-2.webp', 'device-3.webp', 'device-1.webp'
+];
 ?>
 <!-- 05. Dual solution (듀얼솔루션) -->
 <section class="sec dual" id="dual">
@@ -22,7 +25,7 @@ $devices = ['device-1.webp', 'device-2.webp', 'device-3.webp'];
     <div class="dual__devices swiper">
         <div class="swiper-wrapper">
             <?php foreach ($devices as $d): ?>
-            <div class="swiper-slide" style="width:160px">
+            <div class="swiper-slide">
                 <div class="device"><img src="<?= $img($d) ?>" alt="비티엘 전문 관리기기" loading="lazy"></div>
             </div>
             <?php endforeach; ?>

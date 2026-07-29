@@ -1,0 +1,2197 @@
+/* =========================================================
+   pc.css — giao diện màn PC (>= 992px)
+   Nạp CUỐI CÙNG để ghi đè các file section phía trên.
+   ========================================================= */
+@media (min-width:992px) {
+
+    :root {
+        /* chiều cao header = padding 20+20 + logo 40 */
+        --pc-header-h: 80px;
+        /* chiều cao band "19 YEARS" — tính vào chung 1 khung hình đầu tiên */
+        --pc-band-h: 58px;
+        /* khuôn nội dung PC: rộng 1440, padding trong 40px mỗi bên */
+        --pc-w: 1440px;
+        --pc-pad: 40px;
+    }
+
+    /* Utility classes: Ẩn phần tử mobile trên PC, hiển thị phần tử PC */
+    .only-mo,
+    .only_mo {
+        display: none !important;
+    }
+
+    .only-pc,
+    .only_pc {
+        display: block !important;
+    }
+
+    br.only-pc,
+    br.only_pc {
+        display: inline !important;
+    }
+
+    /* Tắt cơ chế zoom của bản mobile (đang scale hộp 375px theo viewport).
+       .btl giữ FULL WIDTH để nền các section tràn hết bề ngang màn hình;
+       việc canh giữa do từng khuôn .*__container bên trong section lo. */
+    .btl {
+        zoom: 1;
+        width: 100%;
+        max-width: none;
+    }
+
+    /* =====================================================
+       GNB — nav ngang, không còn hamburger
+       ===================================================== */
+
+    /* .gnb = thanh full-width (nền trắng tràn hết màn hình)
+       .gnb__container = khuôn 1440 canh giữa, padding 20/40 đúng như design */
+    .btl .gnb {
+        padding: 0;
+    }
+
+    .btl .gnb__container {
+        max-width: var(--pc-w);
+        /* margin-inline: auto; */
+        padding: 20px var(--pc-pad);
+        display: flex;
+        align-items: center;
+        gap: 198px;
+    }
+
+    .btl .gnb__inner {
+        height: auto;
+        padding-inline: 0;
+        justify-content: flex-start;
+    }
+
+    .btl .gnb.is-open .gnb__inner {
+        border-bottom: 0;
+    }
+
+    /* logo 85x40 — giữ nguyên cách crop của mobile nhưng tính lại % để
+       ảnh không bị bóp méo (ảnh gốc 866x288, phần chữ nằm trong 199,31–727,257) */
+    .btl .gnb__logo {
+        width: 85px;
+        height: 40px;
+    }
+
+    .btl .gnb__logo img {
+        width: 164%;
+        height: 115.9%;
+        left: -37.7%;
+        top: -7.95%;
+    }
+
+    /* bỏ nút hamburger */
+    .btl .gnb__toggle {
+        display: none;
+    }
+
+    /* nav từ overlay full-screen -> hàng ngang trong header.
+       Bootstrap reboot có [hidden]{display:none!important} nên bắt buộc phải
+       dùng !important mới ghi đè được thuộc tính hidden của <nav>. */
+    .btl .gnb__menu,
+    .btl .gnb__menu[hidden] {
+        display: block !important;
+        position: static;
+        inset: auto;
+        z-index: auto;
+        background: none;
+        overflow: visible;
+        padding-top: 0;
+    }
+
+    .btl .gnb__list {
+        width: auto;
+        margin: 0;
+        flex-direction: row;
+        align-items: center;
+        gap: 50px;
+    }
+
+    .btl .gnb__list a {
+        font-family: "Pretendard";
+        font-weight: 500;
+        font-size: 18px;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        text-align: center;
+        color: #454545;
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       01. Hero — header + hero + band = ĐÚNG 1 khung hình (100vh)
+       Copy nằm nửa trái (căn dọc giữa), main visual bám đáy-phải.
+       ===================================================== */
+    .btl .hero {
+        height: calc(100vh - var(--pc-header-h) - var(--pc-band-h));
+        min-height: 560px;
+        padding: 0;
+        display: block;
+        /* phần .hero__visual thò ra ngoài hero bị cắt gọn theo mép hero */
+        overflow: hidden;
+    }
+
+    /* Cùng khuôn với .gnb__container -> chữ hero thẳng hàng với logo header */
+    .btl .hero__inner {
+        position: relative;
+        height: 100%;
+        max-width: var(--pc-w);
+        margin-inline: auto;
+        padding: 0 var(--pc-pad);
+        display: flex;
+        align-items: center;
+    }
+
+    /* Copy: nửa trái, trên cả main visual */
+    .btl .hero__copy {
+        display: block;
+        position: relative;
+        z-index: 3;
+        width: 50%;
+        max-width: 620px;
+    }
+
+    .btl .hero__label {
+        margin: 0;
+        font-family: "Pretendard";
+        font-weight: bold;
+        font-size: 22px;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        color: #454554;
+    }
+
+    .btl .hero__title {
+        margin-top: 30px;
+        font-family: var(--f-hero);
+        font-size: 72px;
+        line-height: 96px;
+        letter-spacing: -2px;
+        text-transform: uppercase;
+        /* bản mobile tô chữ bằng gradient — PC dùng màu đặc */
+        background-image: none;
+        -webkit-background-clip: border-box;
+        background-clip: border-box;
+        color: #fb3c5f;
+    }
+
+    .btl .hero__sub {
+        margin-top: 35px;
+        font-family: var(--f-hero);
+        font-size: 42px;
+        line-height: 75px;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        color: #353535;
+    }
+
+    /* Main visual: khung ảnh bám ĐÁY + PHẢI, cao gần hết hero.
+       Nằm trong hero__inner nên tự canh theo max-width của trang. */
+    /* Khung ảnh KHÔNG ép chiều cao -> ảnh luôn hiện trọn, không bị cắt.
+       3 núm vặn duy nhất:
+         width      -> to / nhỏ
+         right      -> dịch ngang
+         bottom     -> dịch dọc (âm = tụt xuống, phần thò khỏi hero bị cắt) */
+    .btl .hero__visual {
+        left: auto;
+        right: 40px;
+        top: auto;
+        bottom: -284px;
+        width: 46%;
+        max-width: 640px;
+        height: auto;
+        overflow: visible;
+        z-index: 1;
+    }
+
+    .btl .hero__visual img {
+        position: static;
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: none;
+        object-fit: fill;
+    }
+
+    /* Lớp nền trang trí phủ cả hero (ảnh nền gắn sau) */
+    .btl .hero__bg {
+        z-index: 0;
+    }
+
+    /* Band nằm ngay dưới hero, khép lại khung hình đầu tiên */
+    .btl .band {
+        height: var(--pc-band-h);
+    }
+
+    .btl .band p,
+    .band p {
+        font-size: 26px;
+        letter-spacing: 16px;
+        color: #ffffff;
+        font-family: "Pretendard";
+        text-align: center;
+    }
+
+    /* =====================================================
+       02. Philosophy (이념) — PC Layout Position
+       ===================================================== */
+    .btl .philo {
+        position: relative;
+        padding-top: 80px;
+        padding-bottom: 160px;
+        overflow: hidden;
+    }
+
+    .btl .philo__head {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .btl .philo__head .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #c8365a;
+        font-family: "Nanum Square EB";
+        text-align: center;
+    }
+
+    .btl .philo__head .sec-head__label {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard";
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .btl .philo__logo {
+        position: relative;
+        width: 476px;
+        height: 386px;
+        margin: 50px auto 140px;
+        z-index: 2;
+    }
+
+    .btl .philo__watermark {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        opacity: 0.459;
+        font-size: 230px;
+        line-height: 1.0;
+        letter-spacing: -6px;
+        text-transform: uppercase;
+        color: #fdecec;
+        font-family: "Nanum Square EB";
+        text-align: center;
+        white-space: nowrap;
+        pointer-events: none;
+        margin: 0;
+    }
+
+    .btl .philo__logo-mark {
+        position: relative;
+        z-index: 1;
+        width: 476px;
+        height: 386px;
+        display: block;
+        object-fit: contain;
+    }
+
+    .btl .philo__logo-text {
+        position: absolute;
+        z-index: 2;
+        left: 50%;
+        top: 48%;
+        transform: translate(-50%, -50%);
+        width: 108px;
+        height: auto;
+    }
+
+    .btl .philo__list {
+        position: static;
+        max-width: none;
+        margin: 0;
+    }
+
+    .btl .philo__item {
+        position: absolute;
+        z-index: 3;
+        white-space: nowrap;
+    }
+
+    .btl .philo__item h3 {
+        font-size: 26px;
+        letter-spacing: -1px;
+        line-height: 60px;
+        text-transform: uppercase;
+        color: #c8365a;
+        font-weight: bold;
+        font-family: "Pretendard";
+        margin: 0 0 4px;
+    }
+
+    .btl .philo__item p {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard";
+        margin: 0;
+    }
+
+    .btl .philo__bullet {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Item 1: bên trái logo, chấm tròn ở phía phải */
+    .btl .philo__item:nth-child(1) {
+        top: 485px;
+        right: calc(50% + 238px + 15px);
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        text-align: right;
+    }
+
+    .btl .philo__item:nth-child(1) p {
+        text-align: right;
+    }
+
+    /* Item 2: bên phải logo, chấm tròn ở phía trái */
+    .btl .philo__item:nth-child(2) {
+        top: 485px;
+        left: calc(50% + 238px + 15px);
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .btl .philo__item:nth-child(2) p {
+        text-align: left;
+    }
+
+    /* Item 3: phía dưới logo, căn giữa, chấm tròn ở trên cùng */
+    .btl .philo__item:nth-child(3) {
+        top: 730px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .btl .philo__item:nth-child(3) .philo__bullet {
+        height: auto;
+        margin-bottom: 8px;
+    }
+
+    .btl .philo__item:nth-child(3) p {
+        text-align: center;
+    }
+
+    /* =====================================================
+       03. Career / Awards (경력) — PC Layout & Positioning
+       ===================================================== */
+    .btl .career {
+        padding-top: 100px;
+        padding-bottom: 0;
+        position: relative;
+        background: #580027;
+    }
+
+    .btl .career__title-wrap {
+        position: relative;
+        margin-bottom: 60px;
+        text-align: center;
+        padding-top: 70px;
+    }
+
+    .btl .career__arc {
+        position: absolute;
+        left: 50%;
+        top: -90px;
+        transform: translateX(-50%);
+        width: 440px;
+        height: 220px;
+        overflow: visible;
+        pointer-events: none;
+    }
+
+    .btl .career__arc text {
+        font-size: 15px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #d4a565;
+        fill: #d4a565;
+        font-weight: 800;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+    }
+
+    .btl .career__title {
+        margin-top: 25px;
+    }
+
+    .btl .career__title .l1 {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 76px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Nanum Square B";
+        text-align: center;
+        display: block;
+    }
+
+    .btl .career__title .l2 {
+        font-size: 62px;
+        letter-spacing: -2px;
+        line-height: 76px;
+        text-transform: uppercase;
+        color: #d4a565;
+        font-family: "Nanum Square EB";
+        text-align: center;
+        filter: drop-shadow(0px 6px 2px rgba(99, 30, 43, 0.15));
+        display: block;
+        margin-top: 5px;
+    }
+
+    /* 4 giải thưởng xếp thành 1 hàng ngang chuẩn theo 4 cột thiết kế */
+    .btl .career__awards {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 40px;
+        max-width: 1360px;
+        margin: 50px auto 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    .btl .award {
+        position: relative;
+        width: 280px;
+        height: 205px;
+        flex: 0 0 280px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* 2 giải ở ngoài (Item 1 & Item 4) nằm thấp hơn theo thiết kế */
+    .btl .award:nth-child(1),
+    .btl .award:nth-child(4) {
+        margin-top: 80px;
+    }
+
+    /* 2 giải ở giữa (Item 2 & Item 3) nằm cao hơn */
+    .btl .award:nth-child(2),
+    .btl .award:nth-child(3) {
+        margin-top: 0;
+    }
+
+    .btl .award::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 280px;
+        height: 265px;
+        background: url("../../images/btl/laurel.png") center/contain no-repeat;
+        pointer-events: none;
+    }
+
+    .btl .award__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 32px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Pretendard";
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        margin: 0;
+    }
+
+    .btl .award__num {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        text-transform: uppercase;
+        color: #d4a565;
+        font-weight: bold;
+        font-family: "Pretendard";
+        text-align: center;
+        filter: drop-shadow(0px 6px 2px rgba(99, 30, 43, 0.15));
+        position: relative;
+        z-index: 1;
+        margin-top: 6px;
+    }
+
+    /* Cúp vàng đặt phía dưới khoảng trống của 2 giải ở giữa, không đè lên chữ */
+    .btl .career__trophy-wrap {
+        position: relative;
+        z-index: 3;
+        width: 380px;
+        margin: -40px auto 0;
+        left: 0;
+        pointer-events: none;
+    }
+
+    /* -- Confetti floating around trophy -- */
+    .btl .career__confetti--l {
+        left: -385px;
+        top: 51px;
+        width: 380px;
+    }
+
+    .btl .career__confetti--r {
+        left: auto;
+        right: -365px;
+        top: 97px;
+        width: 380px;
+    }
+
+    /* -- Khối TV section -- */
+    .btl .career__tv {
+        position: relative;
+        z-index: 4;
+        margin-top: -111px;
+        padding-top: 100px;
+        padding-bottom: 120px;
+        text-align: center;
+    }
+
+    /* Nền góc nghiêng tràn 100% chiều ngang màn hình PC */
+    .btl .career__tv::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        height: 100%;
+        background: #7B1B35;
+        clip-path: polygon(0 90px, 100% 0, 100% 100%, 0 100%);
+        z-index: 0;
+    }
+
+    /* Nền điểm chấm trang trí min-width: 1424px */
+    .btl .career__tv::after {
+        content: "";
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        min-width: 1424px;
+        height: calc(100% - 50px);
+        background: url("../../images/btl/tv-bg.webp") center/contain no-repeat;
+        mix-blend-mode: plus-lighter;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .btl .career__live {
+        width: 80px;
+        height: auto;
+        margin: 0 auto 12px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .btl .career__tv-title {
+        font-size: 46px;
+        letter-spacing: -1px;
+        line-height: 90px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Nanum Square B", sans-serif;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        margin: 0 0 30px;
+    }
+
+    .btl .career__tv-title .hl {
+        color: #ffe034;
+    }
+
+    /* Khung player 650px x 420px */
+    .btl .career__player {
+        position: relative;
+        z-index: 2;
+        width: 650px;
+        height: 420px;
+        max-width: 100%;
+        margin: 40px auto 0;
+        aspect-ratio: auto;
+        background: #000000;
+        border: 4px solid #ffffff;
+        border-radius: 24px;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .btl .career__player .play {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Các icon app (bitiel & MTN) đính bên lề player */
+    .btl .career__apps {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    .btl .career__apps .app-1 {
+        position: absolute;
+        left: -50px;
+        top: 15%;
+        width: 130px;
+        height: auto;
+    }
+
+    .btl .career__apps .app-2 {
+        position: absolute;
+        left: auto;
+        right: -45px;
+        top: auto;
+        bottom: 12%;
+        width: 120px;
+        height: auto;
+    }
+
+    /* =====================================================
+       04. Program (프로그램) — PC Styles
+       ===================================================== */
+    .btl .program {
+        padding: 100px 40px 120px;
+        background: #ffffff;
+    }
+
+    .btl .program .sec-head__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .program .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #c8365a;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    /* Cụm tabs dàn hàng ngang hết trên PC */
+    .btl .program .tabs {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        width: auto;
+        max-width: none;
+        margin: 50px auto 0;
+    }
+
+    .btl .program .tabs__row {
+        display: flex;
+        gap: 12px;
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    .btl .program .tab {
+        height: 54px;
+        padding-inline: 30px;
+        border-radius: 600px;
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-weight: 500;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        background: #ffffff;
+        border: 1px solid #d0d0d0;
+        white-space: nowrap;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btl .program .tab.is-active {
+        background-color: #454545;
+        color: #ffffff;
+        border-color: #454545;
+    }
+
+    .btl .program__panel {
+        max-width: none;
+        margin-top: 50px;
+    }
+
+    .btl .program__card {
+        width: 720px;
+        height: 455px;
+        margin: 0 auto;
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .btl .program__media {
+        position: relative;
+        width: 720px;
+        height: 455px;
+        margin: 0 auto;
+    }
+
+    .btl .program__media img {
+        position: static;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+    .btl .program__desc {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin: 30px auto 0 !important;
+        max-width: 720px;
+    }
+
+    /* =====================================================
+       05. Dual Solution (듀얼솔루션) — PC Styles
+       ===================================================== */
+    .btl .dual {
+        padding: 100px 40px 120px;
+        background: #fcf6f6;
+    }
+
+    .btl .dual .sec-head__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .dual .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .dual__block {
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    .btl .dual__block h3 {
+        font-size: 28px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #252525;
+        font-weight: 500;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btl .dual .check-list li {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+    }
+
+    /* Swiper slide kích thước 326px x 326px trên PC */
+    .btl .dual__devices {
+        margin-top: 40px;
+    }
+
+    .btl .dual__devices .swiper-slide {
+        width: 326px !important;
+        height: 326px;
+        border-radius: 20px;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .btl .dual__devices .device {
+        width: 326px;
+        height: 326px;
+        border-radius: 20px;
+        background-color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .btl .dual__devices .device img {
+        max-width: 85%;
+        max-height: 85%;
+        object-fit: contain;
+    }
+
+    /* 2 ảnh 수기테라피 dàn 1 hàng ngang, kích thước 572px x 374px */
+    .btl .dual__therapy {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        margin-top: 50px;
+        padding-inline: 0;
+    }
+
+    .btl .dual__therapy img {
+        width: 572px;
+        height: 374px;
+        flex: 0 0 572px;
+        border-radius: 20px;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* =====================================================
+       06. Ticket (체험권) — PC Styles
+       ===================================================== */
+    .btl .ticket {
+        padding: 100px 40px 120px;
+        background: #e86382;
+        color: #ffffff;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btl .ticket__head {
+        gap: 16px;
+    }
+
+    .btl .ticket__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin: 0;
+    }
+
+    .btl .ticket__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+        margin: 0;
+    }
+
+    .btl .ticket__visual {
+        position: relative;
+        max-width: none;
+        width: 664px;
+        margin: 80px auto 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btl .ticket__visual .ticket-img {
+        width: 664px;
+        height: 472px;
+        max-width: none;
+        object-fit: contain;
+        display: block;
+        margin-top: -58px;
+    }
+
+    .btl .ticket__visual .ticket-circle {
+        position: absolute;
+        right: -30px;
+        top: -30px;
+        width: 225px;
+        height: 225px;
+        object-fit: contain;
+    }
+
+    /* =====================================================
+       07. Consult status (상담현황) — PC Styles
+       ===================================================== */
+    .btl .consult {
+        padding: 100px 40px 120px;
+        background: #fafafa;
+    }
+
+    .btl .consult .sec-head__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .consult .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .consult__list {
+        max-width: 720px;
+        margin: 50px auto 0;
+        padding-left: 0;
+    }
+
+    .btl .consult__row {
+        height: 70px;
+        padding: 0 30px;
+        border-radius: 14px;
+    }
+
+    .btl .consult__row .state {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #c8365a;
+        font-weight: bold;
+    }
+
+    .btl .consult__row .name {
+        font-size: 18px;
+    }
+
+    .btl .consult__row .time {
+        font-size: 16px;
+    }
+
+    /* =====================================================
+       08. Yoyo ZERO comparison table — PC Styles
+       ===================================================== */
+    .btl .yoyo {
+        padding: 60px 40px 120px;
+    }
+
+    .btl .yoyo .sec-head__label {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #c8365a;
+        font-weight: bold;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .yoyo .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .yoyo .sec-head__title .line2 {
+        color: #252525;
+    }
+
+    /* Bảng so sánh max-width 1024px căn giữa trên PC */
+    .btl .compare {
+        max-width: 1024px;
+        margin: 50px auto 0;
+        padding-inline: 0;
+        overflow-x: visible;
+    }
+
+    .btl .compare table {
+        width: 100%;
+        max-width: 1024px;
+        margin: 0 auto;
+        border-collapse: collapse;
+    }
+
+    .btl .compare th,
+    .btl .compare td {
+        padding: 16px 12px;
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+    }
+
+    .btl .compare thead th.dim {
+        opacity: 0.4;
+        color: #ffffff;
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+    }
+
+    .btl .compare tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    /* Hover vào hàng nào thì background #c8365a với opacity 0.4 */
+    .btl .compare tbody tr:hover {
+        background-color: rgba(200, 54, 90, 0.4);
+    }
+
+    .btl .swipe-hint {
+        display: none !important;
+    }
+
+    /* =====================================================
+       09. Key features 01–03 (주요특장점) — PC Styles
+       ===================================================== */
+    .btl .features {
+        padding: 100px 40px 120px;
+    }
+
+    .btl .feature {
+        padding: 60px 0;
+    }
+
+    .btl .feature .sec-head__label {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #c8365a;
+        font-weight: bold;
+        font-family: "Pretendard", sans-serif;
+        margin-bottom: 8px;
+    }
+
+    .btl .feature .sec-head__title {
+        font-size: 24px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square B", sans-serif;
+        margin-bottom: 12px;
+    }
+
+    .btl .feature--01 .sec-head__title {
+        font-size: 48px;
+        line-height: 68px;
+    }
+
+    .btl .feature .sec-head__title .accent {
+        color: #c8365a;
+    }
+
+    .btl .feature__desc {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        max-width: 900px;
+        margin: 0 auto 30px;
+    }
+
+    /* Feature 01 media: bg 788x544px & ticket 423x266px */
+    .btl .feature--01 .feature__media {
+        position: relative;
+        width: 788px;
+        height: 600px;
+        margin: 40px auto 0;
+        aspect-ratio: auto;
+    }
+
+    .btl .feature--01 .feature__media .feature__bg {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 788px;
+        height: 544px;
+        object-fit: cover;
+        display: block;
+        border-radius: 20px;
+    }
+
+    .btl .feature--01 .feature__media .feature__ticket {
+        position: absolute;
+        left: 50%;
+        bottom: 149px;
+        transform: translateX(-50%);
+        width: 458px;
+        height: 390px;
+        object-fit: contain;
+        display: block;
+    }
+
+    /* Feature 02 và Feature 03 nằm trên CÙNG 1 HÀNG NGANG (features__row) trên PC */
+    .btl .features__row {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 36px;
+        max-width: 1154px;
+        margin: 80px auto 0;
+        width: 100%;
+    }
+
+    .btl .features__row .feature--02,
+    .btl .features__row .feature--03 {
+        width: 559px;
+        flex: 0 0 559px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Khối thermal và feature__media trong từng thẻ 559px */
+    .btl .feature--02 .thermal,
+    .btl .feature--03 .feature__media {
+        width: 559px;
+        height: 380px;
+        margin-top: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .btl .feature--02 .thermal__col {
+        width: 50%;
+        height: 100%;
+    }
+
+    .btl .feature--02 .thermal__badge {
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 90px;
+        height: 90px;
+        border-width: 3px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btl .feature--02 .thermal__badge small,
+    .btl .feature--02 .thermal__badge b {
+        font-size: 16px;
+        letter-spacing: 0px;
+        line-height: 26px;
+        color: #ffffff;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        display: block;
+    }
+
+    .btl .feature--02 .thermal__tag {
+        top: auto;
+        bottom: 20px;
+        height: 28px;
+        padding: 4px 14px;
+        font-size: 13px;
+    }
+
+    .btl .feature--02 .thermal__tag--before {
+        left: 30px;
+    }
+
+    .btl .feature--02 .thermal__tag--after {
+        right: 30px;
+    }
+
+    /* Khối chữ sec-head bên dưới ảnh của từng thẻ 559px — CĂN TRÁI TEXT + GAP 25px */
+    .btl .feature--02 .sec-head,
+    .btl .feature--03 .sec-head {
+        width: 559px;
+        margin-top: 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 0;
+        padding: 0;
+    }
+
+    .btl .feature--02 .sec-head .sec-head__label,
+    .btl .feature--03 .sec-head .sec-head__label,
+    .btl .feature--02 .sec-head .sec-head__title,
+    .btl .feature--03 .sec-head .sec-head__title,
+    .btl .feature--02 .sec-head .feature__desc,
+    .btl .feature--03 .sec-head .feature__desc {
+        text-align: left;
+        margin-inline: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .btl .feature--03 .feature__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    /* =====================================================
+       10. Menopause (갱년기) — PC Styles
+       ===================================================== */
+    .btl .meno {
+        padding: 100px 40px 120px;
+        background: #fcf6f6;
+        margin-top: 80px;
+    }
+
+    .btl .meno .sec-head__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #c8365a;
+        font-weight: bold;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .meno .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .meno .sec-head__title .line2 {
+        color: #c8365a;
+    }
+
+    /* Khối meno__box PC dạng 2 cột: Cột trái 4 tab card, cột phải panel chi tiết acc__detail */
+    .btl .meno__box {
+        max-width: 1200px;
+        margin: 50px auto 0;
+        padding: 40px;
+        background: #ffffff;
+        border-radius: 10px;
+        position: relative;
+        /* min-height: 630px; */
+    }
+
+    .btl .accordion-btl {
+        width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: relative;
+        z-index: 3;
+    }
+
+    .btl .acc__item {
+        border-bottom: none;
+    }
+
+    .btl .acc__head {
+        width: 100%;
+        padding: 20px 24px;
+        border-radius: 16px;
+        background: #ffffff;
+        border: 1px solid #eeeeee;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .btl .acc__head h3 {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 32px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: "Pretendard", sans-serif;
+        color: #252525;
+        margin: 0 0 4px;
+    }
+
+    .btl .acc__head p {
+        font-size: 16px;
+        letter-spacing: 0px;
+        line-height: 24px;
+        color: #888888;
+        font-family: "Pretendard", sans-serif;
+        margin: 0;
+    }
+
+    /* Thẻ active mang màu hồng đỏ đậm và có mũi tên trỏ sang phải */
+    .btl .acc__item.is-open .acc__head {
+        background: #c8365a;
+        box-shadow: 0 10px 25px rgba(200, 54, 90, 0.3);
+        border-color: #c8365a;
+        margin-left: -50px;
+        max-width: 370px;
+    }
+
+    .btl .acc__item.is-open .acc__head h3,
+    .btl .acc__item.is-open .acc__head p {
+        color: #ffffff;
+    }
+
+    .btl .acc__item.is-open .acc__head::after {
+        content: "";
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-left: 10px solid #c8365a;
+        z-index: 4;
+    }
+
+    /* Đưa panel chi tiết của tab active sang cột bên phải */
+    .btl .acc__panel {
+        max-height: none !important;
+        display: none;
+    }
+
+    .btl .acc__item.is-open .acc__panel {
+        display: block;
+        position: absolute;
+        left: 540px;
+        top: 0px;
+        z-index: 2;
+        overflow: hidden;
+        border-radius: 24px;
+    }
+
+    .btl .acc__detail {
+        width: 600px;
+        height: 441px;
+        margin: 0;
+        border-radius: 24px;
+        background:
+            linear-gradient(to right, #bca596 0%, #bca596 30%, rgba(188, 165, 150, 0) 70%),
+            url(../../images/btl/menopause-bg.webp) no-repeat right -112px top -65px / cover;
+        background-color: #bca596;
+        padding: 40px;
+        position: relative;
+    }
+
+    .btl .acc__detail h4 {
+        font-size: 26px;
+        font-weight: bold;
+        line-height: 36px;
+        letter-spacing: -1px;
+        color: #c8365a;
+        margin: 0 0 12px;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    .btl .acc__detail p {
+        font-size: 18px;
+        line-height: 28px;
+        letter-spacing: 0px;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        width: 320px;
+        margin: 0;
+    }
+
+    /* Ảnh phụ nữ PC: absolute theo .meno__box — không bị cut bởi panel, dễ dàng kéo sang trái/phải */
+    .btl .meno__woman-pc {
+        position: absolute;
+        left: 360px;
+        bottom: -34px;
+        width: 371px;
+        height: 394px;
+        object-fit: contain;
+        pointer-events: none;
+        z-index: 4;
+    }
+
+    /* =====================================================
+       11. Thermo diet (체온 다이어트) — PC Styles
+       ===================================================== */
+    .btl .thermo__head {
+        width: auto;
+        max-width: none;
+    }
+
+    .btl .thermo .sec-head__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+    }
+
+    .btl .thermo .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .thermo__chips {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 800px;
+        margin: 40px auto 0;
+        gap: 16px 20px;
+    }
+
+    .btl .thermo__chips .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        height: 65px;
+        padding: 0 28px 0 14px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 100px;
+    }
+
+    .btl .thermo__chips .chip img {
+        width: 45px;
+        height: 45px;
+        object-fit: contain;
+    }
+
+    .btl .thermo__chips .chip span {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    /* Stage: player 400x700 centered, speech bubbles left & right */
+    .btl .thermo__stage {
+        position: relative;
+        height: 700px;
+        max-width: 1100px;
+        margin: 60px auto 0;
+    }
+
+    .btl .thermo__player {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+        width: 400px;
+        height: 700px;
+        border-radius: 20px;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .btl .thermo__play {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Speech bubbles PC positioning (kích thước, hình dáng, đuôi bubble giữ nguyên 100% từ mobile) */
+    .btl .thermo .bubble--a,
+    .btl .thermo .bubble--b,
+    .btl .thermo .bubble--c {
+        right: calc(50% + 230px);
+        left: auto;
+    }
+
+    .btl .thermo .bubble--a {
+        top: 22px;
+    }
+
+    .btl .thermo .bubble--b {
+        top: 115px;
+    }
+
+    .btl .thermo .bubble--c {
+        top: 213px;
+    }
+
+    .btl .thermo .bubble--d,
+    .btl .thermo .bubble--e,
+    .btl .thermo .bubble--f {
+        left: calc(50% + 230px);
+        right: auto;
+    }
+
+    .btl .thermo .bubble--d {
+        top: 102px;
+    }
+
+    .btl .thermo .bubble--e {
+        top: 199px;
+    }
+
+    .btl .thermo .bubble--f {
+        top: 302px;
+    }
+
+    /* Kcal claim styling */
+    .btl .thermo__claim {
+        margin-top: 60px;
+        text-align: center;
+    }
+
+    .btl .thermo__claim h3 {
+        margin: 0 0 16px;
+    }
+
+    .btl .thermo__claim h3 .mark {
+        font-size: 32px;
+        letter-spacing: -1px;
+        line-height: 62px;
+        text-transform: uppercase;
+        font-family: "Nanum Square B", sans-serif;
+        text-align: center;
+        background: #0f1520;
+        padding: 4px 16px;
+        color: #ffffff;
+    }
+
+    .btl .thermo__claim p {
+        font-size: 32px;
+        letter-spacing: -1px;
+        line-height: 62px;
+        text-transform: uppercase;
+        font-family: "Nanum Square B", sans-serif;
+        text-align: center;
+        color: #ffffff;
+        margin: 20px 0 0;
+    }
+
+    /* =====================================================
+       12. Results (결과로 증명하는 비티엘 다이어트) — PC Styles
+       ===================================================== */
+    .btl .results {
+        padding: 80px 40px;
+    }
+
+    .btl .results .sec-head__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .results .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .results .case__badge,
+    .btl .results .rtab,
+    .btl .results .subhead,
+    .btl .results .ba-caption {
+        font-size: 24px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    .btl .results .case {
+        max-width: 1100px;
+        margin: 50px auto 0;
+    }
+
+    .btl .results .results__tabs {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 30px;
+    }
+
+    .btl .results .rtab {
+        padding: 12px 28px;
+        border-radius: 30px;
+        /* background: #f5f5f5; */
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 140px;
+        height: 56px;
+        border-radius: 28px;
+    }
+
+    .btl .results .rtab.is-active {
+        /* background: #c8365a;*/
+        color: #ffffff;
+    }
+
+    .btl .results .ba-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .btl .results .ba-shot {
+        width: 418px;
+        height: 523px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px;
+    }
+
+    .btl .results .ba-badge {
+        width: 106px;
+        height: 106px;
+        border-radius: 50%;
+        background: #c8365a;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        top: 192px;
+    }
+
+    .btl .results .ba-shot__ring {
+        width: 120px;
+        height: 120px;
+        left: 100px !important;
+        top: 100px !important;
+    }
+
+    .results__head {
+        width: 400px;
+    }
+
+    .ba-badge span {
+        font-size: 16px;
+        letter-spacing: 0px;
+        line-height: 26px;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        position: absolute;
+        margin-top: -30px;
+    }
+
+    .ba-badge strong {
+        font-size: 24px;
+        letter-spacing: 0px;
+        line-height: 26px;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        position: absolute;
+        margin-top: 29px;
+    }
+
+    .case__badge {
+        width: 121px;
+        height: 52px;
+        border-radius: 26px;
+        background-color: #f5f5f5;
+    }
+
+    .case__avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 26px;
+        background-color: #c8365a;
+    }
+
+    .case__name {
+        font-size: 24px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Pretendard";
+    }
+
+    .ba-desc {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #454545;
+        font-family: "Pretendard";
+        text-align: center;
+    }
+
+    .btl .results .case__shot {
+        width: 850px;
+        height: 430px;
+        position: relative;
+        overflow: hidden;
+        margin: 20px auto 0;
+        border-radius: 16px;
+    }
+
+    /* =====================================================
+       13. Your turn (이제 당신 차례입니다) — PC Styles
+       ===================================================== */
+    .btl .turn {
+        padding: 80px 40px;
+    }
+
+    .btl .turn__head {
+        width: auto;
+        max-width: none;
+    }
+
+    .btl .turn .sec-head__label {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .turn .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .turn .sec-head__title .line2 {
+        color: #c8365a;
+    }
+
+    .btl .turn__cards {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        position: relative;
+        margin-top: 40px;
+        min-height: 650px;
+    }
+
+    .btl .ba-card {
+        width: 500px;
+        height: 600px;
+        padding: 50px 0 0;
+        box-sizing: border-box;
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .btl .ba-card--before {
+        z-index: 1;
+        margin-right: -50px;
+    }
+
+    .btl .ba-card--after {
+        z-index: 3;
+        margin-top: 50px;
+        border: 3px solid #c8365a;
+        box-shadow: 0 15px 35px rgba(200, 54, 90, 0.15);
+    }
+
+    .btl .ba-card__photo {
+        width: 496px;
+        height: 480px;
+    }
+
+    .btl .ba-card__label {
+        left: 24px;
+        top: 16px;
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-weight: bold;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    .btl .ba-card__react {
+        left: 24px;
+        bottom: 20px;
+        top: auto;
+        width: 100px;
+        height: auto;
+    }
+
+    .btl .turn__badge {
+        width: 106px;
+        height: 106px;
+        border-radius: 50%;
+        background: #c8365a;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+    }
+
+    .turn__badge span {
+        font-size: 16px;
+        letter-spacing: 0px;
+        line-height: 26px;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        position: absolute;
+        margin-top: -30px;
+    }
+
+    .turn__badge strong {
+        font-size: 24px;
+        letter-spacing: 0px;
+        line-height: 26px;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        position: absolute;
+        margin-top: 29px;
+    }
+
+    .btl .turn__quote {
+        width: 956px;
+        height: 151px;
+        border-radius: 20px;
+        background-color: #454545;
+        margin: 40px auto 0;
+        padding: 30px 40px;
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btl .turn__quote::before {
+        content: "\201C";
+        position: absolute;
+        left: 40px;
+        top: 20px;
+        opacity: 0.051;
+        font-size: 100px;
+        letter-spacing: -2px;
+        line-height: 32px;
+        color: #ffffff;
+        font-family: "Jalnan OT F", "NanumSquare", sans-serif;
+        text-align: center;
+    }
+
+    .btl .turn__quote p {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 32px;
+        color: #fefefe;
+        font-family: "Pretendard", sans-serif;
+        text-align: left;
+        margin: 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Swiper Prev/Next Navigation Buttons (40px x 40px, vertically centered relative to turn__cards) */
+    .btl .turn__swiper {
+        position: relative;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .btl .turn__nav {
+        position: absolute;
+        top: 320px;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 25;
+        transition: all 0.3s ease;
+        padding: 0;
+    }
+
+    .btl .turn__nav::after {
+        content: "";
+        width: 20px;
+        height: 20px;
+        border-top: 1.5px solid #252525;
+        border-right: 1.5px solid #252525;
+        display: block;
+    }
+
+    .btl .turn__nav--prev {
+        left: 20px;
+    }
+
+    .btl .turn__nav--prev::after {
+        transform: rotate(-135deg);
+        margin-left: 6px;
+    }
+
+    .btl .turn__nav--next {
+        right: 20px;
+    }
+
+    .btl .turn__nav--next::after {
+        transform: rotate(45deg);
+        margin-right: 6px;
+    }
+
+    .btl .turn__nav:hover::after {
+        border-color: #c8365a;
+    }
+
+    /* =====================================================
+       14. FAQ (자주 묻는 질문) — PC Styles
+       ===================================================== */
+    .btl .faq {
+        padding: 80px 40px;
+    }
+
+    .btl .faq__head {
+        width: auto;
+        max-width: none;
+        text-align: center;
+    }
+
+    .btl .faq .sec-head__label {
+        font-size: 20px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .faq .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .faq__list {
+        max-width: 800px;
+        margin: 50px auto 0;
+    }
+
+    .btl .faq__mark {
+        font-size: 22px;
+    }
+
+    .btl .faq__panel p {
+        font-size: 18px;
+        letter-spacing: 0px;
+        line-height: 26px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    /* =====================================================
+       15. Contact form (1:1 무료컨설팅 예약) — PC Styles
+       ===================================================== */
+    .btl .contact {
+        padding: 80px 40px;
+    }
+
+    .btl .contact__head {
+        width: auto;
+        max-width: none;
+        text-align: center;
+    }
+
+    .btl .contact .sec-head__label {
+        font-size: 22px;
+        letter-spacing: -1px;
+        line-height: 30px;
+        text-transform: uppercase;
+        color: #454545;
+        font-family: "Pretendard", sans-serif;
+        text-align: center;
+        margin-bottom: 12px;
+    }
+
+    .btl .contact .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-transform: uppercase;
+        color: #252525;
+        font-family: "Nanum Square EB", sans-serif;
+        text-align: center;
+    }
+
+    .btl .contact__form {
+        width: 740px;
+        height: 679px;
+        border-radius: 20px;
+        background-color: #ffffff;
+        margin: 50px auto 0;
+        padding: 40px;
+        box-sizing: border-box;
+    }
+
+    .btl .contact .field__label,
+    .btl .contact .field__input,
+    .btl .contact .field__input::placeholder {
+        font-size: 18px;
+        letter-spacing: 0px;
+        line-height: 30px;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    /* =====================================================
+       16. Site footer — PC Styles
+       ===================================================== */
+    .btl .site-footer {
+        padding: 60px 40px;
+        background: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .btl .site-footer__logo {
+        width: 84px;
+        height: 32px;
+        object-fit: contain;
+        margin-top: 0;
+    }
+
+    .btl .site-footer__info,
+    .btl .site-footer__info a {
+        font-size: 16px;
+        letter-spacing: 0px;
+        line-height: 26px;
+        text-transform: uppercase;
+        color: #999999;
+        font-weight: 500;
+        font-family: "Pretendard", sans-serif;
+        width: auto;
+        max-width: none;
+        margin-top: 0 !important;
+        white-space: pre-wrap;
+        text-align: left;
+    }
+}

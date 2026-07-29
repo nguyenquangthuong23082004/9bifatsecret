@@ -1,0 +1,198 @@
+/* =========================================================
+   13. Your turn (이제 당신 차례) — Figma 529:80
+   ========================================================= */
+.turn {
+    background: linear-gradient(180deg, #f6efef 34.163%, #fed0cd 100%);
+    padding: 100px 0 106px;
+}
+
+.turn__head {
+    width: 282px;
+    margin-inline: auto;
+}
+
+.turn .sec-head__title .line2 {
+    color: var(--c-primary);
+}
+
+/* Swiper pagination — Figma 516:458 (above the cards, 4 dots of 10px, gap 10) */
+.turn__dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 36px 0 0;
+    padding: 0;
+    line-height: 0;
+}
+
+.turn__dots .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    margin: 0;
+    border-radius: 50%;
+    background: #e8d5d5;
+    opacity: 1;
+}
+
+.turn__dots .swiper-pagination-bullet-active {
+    background: var(--c-primary);
+}
+
+/* ---------- swipe carousel ---------- */
+.turn__swiper {
+    overflow: hidden;
+}
+
+/* one slide = one full screen; the 310px card is centred inside it */
+.turn__swiper .swiper-slide {
+    width: 100%;
+    height: auto;
+}
+
+/* ---------- before / after cards ---------- */
+.turn__cards {
+    position: relative;
+    margin-top: 39px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.ba-card {
+    position: relative;
+    box-sizing: border-box;
+    width: 310px;
+    height: 405px;
+    margin: 0;
+    padding: 39px 0 0;
+    background: #fff;
+    border: 2px solid var(--c-line);
+    border-radius: 20px;
+    /* clips to the padding box, so a sub-pixel rounding of the 306px photo
+       under .btl's fractional zoom can never eat into the 2px border */
+    overflow: hidden;
+}
+
+.ba-card--after {
+    border-color: var(--c-primary);
+}
+
+/* absolute offsets are relative to the padding box, i.e. inside the 2px border,
+   so the Figma y is reduced by the border width */
+.ba-card__label {
+    position: absolute;
+    left: 19px;
+    top: 13.5px;
+    font-family: "Inter", var(--f-body);
+    font-weight: 700;
+    font-size: 10px;
+    color: var(--c-ink);
+}
+
+/* Photo (518:3) is flush with the inner edge of the 2px border: card 310 − 2×2 = 306.
+   The card therefore has NO horizontal padding, otherwise the photo overhangs
+   the right border and hides it. */
+.ba-card__photo {
+    position: relative;
+    width: 306px;
+    height: 321px;
+    overflow: hidden;
+    background: #f1f1f1;
+}
+
+.ba-card--after .ba-card__photo {
+    background: #f8f1eb;
+}
+
+/* Figma fills are scaled/offset individually — not a plain cover */
+.ba-card__photo img {
+    position: absolute;
+    max-width: none;
+    display: block;
+}
+
+/* crops are emitted inline per slide (see $photo() in turn.php);
+   529:43 / 529:48 use a plain contain instead */
+.ba-card__photo img.is-contain {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    object-fit: contain;
+}
+
+.ba-card__react {
+    position: absolute;
+    left: 19px;
+    top: 367.6px;
+    width: 64.4px;
+    height: 22.65px;
+}
+
+/* result badge sitting between the two cards */
+.turn__badge {
+    position: absolute;
+    left: 50%;
+    top: 385px;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 500px;
+    background: var(--c-primary);
+    border: 2px solid #fff;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, .25));
+    color: #fff;
+    text-align: center;
+}
+
+.turn__badge strong {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.24px;
+}
+
+.turn__badge span {
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: -.24px;
+}
+
+/* ---------- testimonial ---------- */
+.turn__quote {
+    position: relative;
+    width: 310px;
+    margin: 29px auto 0;
+    padding: 40px 24px 0;
+    height: 188px;
+    background: var(--c-ink-2);
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+.turn__quote::before {
+    content: "\201C";
+    position: absolute;
+    left: 24px;
+    top: 0;
+    font-family: var(--f-title);
+    font-size: 60px;
+    line-height: 1.4;
+    letter-spacing: -1.2px;
+    color: #fff;
+    opacity: .05;
+}
+
+.turn__quote p {
+    position: relative;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: -.28px;
+    color: #fff;
+}

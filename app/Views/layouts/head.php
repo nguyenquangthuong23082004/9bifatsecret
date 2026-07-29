@@ -20,8 +20,12 @@
         'common', 'header', 'footer',
         'main-visual', 'philosophy', 'career', 'program', 'dual',
         'ticket', 'consult', 'yoyo', 'features', 'menopause',
+        'thermo', 'results', 'turn', 'faq', 'contact',
+        'pc', // luôn để cuối: ghi đè toàn bộ section cho màn >= 992px
     ];
-    foreach ($btlCss as $css): ?>
-    <link rel="stylesheet" href="<?= base_url('assets/css/btl/' . $css . '.css') ?>">
+    foreach ($btlCss as $css):
+        $cssPath = FCPATH . 'assets/css/btl/' . $css . '.css';
+        $cssVer  = is_file($cssPath) ? filemtime($cssPath) : null; ?>
+    <link rel="stylesheet" href="<?= base_url('assets/css/btl/' . $css . '.css') . ($cssVer ? '?v=' . $cssVer : '') ?>">
     <?php endforeach; ?>
 </head>
