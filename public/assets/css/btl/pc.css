@@ -1800,7 +1800,6 @@
 
     .btl .results .case__badge,
     .btl .results .rtab,
-    .btl .results .subhead,
     .btl .results .ba-caption {
         font-size: 24px;
         letter-spacing: -1px;
@@ -1808,6 +1807,23 @@
         text-transform: uppercase;
         color: #252525;
         font-family: "Pretendard", sans-serif;
+    }
+
+    .btl .results .subhead {
+        height: auto;
+        margin-top: 40px !important;
+    }
+
+    .btl .results .subhead span {
+        font-size: 17px;
+        font-weight: 400;
+        color: #999999;
+    }
+
+    .btl .results .subhead span.is-on {
+        font-size: 20px;
+        font-weight: 700;
+        color: #252525;
     }
 
     .btl .results .case {

@@ -161,7 +161,8 @@
     background: var(--c-primary);
 }
 
-/* 02 & 03 (481:350 / 481:353) : ảnh nằm TRƯỚC, tiêu đề cách ảnh 30px */
+/* 529:510 : tiêu đề nằm SAU ảnh, cách ảnh 30px (giống 02 & 03) */
+.feature--01 .sec-head,
 .feature--02 .sec-head,
 .feature--03 .sec-head {
     margin-top: 30px;

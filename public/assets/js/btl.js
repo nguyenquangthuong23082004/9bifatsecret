@@ -97,6 +97,40 @@
       });
     });
 
+    /* ---- Results: Subhead block switcher (chuyển đổi rblock 1 & 2 khi click subhead title) ---- */
+    document.querySelectorAll('.results .rpanel').forEach(function (panel) {
+      var blocks = panel.querySelectorAll('.rblock');
+      if (blocks.length > 1) {
+        // Mặc định hiện rblock đầu tiên, ẩn các rblock còn lại trong panel
+        blocks.forEach(function (b, idx) {
+          b.style.display = idx === 0 ? 'block' : 'none';
+        });
+
+        // Đăng ký sự kiện click cho các subhead title span
+        blocks.forEach(function (block) {
+          var subheadSpans = block.querySelectorAll('.subhead span');
+          subheadSpans.forEach(function (span, targetIdx) {
+            span.addEventListener('click', function () {
+              blocks.forEach(function (b, bIdx) {
+                // Hiển thị rblock tương ứng với title được click
+                b.style.display = bIdx === targetIdx ? 'block' : 'none';
+
+                // Cập nhật class 'is-on' cho title active và xóa khỏi title inactive
+                var headSpans = b.querySelectorAll('.subhead span');
+                headSpans.forEach(function (s, sIdx) {
+                  if (sIdx === targetIdx) {
+                    s.classList.add('is-on');
+                  } else {
+                    s.classList.remove('is-on');
+                  }
+                });
+              });
+            });
+          });
+        });
+      }
+    });
+
     /* ---- Device carousel (Swiper) ---- */
     var devices = document.querySelector('.dual__devices');
     if (window.Swiper && devices) {

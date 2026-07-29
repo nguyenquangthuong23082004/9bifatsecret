@@ -45,7 +45,7 @@ $awards = [
 
         <div class="career__tv">
             <img class="career__live" src="<?= $img('badge-live.png') ?>" alt="LIVE" loading="lazy">
-            <p class="career__tv-title"><span class="hl">머니투데이 방송</span>,<br>방송 통 소개</p>
+            <p class="career__tv-title"><span class="hl">머니투데이 방송</span>외<br>언론사, 잡지사 다수 소개</p>
 
             <div class="career__player" role="button" tabindex="0" aria-label="방송 영상 재생" data-video="">
                 <svg class="play" width="60" height="60" viewBox="0 0 60 60" fill="none" aria-hidden="true">
