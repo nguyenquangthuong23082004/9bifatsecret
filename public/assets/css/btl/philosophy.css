@@ -34,6 +34,8 @@
 
 .philo__lead-2 {
     margin-top: 19.6px;
+    border: 1px solid #da4272;
+    border-radius: 12px;
 }
 
 .philo__lead-2 b {
@@ -46,11 +48,13 @@
     color: #da4272;
 }
 
+/* Figma mới (529:264): tam giác 280x304 tại x=47 trong khung 375 —
+   thu lại so với bản cũ (362) để chừa chỗ cho 3 nhãn dọc theo cạnh */
 .philo__logo {
     position: relative;
     z-index: 2;
     margin: 40px auto 30px;
-    max-width: 362px;
+    max-width: 280px;
 }
 
 /* watermark behind the triangle, starts 13px above it (Figma 460:85) */
@@ -94,6 +98,46 @@
     width: 22.65%;
     height: auto;
     pointer-events: none;
+}
+
+/* ---- Nhãn dọc theo 3 cạnh tam giác (mobile only) ----
+   Toạ độ quy về % của khung ảnh 280x304:
+   left  565:9  tâm (45.7, 87.3)  xoay -59.1deg
+   right 565:13 tâm (240.0, 86.7) xoay  60.3deg
+   bottom 565:20 box top 256, canh giữa                       */
+.philo__edge {
+    position: absolute;
+    z-index: 2;
+    font-family: var(--f-body);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.4;
+    letter-spacing: -.32px;
+    color: var(--c-rose);
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.philo__edge b {
+    font-weight: 600;
+}
+
+.philo__edge--left {
+    left: 16.34%;
+    top: 28.72%;
+    transform: translate(-50%, -50%) rotate(-59.1deg);
+}
+
+.philo__edge--right {
+    left: 85.73%;
+    top: 28.51%;
+    transform: translate(-50%, -50%) rotate(60.3deg);
+}
+
+.philo__edge--bottom {
+    left: 50%;
+    top: 84.2%;
+    transform: translateX(-50%);
 }
 
 .philo__list {

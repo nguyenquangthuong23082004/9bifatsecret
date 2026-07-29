@@ -38,6 +38,14 @@
     pointer-events: none;
 }
 
+/* Figma 529:315 — vòng cung r=72 (không phải cung phẳng của bản PC),
+   ink chữ cao ~31px, đáy cách tiêu đề ~9px */
+.career__arc--mo {
+    height: 48px;
+    top: -53.5px;
+    overflow: visible;
+}
+
 .career__arc text {
     font-family: var(--f-title);
     font-weight: 800;

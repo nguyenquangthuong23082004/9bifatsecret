@@ -19,6 +19,11 @@
             <img src="<?= $img('philosophy-triangle.png') ?>" alt="BITIEL premium body care" loading="lazy">
         </picture>
         <img class="philo__logo-text" src="<?= $img('philosophy-logo-gray.png') ?>" alt="bitiel" loading="lazy">
+
+        <!-- Nhãn chạy dọc 3 cạnh tam giác (chỉ mobile — Figma 565:9 / 565:13 / 565:20) -->
+        <span class="philo__edge philo__edge--left" aria-hidden="true"><b>아름답게</b> Beautiful</span>
+        <span class="philo__edge philo__edge--right" aria-hidden="true"><b>건강하게</b> Healthy</span>
+        <span class="philo__edge philo__edge--bottom" aria-hidden="true"><b>더욱 젊게</b> Younger</span>
     </div>
 
     <div class="philo__list">

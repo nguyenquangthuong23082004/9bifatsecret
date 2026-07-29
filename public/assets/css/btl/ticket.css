@@ -9,7 +9,26 @@
    overflow: hidden;
 }
 
+/* Figma 529:373 — ảnh nền (bánh sinh nhật) phủ 10% trên nền #e86382.
+   Trong design: w 263.46% / h 107.68% của khung 375x590, lệch trái 54.93%,
+   lên trên 4.8% -> quy ra px của bản dựng 375: 988 x 635, left -206, top -28 */
+.ticket::before {
+   content: "";
+   position: absolute;
+   z-index: 0;
+   left: -206px;
+   top: -28px;
+   width: 988px;
+   height: 635px;
+   min-height: calc(100% + 28px);
+   background: url("../../images/btl/ticket-bg.webp") center/cover no-repeat;
+   opacity: .1;
+   pointer-events: none;
+}
+
 .ticket__head {
+   position: relative;
+   z-index: 1;
    text-align: center;
    display: flex;
    flex-direction: column;
@@ -32,6 +51,7 @@
 
 .ticket__visual {
    position: relative;
+   z-index: 1;
    margin: 40px auto 0;
    max-width: 343px;
    display: flex;

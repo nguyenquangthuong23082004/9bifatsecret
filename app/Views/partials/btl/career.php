@@ -12,7 +12,13 @@ $awards = [
     <div class="career__bg" aria-hidden="true"></div>
     <div class="career__inner">
         <div class="career__title-wrap">
-            <svg class="career__arc" viewBox="0 0 200 100" aria-hidden="true" focusable="false">
+            <!-- Mobile (Figma 529:315): cung tròn hẹp hơn, chữ ôm sát tiêu đề -->
+            <svg class="career__arc career__arc--mo only-mo" viewBox="0 0 171 48" aria-hidden="true" focusable="false">
+                <defs><path id="careerArcMo" d="M 24.9 43.1 A 72 72 0 0 1 146.1 43.1" fill="none"></path></defs>
+                <text><textPath href="#careerArcMo" startOffset="50%" text-anchor="middle">19 YEARS OF BITIEL</textPath></text>
+            </svg>
+            <!-- PC: giữ nguyên cung cũ -->
+            <svg class="career__arc only-pc" viewBox="0 0 200 100" aria-hidden="true" focusable="false">
                 <defs><path id="careerArc" d="M 5 85 A 160 160 0 0 1 195 85" fill="none"></path></defs>
                 <text><textPath href="#careerArc" startOffset="50%" text-anchor="middle">19 YEARS OF BITIEL</textPath></text>
             </svg>

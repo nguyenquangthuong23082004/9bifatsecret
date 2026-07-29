@@ -45,6 +45,15 @@
    margin-top: 24px;
 }
 
+/* Swiper dùng slidesPerView:'auto' -> phải tự khai width cho slide,
+   nếu không CSS mặc định của Swiper (width:100%) làm mỗi slide rộng bằng
+   màn hình và ô 160px bị dồn về mép trái.
+   Figma 529:365: 3 ô 160x160, gap 20, dải căn giữa (ô hai bên lộ 88px). */
+.dual__devices .swiper-slide {
+   width: 160px;
+   height: 160px;
+}
+
 .device {
    width: 160px;
    height: 160px;
