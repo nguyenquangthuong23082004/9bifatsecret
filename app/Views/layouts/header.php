@@ -7,7 +7,7 @@ $menu = [
     ['프로그램',        '#program'],
     ['듀얼솔루션',      '#dual'],
     ['체험권',          '#ticket'],
-    ['실시간상담',      '#consult', true],   // struck through (529:208)
+    // ['실시간상담',      '#consult', true],   // struck through (529:208)
     ['요요 ZERO',       '#yoyo'],
     ['갱년기 프로그램', '#menopause'],
     ['체온다이어트',    '#thermo'],
