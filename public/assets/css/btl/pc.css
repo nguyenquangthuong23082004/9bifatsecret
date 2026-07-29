@@ -275,6 +275,11 @@
         margin-top: 15px;
     }
 
+    /* dòng lead thứ 2 cách 1 dòng trống theo line-height của PC */
+    .btl .philo__head .philo__lead-2 {
+        margin-top: 30px;
+    }
+
     .btl .philo__logo {
         position: relative;
         width: 476px;

@@ -5,7 +5,10 @@
         <h2 class="sec-head__title sec-head__title--rose">
             <span class="line1">부산 프리미엄 체험관리</span><br>다이어트 전문 센터
         </h2>
-        <p class="sec-head__label">세계적으로 검증된<br>BTL전문가와 1:1 맞춤 체형관리</p>
+        <p class="sec-head__label philo__lead">
+            <span class="philo__lead-1">세계적으로 검증된 BTL전문가와 1:1 맞춤 체형관리</span>
+            <span class="philo__lead-2"><b><em>Plus</em> <em>B</em>eauty <em>T</em>o <em>L</em>ife</b> : 삶에 아름다움을 더하다</span>
+        </p>
     </div>
 
     <div class="philo__logo">

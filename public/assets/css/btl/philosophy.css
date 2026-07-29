@@ -20,6 +20,32 @@
     line-height: 1.4;
 }
 
+/* Figma 529:261 — lead 2 dòng, mỗi dòng KHÔNG xuống dòng, cách nhau đúng
+   1 dòng trống (14px * 1.4 = 19.6px) */
+.philo__lead {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.philo__lead-1,
+.philo__lead-2 {
+    display: block;
+}
+
+.philo__lead-2 {
+    margin-top: 19.6px;
+}
+
+.philo__lead-2 b {
+    font-weight: 500;
+}
+
+/* chữ cái đầu (và cả từ "Plus") tô hồng */
+.philo__lead-2 em {
+    font-style: normal;
+    color: #da4272;
+}
+
 .philo__logo {
     position: relative;
     z-index: 2;
