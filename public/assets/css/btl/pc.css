@@ -322,6 +322,7 @@
         height: 386px;
         display: block;
         object-fit: contain;
+        margin-left: -100px;
     }
 
     .btl .philo__logo-mark>img {
@@ -336,7 +337,7 @@
         left: 50%;
         top: 48%;
         transform: translate(-50%, -50%);
-        width: 108px;
+        width: 86px;
         height: auto;
     }
 
@@ -408,7 +409,7 @@
 
     /* Item 3: phía dưới logo, căn giữa, chấm tròn ở trên cùng */
     .btl .philo__item:nth-child(3) {
-        top: 730px;
+        top: 752px;
         left: 50%;
         transform: translateX(-50%);
         flex-direction: column;
