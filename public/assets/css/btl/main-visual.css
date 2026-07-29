@@ -11,12 +11,12 @@
    (hero__visual vẫn tham chiếu .hero). PC sẽ bật flex ở pc.css. */
 .hero__inner,
 .hero__copy{ display:contents; }
-.hero__label{ position:relative; z-index:2; font-size:16px; color:var(--c-ink-2); }
+.hero__label{ position:relative; z-index:2; text-align:center; font-size:16px; color:var(--c-ink-2); }
 .hero__label b{ font-weight:700; }
 /* TAEBAEK chỉ có 1 nét (Regular 400) — ép 400 để tránh faux-bold của <h1> */
-.hero__title{ position:relative; z-index:2; margin-top:24px; font-family:var(--f-hero); font-weight:400; letter-spacing:0; font-size:42px; line-height:1.4;
+.hero__title{ position:relative; z-index:2; margin-top:24px; font-family:var(--f-hero); font-weight:400; letter-spacing:0; text-align:center; font-size:42px; line-height:1.4;
     background-image:linear-gradient(118deg,#ff6434 5%,#e72c67 108%); -webkit-background-clip:text; background-clip:text; color:transparent; }
-.hero__sub{ position:relative; z-index:2; margin-top:24px; font-family:var(--f-hero); font-weight:400; font-size:30px; line-height:1.4; color:var(--c-ink-2); white-space:nowrap; }
+.hero__sub{ position:relative; z-index:2; margin-top:24px; font-family:var(--f-hero); font-weight:400; text-align:center; font-size:30px; line-height:1.4; color:var(--c-ink-2); white-space:nowrap; }
 .hero__sub .em{ color:#ed395b; }
 /* Figma 458:45 "Frame 1" — 375x433 at y=331 absolute, i.e. 281 inside the
    hero frame (458:44 starts at y=50) and flush with its bottom (281+433=714).

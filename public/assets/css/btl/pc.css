@@ -156,6 +156,7 @@
 
     .btl .hero__label {
         margin: 0;
+        text-align: left;
         font-family: "Pretendard";
         font-weight: bold;
         font-size: 22px;
@@ -167,6 +168,8 @@
     .btl .hero__title {
         margin-top: 30px;
         font-family: var(--f-hero);
+        /* mobile căn giữa theo design — PC là cột trái nên trả về left */
+        text-align: left;
         font-size: 72px;
         line-height: 96px;
         letter-spacing: -2px;
@@ -175,6 +178,7 @@
     .btl .hero__sub {
         margin-top: 35px;
         font-family: var(--f-hero);
+        text-align: left;
         font-size: 42px;
         line-height: 75px;
         letter-spacing: -1px;
