@@ -13,8 +13,8 @@
 @font-face { font-family:"NanumSquare"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/NanumSquareR.ttf") format("truetype"); }
 @font-face { font-family:"NanumSquare"; font-weight:700; font-style:normal; font-display:swap; src:url("../../../fonts/NanumSquareB.ttf") format("truetype"); }
 @font-face { font-family:"NanumSquare"; font-weight:800; font-style:normal; font-display:swap; src:url("../../../fonts/NanumSquareEB.ttf") format("truetype"); }
-/* TAEBAEK(태백체) – drop TAEBAEKfont.ttf into public/fonts to enable; falls back to NanumSquare */
-@font-face { font-family:"TAEBAEK"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/TAEBAEKfont.ttf") format("truetype"); }
+/* TAEBAEK(태백체) – Figma hero font (TAEBAEK font, Regular) */
+@font-face { font-family:"TAEBAEK"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/TAEBAEKfont.woff2") format("woff2"); }
 
 /* ---------- Design tokens ---------- */
 :root{

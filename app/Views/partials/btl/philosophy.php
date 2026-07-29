@@ -10,7 +10,11 @@
 
     <div class="philo__logo">
         <p class="philo__watermark" aria-hidden="true">PREMIUM<br>BODY CARE</p>
-        <img class="philo__logo-mark" src="<?= $img('philosophy-triangle.png') ?>" alt="BITIEL premium body care" loading="lazy">
+        <!-- PC dùng ảnh riêng (philosophy-triangle-pc.png), mobile giữ bản gốc -->
+        <picture class="philo__logo-mark">
+            <source media="(min-width:992px)" srcset="<?= $img('philosophy-triangle-pc.png') ?>">
+            <img src="<?= $img('philosophy-triangle.png') ?>" alt="BITIEL premium body care" loading="lazy">
+        </picture>
         <img class="philo__logo-text" src="<?= $img('philosophy-logo-gray.png') ?>" alt="bitiel" loading="lazy">
     </div>
 

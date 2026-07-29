@@ -53,6 +53,12 @@
     width: 100%;
 }
 
+.philo__logo-mark>img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
 /* bitiel wordmark inside the triangle (Figma 460:80 — 82x35 @ 140,182 of 362x393) */
 .philo__logo-text {
     position: absolute;
