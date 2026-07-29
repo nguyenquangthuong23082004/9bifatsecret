@@ -150,6 +150,7 @@
       new window.Swiper('.turn__swiper', {
         slidesPerView: 1,     // one case per screen — no neighbour peeking
         spaceBetween: 0,
+        loop: true,           // Vòng lặp vô hạn: qua slide cuối tự về slide đầu và ngược lại
         grabCursor: true,
         pagination: { el: '.turn__dots', clickable: true },
         navigation: {

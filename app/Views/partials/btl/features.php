@@ -12,7 +12,7 @@
         <div class="sec-head sec-head--left">
             <p class="sec-head__label">요요ZERO 핵심 메커니즘 01</p>
             <h3 class="sec-head__title">요요 케이스별 <span class="accent">전문기기 완비</span></h3>
-            <p class="feature__desc">30여종 전문기기 중 특정부위군살, 셀루라이트, 기초대사저하 등 본인 요요케이스에 맞춰 직접선택가능</p>
+            <p class="feature__desc">30여종 전문기기중 특정부위군살, 셀룰라이트,기초대사저하 등<br class="only-pc">본인 요요케이스에 맞춰 직접선택가능</p>
         </div>
     </div>
 

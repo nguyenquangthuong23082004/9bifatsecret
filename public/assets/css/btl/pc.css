@@ -388,7 +388,7 @@
 
     /* Item 1: bên trái logo, chấm tròn ở phía phải */
     .btl .philo__item:nth-child(1) {
-        top: 485px;
+        top: 524px;
         right: calc(50% + 238px + 15px);
         flex-direction: row-reverse;
         align-items: flex-start;
@@ -401,7 +401,7 @@
 
     /* Item 2: bên phải logo, chấm tròn ở phía trái */
     .btl .philo__item:nth-child(2) {
-        top: 485px;
+        top: 524px;
         left: calc(50% + 238px + 15px);
         flex-direction: row;
         align-items: flex-start;
@@ -414,7 +414,7 @@
 
     /* Item 3: phía dưới logo, căn giữa, chấm tròn ở trên cùng */
     .btl .philo__item:nth-child(3) {
-        top: 752px;
+        top: 824px;
         left: 50%;
         transform: translateX(-50%);
         flex-direction: column;
@@ -739,7 +739,7 @@
         letter-spacing: -1px;
         line-height: 68px;
         text-transform: uppercase;
-        color: #c8365a;
+        /* color: #c8365a; */
         font-family: "Nanum Square EB", sans-serif;
         text-align: center;
     }
@@ -1210,7 +1210,7 @@
         color: #454545;
         font-family: "Pretendard", sans-serif;
         max-width: 900px;
-        margin: 0 auto 30px;
+        /* margin: 0 auto 30px; */
     }
 
     /* Feature 01 media: bg 788x544px & ticket 423x266px */
@@ -1835,7 +1835,7 @@
         display: flex;
         justify-content: center;
         gap: 16px;
-        margin-top: 30px;
+        margin-top: 60px;
     }
 
     .btl .results .rtab {
@@ -1861,7 +1861,7 @@
         align-items: center;
         gap: 20px;
         position: relative;
-        margin-top: 20px;
+        margin-top: 40px;
     }
 
     .btl .results .ba-row--scroll {
@@ -1964,7 +1964,7 @@
         height: 430px;
         position: relative;
         overflow: hidden;
-        margin: 20px auto 0;
+        margin: 46px auto 0;
         border-radius: 16px;
     }
 
@@ -2339,5 +2339,18 @@
         margin-top: 0 !important;
         white-space: pre-wrap;
         text-align: left;
+    }
+
+    .feature--01 .sec-head--left {
+        max-width: 1154px;
+        margin: 80px auto 0;
+    }
+
+    .ba-caption {
+        margin-top: 40px !important;
+    }
+
+    .ba-desc {
+        margin-top: 30px !important;
     }
 }

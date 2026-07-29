@@ -31,7 +31,7 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
         <p class="case__who">
             <span class="case__avatar" aria-hidden="true"></span>
             <span class="case__badge">CASE 01</span>
-            <span class="case__name">강**회원님의 실제 사례</span>
+            <span class="case__name">강 ** 회원님의 실제 사례</span>
         </p>
 
         <div class="results__tabs" role="tablist">
@@ -148,7 +148,7 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
         <p class="case__who">
             <span class="case__avatar" aria-hidden="true"></span>
             <span class="case__badge">CASE 02</span>
-            <span class="case__name">예비신부 김** 님의 실제 사례</span>
+            <span class="case__name">예비신부 김 ** 님의 실제 사례</span>
         </p>
         <div class="case__shot">
             <?php $shot('res-c2-before.png', 76.09, 111.34, -3.69, 4.11, '', 'is-ghost-20') ?>
@@ -163,7 +163,7 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
         <p class="case__who">
             <span class="case__avatar" aria-hidden="true"></span>
             <span class="case__badge">CASE 03</span>
-            <span class="case__name">갱년기 임** 님의 실제사례</span>
+            <span class="case__name">갱년기 임 ** 님의 실제사례</span>
         </p>
         <div class="case__shot">
             <?php $shot('res-c3-before.png', 43.51, 191.36, 12.19, 0, '', 'is-ghost-60') ?>
