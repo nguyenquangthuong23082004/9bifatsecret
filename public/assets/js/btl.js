@@ -160,13 +160,28 @@
       });
     }
 
-    /* ---- Video placeholder play ---- */
+    /* ---- Video player: Phát video & ẩn nút SVG play khi click ---- */
     var player = document.querySelector('.career__player');
     if (player) {
-      player.addEventListener('click', function () {
-        var url = player.getAttribute('data-video');
-        if (url) { window.open(url, '_blank', 'noopener'); }
-      });
+      var videoEl = player.querySelector('video');
+      var playBtn = player.querySelector('.play');
+
+      if (videoEl) {
+        player.addEventListener('click', function () {
+          if (videoEl.paused) {
+            videoEl.play();
+            if (playBtn) playBtn.style.display = 'none';
+          } else {
+            videoEl.pause();
+            if (playBtn) playBtn.style.display = 'block';
+          }
+        });
+
+        // Khi video chạy hết, tự hiện lại nút play
+        videoEl.addEventListener('ended', function () {
+          if (playBtn) playBtn.style.display = 'block';
+        });
+      }
     }
   });
 })();
