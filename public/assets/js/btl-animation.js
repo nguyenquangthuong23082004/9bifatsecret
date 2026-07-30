@@ -39,6 +39,10 @@
     initFeaturesAnimation();
     initThermoAnimation();
     initMenoAnimation();
+    initResultsAnimation();
+    initTurnHeadAnimation();
+    initFaqHeadAnimation();
+    initContactHeadAnimation();
   }
 
   /**
@@ -1545,6 +1549,237 @@
         { threshold: 0.15 }
       );
       observer.observe(menoHead);
+    } else {
+      play();
+    }
+  }
+
+  /**
+   * 13. Results Section Animations (.sec.results - Chỉ dành riêng cho sec-head results__head)
+   * Kích hoạt khi cuộn chạm vào đúng .results__head (.sec-head):
+   * - sec-head__label & sec-head__title trượt XUỐNG
+   */
+  function initResultsAnimation() {
+    var resultsSec = document.querySelector('.sec.results') || document.querySelector('#results');
+    if (!resultsSec) return;
+
+    var resultsHead = resultsSec.querySelector('.results__head') || resultsSec.querySelector('.sec-head');
+    if (!resultsHead) return;
+
+    var headElements = [
+      resultsHead.querySelector('.sec-head__label'),
+      resultsHead.querySelector('.sec-head__title .line1'),
+      resultsHead.querySelector('.sec-head__title .line2')
+    ].filter(Boolean);
+
+    if (headElements.length === 0) return;
+
+    gsap.set(headElements, { autoAlpha: 0, y: -45 });
+
+    var resultsTl = gsap.timeline({ paused: true });
+    resultsTl.to(headElements, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1.15,
+      stagger: 0.22,
+      ease: 'power3.out',
+      clearProps: 'will-change'
+    });
+
+    function play() { resultsTl.restart(); }
+    function reset() { resultsTl.pause(0); }
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.create({
+        trigger: resultsHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .results__head
+        start: 'top 85%',
+        onEnter: play,
+        onEnterBack: play,
+        onLeaveBack: reset
+      });
+    } else if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { play(); }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(resultsHead);
+    } else {
+      play();
+    }
+  }
+
+  /**
+   * 14. Turn Section Animations (.sec.turn - Chỉ dành riêng cho sec-head turn__head)
+   * Kích hoạt khi cuộn chạm vào đúng .turn__head (.sec-head):
+   * - sec-head__label & sec-head__title trượt XUỐNG
+   */
+  function initTurnHeadAnimation() {
+    var turnSec = document.querySelector('.sec.turn') || document.querySelector('#turn');
+    if (!turnSec) return;
+
+    var turnHead = turnSec.querySelector('.turn__head') || turnSec.querySelector('.sec-head');
+    if (!turnHead) return;
+
+    var headElements = [
+      turnHead.querySelector('.sec-head__label'),
+      turnHead.querySelector('.sec-head__title .line1'),
+      turnHead.querySelector('.sec-head__title .line2')
+    ].filter(Boolean);
+
+    if (headElements.length === 0) return;
+
+    gsap.set(headElements, { autoAlpha: 0, y: -45 });
+
+    var turnTl = gsap.timeline({ paused: true });
+    turnTl.to(headElements, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1.15,
+      stagger: 0.22,
+      ease: 'power3.out',
+      clearProps: 'will-change'
+    });
+
+    function play() { turnTl.restart(); }
+    function reset() { turnTl.pause(0); }
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.create({
+        trigger: turnHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .turn__head
+        start: 'top 85%',
+        onEnter: play,
+        onEnterBack: play,
+        onLeaveBack: reset
+      });
+    } else if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { play(); }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(turnHead);
+    } else {
+      play();
+    }
+  }
+
+  /**
+   * 15. FAQ Section Animations (.sec.faq - Chỉ dành riêng cho sec-head faq__head)
+   * Kích hoạt khi cuộn chạm vào đúng .faq__head (.sec-head):
+   * - sec-head__label & sec-head__title trượt XUỐNG
+   */
+  function initFaqHeadAnimation() {
+    var faqSec = document.querySelector('.sec.faq') || document.querySelector('#faq');
+    if (!faqSec) return;
+
+    var faqHead = faqSec.querySelector('.faq__head') || faqSec.querySelector('.sec-head');
+    if (!faqHead) return;
+
+    var headElements = [
+      faqHead.querySelector('.sec-head__label'),
+      faqHead.querySelector('.sec-head__title')
+    ].filter(Boolean);
+
+    if (headElements.length === 0) return;
+
+    gsap.set(headElements, { autoAlpha: 0, y: -45 });
+
+    var faqTl = gsap.timeline({ paused: true });
+    faqTl.to(headElements, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1.15,
+      stagger: 0.22,
+      ease: 'power3.out',
+      clearProps: 'will-change'
+    });
+
+    function play() { faqTl.restart(); }
+    function reset() { faqTl.pause(0); }
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.create({
+        trigger: faqHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .faq__head
+        start: 'top 85%',
+        onEnter: play,
+        onEnterBack: play,
+        onLeaveBack: reset
+      });
+    } else if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { play(); }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(faqHead);
+    } else {
+      play();
+    }
+  }
+
+  /**
+   * 16. Contact Form Section Animations (.sec.contact - Chỉ dành riêng cho sec-head contact__head)
+   * Kích hoạt khi cuộn chạm vào đúng .contact__head (.sec-head):
+   * - sec-head__label & sec-head__title trượt XUỐNG
+   */
+  function initContactHeadAnimation() {
+    var contactSec = document.querySelector('.sec.contact') || document.querySelector('#contact');
+    if (!contactSec) return;
+
+    var contactHead = contactSec.querySelector('.contact__head') || contactSec.querySelector('.sec-head');
+    if (!contactHead) return;
+
+    var headElements = [
+      contactHead.querySelector('.sec-head__label'),
+      contactHead.querySelector('.sec-head__title .line1'),
+      contactHead.querySelector('.sec-head__title .line2')
+    ].filter(Boolean);
+
+    if (headElements.length === 0) return;
+
+    gsap.set(headElements, { autoAlpha: 0, y: -45 });
+
+    var contactTl = gsap.timeline({ paused: true });
+    contactTl.to(headElements, {
+      autoAlpha: 1,
+      y: 0,
+      duration: 1.15,
+      stagger: 0.22,
+      ease: 'power3.out',
+      clearProps: 'will-change'
+    });
+
+    function play() { contactTl.restart(); }
+    function reset() { contactTl.pause(0); }
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.create({
+        trigger: contactHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .contact__head
+        start: 'top 85%',
+        onEnter: play,
+        onEnterBack: play,
+        onLeaveBack: reset
+      });
+    } else if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { play(); }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(contactHead);
     } else {
       play();
     }
