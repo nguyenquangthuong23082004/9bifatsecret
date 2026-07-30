@@ -1,13 +1,64 @@
 <head>
+    <?php
+    $site_title = $metaTitle ?? $_settings['browser_title'] ?? '';
+    $site_description = $metaDescription ?? $_settings['meta_tag'] ?? '';
+    $site_keywords = $_settings['meta_keyword'] ?? '';
+    $site_og_title = $_settings['og_title'] ?? $site_title;
+    $site_og_des = $_settings['og_des'] ?? $site_description;
+    
+    $site_og_image = '';
+    if (!empty($ogImage)) {
+        $site_og_image = $ogImage;
+    } elseif (!empty($_settings['og_img'])) {
+        $site_og_image = base_url('uploads/setting/' . $_settings['og_img']);
+    }
+    
+    $site_og_url = $_settings['og_url'] ?? '';
+    $site_og_site = $_settings['og_site'] ?? '';
+    $favicon = !empty($_settings['favico']) ? base_url('uploads/setting/' . $_settings['favico']) : base_url('favicon.ico');
+    ?>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
-    <meta name="description" content="<?= esc($metaDescription ?? '부산 프리미엄 체험관리 다이어트 전문 센터 비티엘. 19년 노하우, BTL 전문가와 1:1 맞춤 체형관리.') ?>">
-    <meta property="og:title" content="<?= esc($metaTitle ?? '비티엘 다이어트 (BITIEL)') ?>">
-    <meta property="og:description" content="<?= esc($metaDescription ?? '부산 프리미엄 체험관리 다이어트 전문 센터') ?>">
-    <meta property="og:image" content="<?= esc($ogImage ?? base_url('assets/images/btl/main-visual.webp')) ?>">
+    
+    <?php if (!empty($site_description)): ?>
+    <meta name="description" content="<?= esc($site_description) ?>">
+    <?php endif; ?>
+    
+    <?php if (!empty($site_keywords)): ?>
+    <meta name="keywords" content="<?= esc($site_keywords) ?>">
+    <?php endif; ?>
+    
+    <?php if (!empty($site_og_title)): ?>
+    <meta property="og:title" content="<?= esc($site_og_title) ?>">
+    <?php endif; ?>
+    
+    <?php if (!empty($site_og_des)): ?>
+    <meta property="og:description" content="<?= esc($site_og_des) ?>">
+    <?php endif; ?>
+    
+    <?php if (!empty($site_og_image)): ?>
+    <meta property="og:image" content="<?= esc($site_og_image) ?>">
+    <?php endif; ?>
+    
+    <?php if (!empty($site_og_url)): ?>
+    <meta property="og:url" content="<?= esc($site_og_url) ?>">
+    <?php endif; ?>
+    
+    <?php if (!empty($site_og_site)): ?>
+    <meta property="og:site_name" content="<?= esc($site_og_site) ?>">
+    <?php endif; ?>
+    
     <meta property="og:type" content="website">
-    <title><?= esc($metaTitle ?? '비티엘 다이어트 (BITIEL)') ?></title>
+    <link rel="shortcut icon" type="image/x-icon" href="<?= $favicon ?>">
+    
+    <?php if (!empty($site_title)): ?>
+    <title><?= esc($site_title) ?></title>
+    <?php endif; ?>
+    
+    <?php if (!empty($_settings['schema_jsonld'])): ?>
+    <?= $_settings['schema_jsonld'] ?>
+    <?php endif; ?>
 
     <!-- Bootstrap 5 (reboot + grid utilities) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">

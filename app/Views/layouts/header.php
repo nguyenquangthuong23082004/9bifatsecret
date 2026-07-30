@@ -20,7 +20,11 @@ $menu = [
   <div class="gnb__container">
     <div class="gnb__inner">
         <a class="gnb__logo" href="<?= base_url() ?>" aria-label="비티엘 홈">
-            <img src="<?= base_url('assets/images/btl/logo-bitiel.png') ?>" alt="BITIEL">
+            <?php if (!empty($_settings['logos'])): ?>
+                <img src="<?= base_url('uploads/setting/' . $_settings['logos']) ?>" alt="BITIEL">
+            <?php else: ?>
+                <img src="<?= base_url('assets/images/btl/logo-bitiel.png') ?>" alt="BITIEL">
+            <?php endif; ?>
         </a>
         <button class="gnb__toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="gnbMenu">
             <!-- 457:37 — 18x14 bars, 2px thick, 4px gaps -->

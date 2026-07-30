@@ -88,14 +88,14 @@
                             <td class="px-4 py-3"><?= esc($item['tel'] ?? '') ?></td>
                         </tr>
                         <tr>
-                            <th class="px-4 py-3 fw-bold text-start">직업/주업</th>
+                            <th class="px-4 py-3 fw-bold text-start">나이</th>
                             <td class="px-4 py-3"><?= esc($item['company'] ?? '') ?></td>
-                            <th class="px-4 py-3 fw-bold text-start">장기렌터카 판매 경험 여부</th>
-                            <td class="px-4 py-3"><?= ($item['location'] ?? '') == 'yes' ? '경험 있음' : '경험 없음' ?></td>
+                            <th class="px-4 py-3 fw-bold text-start">거주지역</th>
+                            <td class="px-4 py-3"><?= esc($item['location'] ?? '') ?></td>
                         </tr>
                         <tr>
-                            <th class="px-4 py-3 fw-bold text-start">제휴 희망 형태</th>
-                            <td class="px-4 py-3"><?= ($item['content'] ?? '') == 'corporate' ? 'B2B/법인 제휴' : '개인 제휴' ?></td>
+                            <th class="px-4 py-3 fw-bold text-start">개인정보동의 여부</th>
+                            <td class="px-4 py-3"><?= ($item['content'] ?? '') == '1' ? '동의함' : '동의안함' ?></td>
                             <th class="px-4 py-3 fw-bold text-start">신청일</th>
                             <td class="px-4 py-3"><?= esc($item['regdate'] ?? '') ?></td>
                         </tr>

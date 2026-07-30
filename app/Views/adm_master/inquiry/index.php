@@ -23,7 +23,8 @@
                         <option value="user_name" <?= ($search_category ?? '') == 'user_name' ? 'selected' : '' ?>>작성자</option>
                     <?php else: ?>
                         <option value="manager" <?= ($search_category ?? '') == 'manager' ? 'selected' : '' ?>>이름</option>
-                        <option value="company" <?= ($search_category ?? '') == 'company' ? 'selected' : '' ?>>직업/주업</option>
+                        <option value="company" <?= ($search_category ?? '') == 'company' ? 'selected' : '' ?>>나이</option>
+                        <option value="location" <?= ($search_category ?? '') == 'location' ? 'selected' : '' ?>>거주지역</option>
                     <?php endif; ?>
                     <option value="tel" <?= ($search_category ?? '') == 'tel' ? 'selected' : '' ?>>연락처</option>
                 </select>
@@ -75,9 +76,9 @@
                             <th style="width: 60px;">번호</th>
                             <th style="width: 150px;">이름</th>
                             <th style="width: 150px;">휴대전화</th>
-                            <th style="width: 150px;">직업/주업</th>
-                            <th style="width: 150px;">판매 경험 여부</th>
-                            <th style="width: 150px;">제휴 희망 형태</th>
+                            <th style="width: 150px;">나이</th>
+                            <th style="width: 150px;">거주지역</th>
+                            <th style="width: 150px;">동의여부</th>
                             <th style="width: 150px;">신청일</th>
                             <th style="width: 100px;">관리</th>
                         </tr>
@@ -130,8 +131,8 @@
                                 </td>
                                 <td><?= esc($row['tel'] ?? '') ?></td>
                                 <td><?= esc($row['company'] ?? '') ?></td>
-                                <td><?= ($row['location'] ?? '') == 'yes' ? '경험 있음' : '경험 없음' ?></td>
-                                <td><?= ($row['content'] ?? '') == 'corporate' ? 'B2B/법인 제휴' : '개인 제휴' ?></td>
+                                <td><?= esc($row['location'] ?? '') ?></td>
+                                <td><?= ($row['content'] ?? '') == '1' ? '동의함' : '동의안함' ?></td>
                                 <td class="small text-muted"><?= !empty($row['regdate']) ? date('Y-m-d H:i', strtotime($row['regdate'])) : '' ?></td>
                             <?php endif; ?>
                             <td>

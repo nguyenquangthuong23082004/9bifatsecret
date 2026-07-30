@@ -23,14 +23,13 @@ class Home extends BaseController
         }
 
         // 2. FAQ List Seeding
-        $hasTypo = $bbsModel->where('code', 'faq')
+        $hasOldAutoStyle = $bbsModel->where('code', 'faq')
             ->groupStart()
-                ->like('contents', '파at너')
-                ->orLike('contents', 'of 공제')
+                ->like('contents', '오토스타일')
+                ->orLike('subject', '초보도 할수 있나요')
             ->groupEnd()
             ->countAllResults();
-        $hasZeroOnum = $bbsModel->where('code', 'faq')->where('onum', 0)->countAllResults();
-        if ($hasTypo > 0 || $hasZeroOnum > 0) {
+        if ($hasOldAutoStyle > 0) {
             $bbsModel->where('code', 'faq')->delete();
         }
 
@@ -39,11 +38,23 @@ class Home extends BaseController
             $defaultFaqs = [
                 [
                     'code' => 'faq',
-                    'subject' => '차를 잘 모르는 초보도 할수 있나요?',
+                    'subject' => '비용은 얼마인가요?',
                     'writer' => '관리자',
-                    'contents' => '네, 오토스타일에서는 장기렌터카 영업 교육을 기본 제공하며, 복잡한 견적과 심사 등의 실무 업무를 전문가가 1:1로 밀착 지원해드립니다. 차를 잘 모르시더라도 고객 상담 및 연계 프로세스만으로도 충분히 세일즈 파트너로 활동하실 수 있습니다.',
+                    'contents' => '<p>프로그램/목표감량kg/관리기간 등에 따라 달라집니다. 1대1 맞춤별 상담을 통해 상세 안내드리며, 비티엘은 10년전 가격 그대로 거품없이 필요한 만큼만 제안 드립니다. 큰 패키지보단 필요할 때 원하는 만큼 1회부터 시작하실 수 있도록 부담없이 구성한 단기프로그램도 다양하게 마련되었으며, 비티엘은 장기등록권유나 방문없이 소진을 하는 등의 행위를 하지 않습니다.</p>',
                     'r_date' => date('Y-m-d H:i:s'),
                     'b_ref' => 1,
+                    'b_step' => 0,
+                    'b_level' => 0,
+                    'hit' => 0,
+                    'onum' => 5
+                ],
+                [
+                    'code' => 'faq',
+                    'subject' => '통증이나 러닝타임이 어느 정도인가요?',
+                    'writer' => '관리자',
+                    'contents' => '<p>프로그램별로 차이가 있으나, 대부분의 관리는 통증이 전혀 없거나 기분 좋은 자극 수준입니다. 러닝타임은 보통 40분에서 1시간 내외로 소요됩니다.</p>',
+                    'r_date' => date('Y-m-d H:i:s'),
+                    'b_ref' => 2,
                     'b_step' => 0,
                     'b_level' => 0,
                     'hit' => 0,
@@ -51,11 +62,11 @@ class Home extends BaseController
                 ],
                 [
                     'code' => 'faq',
-                    'subject' => '수익 구조는 어떻게 되나요?',
+                    'subject' => '식단조절이나 운동이 필요한가요?',
                     'writer' => '관리자',
-                    'contents' => '오토스타일은 업계 최고의 판매 수수료율을 보장합니다. 본인의 장기렌터카 계약 건수와 거래 유형에 따라 투명하게 산정된 수수료가 정산되며, 영업 지원 명목의 공제는 일절 없습니다.',
+                    'contents' => '<p>억지로 굶는 식단이나 무리한 운동 없이도 효과적인 감량이 가능합니다. 일상생활을 유지하면서 체계적인 기기 관리와 맞춤 컨설팅을 통해 요요 없는 다이어트를 도와드립니다.</p>',
                     'r_date' => date('Y-m-d H:i:s'),
-                    'b_ref' => 2,
+                    'b_ref' => 3,
                     'b_step' => 0,
                     'b_level' => 0,
                     'hit' => 0,
@@ -63,11 +74,11 @@ class Home extends BaseController
                 ],
                 [
                     'code' => 'faq',
-                    'subject' => '법인 간 제휴를 하는 것도 가능한가요?',
+                    'subject' => '갱년기 50대 이상 중년도 다이어트가 가능할까요?',
                     'writer' => '관리자',
-                    'contents' => '개인 단위의 제휴가 아닌, 중고차 에이전시 · 보험대리점 단위 B2B 제휴도 가능합니다. 제휴 조건과 정산 등에 대한 상담을 위해서는 제휴 상담을 요청해주시기 바랍니다.',
+                    'contents' => '<p>네, 당연히 가능합니다. 나이가 들면서 저하되는 기초대사량과 호르몬 변화를 고려하여, 갱년기 여성분들도 무리 없이 건강하게 체지방 위주로 감량하실 수 있는 맞춤형 프로그램을 제공합니다.</p>',
                     'r_date' => date('Y-m-d H:i:s'),
-                    'b_ref' => 3,
+                    'b_ref' => 4,
                     'b_step' => 0,
                     'b_level' => 0,
                     'hit' => 0,
@@ -75,11 +86,11 @@ class Home extends BaseController
                 ],
                 [
                     'code' => 'faq',
-                    'subject' => '자격증이 따로 필요한가요?',
+                    'subject' => '요요, 감량 후 얼굴처짐 등이 걱정돼요.',
                     'writer' => '관리자',
-                    'contents' => '장기렌터카 판매 및 세일즈 파트너 가입을 위해 필수적으로 요구되는 전문 자격증은 없습니다. 오토스타일의 교육 과정과 멘토링을 이수하시면 누구나 파트너로 즉시 영업 활동이 가능합니다.',
+                    'contents' => '<p>급격한 굶기 다이어트와 달리 체지방은 태우고 탄력은 유지하는 관리로 진행되므로 얼굴 처짐이 최소화됩니다. 또한 기초대사량을 높여주는 체질 개선을 병행하여 요요를 예방합니다.</p>',
                     'r_date' => date('Y-m-d H:i:s'),
-                    'b_ref' => 4,
+                    'b_ref' => 5,
                     'b_step' => 0,
                     'b_level' => 0,
                     'hit' => 0,
@@ -148,10 +159,18 @@ class Home extends BaseController
 
     public function index()
     {
+        $bbsModel = new \App\Models\BbsModel();
+        $configModel = new \App\Models\BbsConfigModel();
+
+        $this->checkAndSeed($bbsModel, $configModel);
+
+        $faqs = $bbsModel->where('code', 'faq')
+                         ->orderBy('onum', 'DESC')
+                         ->orderBy('bbs_idx', 'DESC')
+                         ->findAll();
+
         return view('home', [
-            'metaTitle' => '비티엘 다이어트 (BITIEL) – 부산 프리미엄 다이어트 전문 센터',
-            'metaDescription' => '19년 노하우, 누적 1만 명의 놀라운 변화. BTL 전문가와 1:1 맞춤 체형관리로 요요 ZERO 다이어트.',
-            'ogImage' => base_url('assets/images/btl/main-visual.webp'),
+            'faqs' => $faqs
         ]);
     }
 
@@ -262,7 +281,7 @@ class Home extends BaseController
             $smtpId = $setting['smtp_id'] ?? '';
             $smtpPass = $setting['smtp_pass'] ?? '';
             $adminEmailList = $setting['admin_email_list'] ?? '';
-            $siteName = '오토스타일';
+            $siteName = !empty($setting['browser_title']) ? $setting['browser_title'] : '비티엘 다이어트';
 
             if (!empty($smtpHost) && !empty($smtpId) && !empty($smtpPass) && !empty($adminEmailList)) {
                 $recipients = preg_split('/[\s,;]+/', trim($adminEmailList));
@@ -290,70 +309,102 @@ class Home extends BaseController
 
                     $emailService->initialize($emailConfig);
 
-                    $subject = "[{$siteName}] 새로운 제휴 파트너 신청이 접수되었습니다.";
-
-                    // Parse English values to Korean
+                    // Parse dynamic fields
                     $userName = $inquiry['manager'] ?? '';
                     $userPhone = $inquiry['tel'] ?? '';
-                    $userJob = $inquiry['company'] ?? '';
-                    $experienceRaw = $inquiry['location'] ?? '';
-                    $partnerTypeRaw = $inquiry['content'] ?? '';
+                    $userCompany = $inquiry['company'] ?? '';
+                    $location = $inquiry['location'] ?? '';
+                    $content = $inquiry['content'] ?? '';
 
-                    $experience = $experienceRaw === 'yes' ? '경험 있음' : '경험 없음';
-                    $partnerType = $partnerTypeRaw === 'corporate' ? '법인 제휴' : '개인 제휴';
+                    $isConsult = ($content === '1');
 
-                    // Beautiful Warm Rose Pink HTML Table for Admin Notification
+                    $labelAgeOrJob = $isConsult ? '나이' : '현재 하는 일';
+                    $labelRegionOrExp = $isConsult ? '거주지역' : '영업/유관 경험';
+                    $labelAgreeOrType = $isConsult ? '개인정보 수집 동의' : '희망 파트너 유형';
+
+                    $valueAgeOrJob = $userCompany;
+                    $valueRegionOrExp = $isConsult ? $location : ($location === 'yes' ? '경험 있음' : '경험 없음');
+                    $valueAgreeOrType = $isConsult ? '동의함' : ($content === 'corporate' ? '법인 제휴' : '개인 제휴');
+
+                    $subject = $isConsult 
+                        ? "[{$siteName}] 새로운 1:1 무료컨설팅 예약 신청이 접수되었습니다."
+                        : "[{$siteName}] 새로운 제휴 파트너 신청이 접수되었습니다.";
+                    
+                    $headerTitle = $isConsult ? '1:1 무료컨설팅 예약 신청 알림' : '제휴 파트너 신청 알림';
+                    $headerSubtitle = $isConsult 
+                        ? "{$siteName} 웹사이트에서 새로운 1:1 무료컨설팅 예약 신청이 도착했습니다."
+                        : "{$siteName} 웹사이트에서 새로운 제휴 신청서가 도착했습니다.";
+
+                    $agreeOrTypeRow = '';
+                    if (!$isConsult) {
+                        $agreeOrTypeRow = "
+                                    <tr>
+                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #c8365a; font-weight: bold; background-color: #fff1f2;'>{$labelAgreeOrType}</th>
+                                        <td style='padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #4b5563;'>{$valueAgreeOrType}</td>
+                                    </tr>
+                        ";
+                    }
+
+                    // Beautiful Warm Rose Pink HTML Table for Admin Notification with Responsive Styles
                     $htmlContent = "
-                    <div style='max-width: 600px; margin: 20px auto; font-family: -apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", \"Malgun Gothic\", sans-serif; color: #374151; line-height: 1.6; border: 1px solid #ffe4e6; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(255, 75, 114, 0.08), 0 4px 6px -2px rgba(255, 75, 114, 0.04); background-color: #ffffff;'>
+                    <style>
+                        * { box-sizing: border-box; }
+                        @media only screen and (max-width: 600px) {
+                            .email-container { width: 95% !important; margin: 10px auto !important; }
+                            .email-body { padding: 25px 16px !important; }
+                            .email-header { padding: 25px 16px !important; }
+                            .email-table th, .email-table td { padding: 12px 10px !important; font-size: 13px !important; }
+                            .email-title { font-size: 20px !important; }
+                            .email-subtitle { font-size: 13px !important; }
+                        }
+                    </style>
+                    <div class='email-container' style='max-width: 600px; width: 100%; margin: 20px auto; font-family: -apple-system, BlinkMacSystemFont, \"Apple SD Gothic Neo\", \"Malgun Gothic\", sans-serif; color: #374151; line-height: 1.6; border: 1px solid #fbcfe8; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(200, 54, 90, 0.08), 0 4px 6px -2px rgba(200, 54, 90, 0.04); background-color: #ffffff;'>
                         <!-- Top Gradient Header -->
-                        <div style='background: linear-gradient(135deg, #ff4e73 0%, #ff7b92 100%); padding: 35px 24px; text-align: center;'>
-                            <h1 style='color: #ffffff; margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(190, 18, 60, 0.2);'>제휴 파트너 신청 알림</h1>
-                            <p style='color: rgba(255, 255, 255, 0.95); margin: 10px 0 0 0; font-size: 15px; font-weight: 500;'>{$siteName} 웹사이트에서 새로운 제휴 신청서가 도착했습니다.</p>
+                        <div class='email-header' style='background: linear-gradient(135deg, #c8365a 0%, #da4070 100%); padding: 35px 24px; text-align: center;'>
+                            <h1 class='email-title' style='color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(200, 54, 90, 0.2);'>{$headerTitle}</h1>
+                            <p class='email-subtitle' style='color: rgba(255, 255, 255, 0.95); margin: 10px 0 0 0; font-size: 14px; font-weight: 500;'>{$headerSubtitle}</p>
                         </div>
                         
                         <!-- Content Body -->
-                        <div style='padding: 35px 28px;'>
+                        <div class='email-body' style='padding: 35px 28px;'>
                             <!-- Section Heading -->
-                            <div style='border-bottom: 2px solid #ff4e73; padding-bottom: 10px; margin-bottom: 20px;'>
-                                <span style='background-color: #ff4e73; width: 4px; height: 18px; display: inline-block; vertical-align: middle; border-radius: 2px; margin-right: 8px;'></span>
-                                <h2 style='font-size: 17px; font-weight: 800; color: #be123c; margin: 0; display: inline-block; vertical-align: middle;'>접수 내역</h2>
+                            <div style='border-bottom: 2px solid #c8365a; padding-bottom: 10px; margin-bottom: 20px;'>
+                                <span style='background-color: #c8365a; width: 4px; height: 18px; display: inline-block; vertical-align: middle; border-radius: 2px; margin-right: 8px;'></span>
+                                <h2 style='font-size: 16px; font-weight: 800; color: #c8365a; margin: 0; display: inline-block; vertical-align: middle;'>접수 내역</h2>
                             </div>
                             
                             <!-- Table -->
-                            <table style='width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 15px; margin-bottom: 30px; border: 1px solid #ffe4e6; border-radius: 8px; overflow: hidden;'>
+                            <table class='email-table' style='width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 15px; margin-bottom: 30px; border: 1px solid #fbcfe8; border-radius: 8px; overflow: hidden;'>
                                     <tr>
-                                        <th style='width: 32%; text-align: left; padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #be123c; font-weight: bold; background-color: #fff1f2;'>이름 / 담당자</th>
-                                        <td style='padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; font-weight: bold; color: #111827;'>{$userName}</td>
+                                        <th style='width: 32%; text-align: left; padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #c8365a; font-weight: bold; background-color: #fff1f2;'>이름</th>
+                                        <td style='padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; font-weight: bold; color: #111827;'>{$userName}</td>
                                     </tr>
                                     <tr>
-                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #be123c; font-weight: bold; background-color: #fff1f2;'>휴대전화번호</th>
-                                        <td style='padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; font-weight: bold; color: #ff4e73;'>{$userPhone}</td>
+                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #c8365a; font-weight: bold; background-color: #fff1f2;'>연락처</th>
+                                        <td style='padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; font-weight: bold; color: #da4070;'>{$userPhone}</td>
                                     </tr>
                                     <tr>
-                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #be123c; font-weight: bold; background-color: #fff1f2;'>현재 하는 일</th>
-                                        <td style='padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #4b5563;'>{$userJob}</td>
+                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #c8365a; font-weight: bold; background-color: #fff1f2;'>{$labelAgeOrJob}</th>
+                                        <td style='padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #4b5563;'>{$valueAgeOrJob}</td>
                                     </tr>
                                     <tr>
-                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #be123c; font-weight: bold; background-color: #fff1f2;'>영업/유관 경험</th>
-                                        <td style='padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #4b5563;'>{$experience}</td>
+                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #c8365a; font-weight: bold; background-color: #fff1f2;'>{$labelRegionOrExp}</th>
+                                        <td style='padding: 14px 16px; border-bottom: 1px solid #fbcfe8; font-size: 14px; color: #4b5563;'>{$valueRegionOrExp}</td>
                                     </tr>
+                                    {$agreeOrTypeRow}
                                     <tr>
-                                        <th style='text-align: left; padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #be123c; font-weight: bold; background-color: #fff1f2;'>희망 파트너 유형</th>
-                                        <td style='padding: 14px 16px; border-bottom: 1px solid #ffe4e6; font-size: 14px; color: #4b5563;'>{$partnerType}</td>
-                                    </tr>
-                                    <tr>
-                                        <th style='text-align: left; padding: 14px 16px; font-size: 14px; color: #be123c; font-weight: bold; background-color: #fff1f2;'>신청 일시</th>
+                                        <th style='text-align: left; padding: 14px 16px; font-size: 14px; color: #c8365a; font-weight: bold; background-color: #fff1f2;'>신청 일시</th>
                                         <td style='padding: 14px 16px; font-size: 14px; color: #6b7280;'>{$inquiry['regdate']}</td>
                                     </tr>
                             </table>
                             
                             <div style='text-align: center; margin-top: 25px;'>
-                                <a href='" . base_url('AdmMaster') . "' style='display: inline-block; background: linear-gradient(135deg, #ff4e73 0%, #ff7b92 100%); color: #ffffff; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: bold; box-shadow: 0 6px 20px rgba(255, 75, 114, 0.35); transition: all 0.2s;'>관리자 페이지에서 상세 정보 확인</a>
+                                <a href='" . base_url('AdmMaster') . "' style='display: inline-block; background: linear-gradient(135deg, #c8365a 0%, #da4070 100%); color: #ffffff; padding: 14px 30px; border-radius: 50px; text-decoration: none; font-size: 13px; font-weight: bold; box-shadow: 0 6px 20px rgba(200, 54, 90, 0.2); transition: all 0.2s;'>관리자 페이지에서 상세 정보 확인</a>
                             </div>
                         </div>
                         
-                        <div style='text-align: center; padding: 24px; background-color: #fff5f5; border-top: 1px solid #ffe4e6; font-size: 12px; color: #9ca3af;'>
-                            <p style='margin: 0; color: #f43f5e; font-weight: 500;'>본 메일은 시스템에서 자동으로 발송되는 알림 메일입니다.</p>
+                        <div style='text-align: center; padding: 24px; background-color: #fdfafb; border-top: 1px solid #fbcfe8; font-size: 12px; color: #9ca3af;'>
+                            <p style='margin: 0; color: #da4070; font-weight: 500;'>본 메일은 시스템에서 자동으로 발송되는 알림 메일입니다.</p>
                             <p style='margin: 6px 0 0 0;'>© " . date('Y') . " {$siteName}. All rights reserved.</p>
                         </div>
                     </div>
@@ -372,6 +423,79 @@ class Home extends BaseController
 
         return $this->response->setJSON([
             'status' => 'OK'
+        ]);
+    }
+
+    public function submitConsult()
+    {
+        $validation = \Config\Services::validation();
+        $validation->setRules([
+            'name'   => 'required',
+            'phone'  => 'required',
+            'age'    => 'required',
+            'region' => 'required',
+            'agree'  => 'required'
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setBody("
+            <script>
+                alert('모든 필수 항목(성함, 나이, 거주지역, 연락처)을 입력하고 개인정보 동의에 체크해 주세요.');
+                window.history.back();
+            </script>
+            ")->setHeader('Content-Type', 'text/html');
+        }
+
+        $name = $this->request->getPost('name');
+        $phone = $this->request->getPost('phone');
+        $age = $this->request->getPost('age');
+        $region = $this->request->getPost('region');
+        $agree = $this->request->getPost('agree');
+
+        $inquiryModel = new \App\Models\InquiryModel();
+
+        $data = [
+            'manager'  => $name,
+            'tel'      => $phone,
+            'company'  => $age,
+            'location' => $region,
+            'content'  => $agree
+        ];
+
+        $result = $inquiryModel->saveInquiry($data);
+
+        if ($result) {
+            try {
+                $this->sendEmailNotification($result);
+            } catch (\Throwable $e) {
+                log_message('error', 'Email notification failed inside submitConsult: ' . $e->getMessage());
+            }
+
+            return $this->response->setBody("
+            <script>
+                alert('1:1 무료컨설팅 예약 신청이 완료되었습니다.');
+                window.location.href = '" . base_url() . "';
+            </script>
+            ")->setHeader('Content-Type', 'text/html');
+        } else {
+            return $this->response->setBody("
+            <script>
+                alert('서버 오류로 인해 신청을 처리할 수 없습니다. 잠시 후 다시 시도해 주세요.');
+                window.history.back();
+            </script>
+            ")->setHeader('Content-Type', 'text/html');
+        }
+    }
+
+    public function getPrivacyPolicy()
+    {
+        $bbsModel = new \App\Models\BbsModel();
+        $policy = $bbsModel->where('code', 'policy')
+                           ->where('subject', '개인정보처리방침')
+                           ->first();
+        return $this->response->setJSON([
+            'status' => 'OK',
+            'content' => $policy['contents'] ?? '개인정보처리방침 준비 중입니다.'
         ]);
     }
 }

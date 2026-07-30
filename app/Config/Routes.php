@@ -8,12 +8,14 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->post('inquiry/submit', 'Home::submitInquiry');
 $routes->post('inquiry/send-email/(:num)', 'Home::sendEmailNotification/$1');
+$routes->post('consult', 'Home::submitConsult');
 $routes->get('works', 'Sub::works');
 $routes->get('view', 'Sub::view');
 $routes->get('about', 'Sub::about');
 $routes->get('about/history', 'Sub::history');
 $routes->get('contact', 'Sub::contact');
 $routes->get('privacy', 'Home::privacy');
+$routes->get('privacy-policy-content', 'Home::getPrivacyPolicy');
 $routes->get('terms', 'Home::terms');
 
 // Policy 페이지 (동적 DB 조회)

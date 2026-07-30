@@ -1,27 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 :root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --accent-glow: #10b981;
-    --bg-light: #f8fafc;
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --border-color: rgba(0, 0, 0, 0.06);
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --text-light: #334155;
+    --primary-color: #c8365a;      /* BTL primary crimson */
+    --primary-hover: #a62947;     /* Darker BTL crimson */
+    --accent-glow: #d4a565;       /* BTL gold accent */
+    --bg-light: #fdfafb;
+    --card-bg: rgba(255, 255, 255, 0.90);
+    --border-color: rgba(200, 54, 90, 0.08);
+    --text-main: #252525;         /* BTL ink color */
+    --text-muted: #666666;
+    --text-light: #454545;        /* BTL secondary text */
 }
 
 body {
-    background-color: #f1f5f9;
+    background-color: #fdfafb;
     background-image: 
-        radial-gradient(circle at 10% 20%, rgba(239, 68, 68, 0.15) 0%, transparent 45%), /* Vibrant Red */
-        radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.25) 0%, transparent 50%), /* Vibrant Blue */
-        radial-gradient(circle at 50% 85%, rgba(16, 185, 129, 0.15) 0%, transparent 45%), /* Vibrant Green */
-        radial-gradient(circle at 80% 90%, rgba(245, 158, 11, 0.16) 0%, transparent 45%), /* Vibrant Amber */
-        radial-gradient(circle at 25% 85%, rgba(139, 92, 246, 0.18) 0%, transparent 45%); /* Vibrant Purple */
+        radial-gradient(circle at 10% 20%, rgba(200, 54, 90, 0.07) 0%, transparent 45%), /* BTL Crimson */
+        radial-gradient(circle at 90% 10%, rgba(212, 165, 101, 0.12) 0%, transparent 50%), /* BTL Gold */
+        radial-gradient(circle at 50% 85%, rgba(218, 64, 112, 0.08) 0%, transparent 45%), /* BTL Rose */
+        radial-gradient(circle at 80% 90%, rgba(231, 44, 103, 0.07) 0%, transparent 45%), /* BTL Rose 2 */
+        radial-gradient(circle at 25% 85%, rgba(166, 41, 71, 0.06) 0%, transparent 45%);
     background-attachment: fixed;
-    font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
+    font-family: 'Pretendard', 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
     height: 100vh;
     margin: 0;
     display: flex;
@@ -39,8 +40,8 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.005) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(0, 0, 0, 0.005) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(200, 54, 90, 0.003) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(200, 54, 90, 0.003) 1px, transparent 1px);
     background-size: 40px 40px;
     z-index: 0;
     pointer-events: none;
@@ -63,29 +64,29 @@ body::before {
     background: var(--card-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08), 
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 20px 50px rgba(200, 54, 90, 0.05), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-card:hover {
-    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12), 
-                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: 0 25px 60px rgba(200, 54, 90, 0.08), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 .admin-badge {
     display: inline-flex;
     align-items: center;
-    background: rgba(37, 99, 235, 0.05);
+    background: rgba(200, 54, 90, 0.05);
     color: var(--primary-color);
     padding: 0.35rem 0.9rem;
     border-radius: 50px;
     font-size: 0.72rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     letter-spacing: 0.03em;
-    border: 1px solid rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(200, 54, 90, 0.1);
 }
 
 .badge-dot {
@@ -102,15 +103,15 @@ body::before {
 @keyframes pulse-dot {
     0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+        box-shadow: 0 0 0 0 rgba(212, 165, 101, 0.5);
     }
     70% {
         transform: scale(1);
-        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+        box-shadow: 0 0 0 5px rgba(212, 165, 101, 0);
     }
     100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        box-shadow: 0 0 0 0 rgba(212, 165, 101, 0);
     }
 }
 
@@ -121,6 +122,13 @@ body::before {
     margin-bottom: 0.4rem;
     font-size: 1.85rem;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.login-logo {
+    max-width: 140px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 .cms-subtitle {
@@ -157,7 +165,7 @@ body::before {
 
 .form-control {
     background-color: #ffffff !important;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #e5e7eb;
     color: var(--text-main) !important;
     height: 46px; /* Reduced height */
     padding: 0 1rem 0 2.6rem;
@@ -169,13 +177,13 @@ body::before {
 }
 
 .form-control::placeholder {
-    color: #94a3b8;
+    color: #9ca3af;
 }
 
 .form-control:focus {
     background-color: #ffffff !important;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    box-shadow: 0 0 0 4px rgba(200, 54, 90, 0.12);
     outline: none;
 }
 
@@ -195,7 +203,7 @@ body::before {
     -webkit-appearance: none;
     width: 16px;
     height: 16px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #d1d5db;
     border-radius: 4px;
     background-color: #ffffff;
     cursor: pointer;
@@ -221,7 +229,7 @@ body::before {
 }
 
 .form-check-input-custom:focus {
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 3px rgba(200, 54, 90, 0.1);
     outline: none;
 }
 
@@ -234,7 +242,7 @@ body::before {
 }
 
 .btn-login {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color) 0%, #da4070 100%);
     border: none;
     height: 46px; /* Reduced height */
     border-radius: 10px;
@@ -248,13 +256,13 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 4px 12px rgba(200, 54, 90, 0.2);
 }
 
 .btn-login:hover {
     cursor: pointer;
-    background: var(--primary-hover);
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, #c8365a 100%);
+    box-shadow: 0 6px 16px rgba(200, 54, 90, 0.3);
 }
 
 .btn-login:active {

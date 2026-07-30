@@ -2214,7 +2214,7 @@
         letter-spacing: 0px;
         line-height: 30px;
         text-transform: uppercase;
-        color: #454545;
+        color: #ffffff;
         font-family: "Pretendard", sans-serif;
         text-align: center;
         margin-bottom: 12px;
@@ -2225,7 +2225,7 @@
         letter-spacing: -1px;
         line-height: 68px;
         text-transform: uppercase;
-        color: #252525;
+        color: #ffffff;
         font-family: "Nanum Square EB", sans-serif;
         text-align: center;
     }
@@ -2240,6 +2240,10 @@
     }
 
     .btl .faq__panel p {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 0 40px 30px 40px;
         font-size: 18px;
         letter-spacing: 0px;
         line-height: 26px;
