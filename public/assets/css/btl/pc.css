@@ -1494,6 +1494,9 @@
     }
 
     .btl .meno__care-img {
+        left: auto;
+        top: auto;
+        max-width: none;
         width: calc(100% + 80px);
         margin-left: 48px;
         margin-right: -40px;

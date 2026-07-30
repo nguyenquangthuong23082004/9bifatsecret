@@ -82,20 +82,36 @@
    max-height: 600px;
 }
 
-px
-
-/* ---- Khối chi tiết tĩnh (Figma 529:580) — 301x320, r16, nền #f3f3f3
-   + ảnh 3 dáng người: w 117.13% / h 61.97%, left -9.06%, top 37.19% ---- */
+/* ---- Khối chi tiết (Figma 499:78) — 301x320, r16, nền #f3f3f3
+   + ảnh fill: w 131.89% / h 124.06%, left -0.83%, top -4.53%
+   Khoảng cách với head đang mở (Figma): 9529 - 9501 = 28px ---- */
 .meno__care {
    position: relative;
-   margin-top: 16px;
+   margin-top: 28px;
    height: 320px;
    border-radius: 16px;
    overflow: hidden;
-   padding: 30px 29px 224px 30px;
-   background: #f3f3f3 url("../../images/btl/menopause-care.webp") no-repeat;
-   background-size: 352.6px 198.3px;
-   background-position: -27.3px 119px;
+   padding: 30px 29px 0 30px;
+   background: #f3f3f3;
+}
+
+/* Ảnh thay đổi động theo item đang chọn (careImg trong config) */
+.meno__care-img {
+   position: absolute;
+   left: -0.83%;
+   top: -4.53%;
+   width: 131.89%;
+   height: 124.06%;
+   max-width: none;
+   object-fit: cover;
+   z-index: 0;
+   pointer-events: none;
+}
+
+.meno__care h4,
+.meno__care p {
+   position: relative;
+   z-index: 1;
 }
 
 .meno__care h4 {

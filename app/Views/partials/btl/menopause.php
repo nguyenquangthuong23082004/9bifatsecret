@@ -79,7 +79,7 @@ $jsData = array_map(fn($item) => [
         <div class="meno__care">
             <h4 id="menoCareTitle"><?= esc($items[$open][2]) ?></h4>
             <p id="menoCareDesc"><?= nl2br(esc($items[$open][3])) ?></p>
-            <img id="menoCareImg" class="meno__care-img only-pc"
+            <img id="menoCareImg" class="meno__care-img"
                  src="<?= $img($items[$open][4]) ?>"
                  alt="<?= esc($items[$open][2]) ?>" loading="lazy">
         </div>
