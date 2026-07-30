@@ -170,7 +170,8 @@
         right: 131px;
         top: auto;
         bottom: -393px;
-        width: 46%;
+        /* width: 46%; */
+        width: 640px;
         max-width: 640px;
         height: auto;
         overflow: visible;
@@ -179,7 +180,7 @@
 
     @media (max-height: 850px) {
         .btl .hero__visual {
-            width: 38%;
+            width: 548px;
         }
     }
 
@@ -217,7 +218,7 @@
 
     .btl .philo {
         position: relative;
-        padding-top: 120px;
+        padding-top: 108px;
         padding-bottom: 160px;
         overflow: hidden;
     }
@@ -414,7 +415,7 @@
         left: 50%;
         top: -90px;
         transform: translateX(-50%);
-        width: 440px;
+        width: 350px;
         height: 220px;
         overflow: visible;
         pointer-events: none;
@@ -518,7 +519,8 @@
     }
 
     .btl .award__num {
-        font-size: 48px;
+        font-size: 39px;
+        /* font-size: 48px; */
         letter-spacing: -1px;
         line-height: 1.1;
         text-transform: uppercase;
@@ -536,22 +538,22 @@
         position: relative;
         z-index: 3;
         width: 380px;
-        margin: -40px auto 0;
+        margin: -100px auto 0;
         left: 0;
         pointer-events: none;
     }
 
     .btl .career__confetti--l {
-        left: -385px;
-        top: 51px;
-        width: 380px;
+        left: -321px;
+        top: 124px;
+        width: 319px;
     }
 
     .btl .career__confetti--r {
         left: auto;
-        right: -365px;
-        top: 97px;
-        width: 380px;
+        right: -300px;
+        top: 130px;
+        width: 306px;
     }
 
     .btl .career__tv {
@@ -650,8 +652,8 @@
 
     .btl .career__apps .app-1 {
         position: absolute;
-        left: -50px;
-        top: 15%;
+        left: -69px;
+        top: 7%;
         width: 130px;
         height: auto;
     }
@@ -659,9 +661,9 @@
     .btl .career__apps .app-2 {
         position: absolute;
         left: auto;
-        right: -45px;
+        right: -75px;
         top: auto;
-        bottom: 12%;
+        bottom: 34%;
         width: 120px;
         height: auto;
     }
@@ -700,7 +702,7 @@
         gap: 12px;
         width: auto;
         max-width: none;
-        margin: 50px auto 0;
+        margin: 30px auto 0;
     }
 
     .btl .program .tabs__row {
@@ -804,7 +806,7 @@
     }
 
     .btl .dual__block {
-        margin-top: 50px;
+        margin-top: 20px;
         text-align: center;
     }
 
@@ -827,6 +829,13 @@
         color: #454545;
         font-family: "Pretendard", sans-serif;
         text-align: center;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+
+    .btl .dual .check-list li:hover {
+        color: var(--c-primary);
+        font-weight: 600;
     }
 
     .btl .dual__devices {
@@ -1141,7 +1150,7 @@
 
     .btl .feature--01 .feature__media {
         position: relative;
-        width: 788px;
+        width: 1031px;
         height: 600px;
         margin: 40px auto 0;
         aspect-ratio: auto;
@@ -1176,7 +1185,7 @@
         justify-content: center;
         align-items: flex-start;
         gap: 36px;
-        max-width: 1154px;
+        max-width: 1031px;
         margin: 80px auto 0;
         width: 100%;
     }
@@ -1680,7 +1689,7 @@
     }
 
     .btl .results {
-        padding: 80px 40px;
+        padding: 80px 40px 180px 40px;
     }
 
     .btl .results .sec-head__label {
@@ -1711,7 +1720,7 @@
         letter-spacing: -1px;
         line-height: 30px;
         text-transform: uppercase;
-        color: #252525;
+        /* color: #252525; */
         font-family: "Pretendard", sans-serif;
     }
 
@@ -2241,7 +2250,7 @@
     }
 
     .feature--01 .sec-head--left {
-        max-width: 1154px;
+        max-width: 1031px;
         margin: 80px auto 0;
         gap: 0;
     }
@@ -2265,8 +2274,75 @@
         font-size: 22px;
         letter-spacing: -1px;
         line-height: 30px;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
         font-family: "Pretendard";
         text-align: center;
+    }
+
+    .program,
+    .dual,
+    .results .sec-head {
+        gap: 0;
+    }
+
+    .dual__block {
+        gap: 0;
+    }
+}
+
+
+@media (min-width: 992px) and (max-width: 1300px) {
+
+    .btl .gnb__container {
+        gap: clamp(32px, 4vw, 100px);
+        padding: 20px 32px;
+    }
+
+    .btl .gnb__list {
+        gap: clamp(20px, 2.5vw, 50px);
+    }
+
+    .btl .gnb__list a {
+        font-size: clamp(13px, 1.2vw, 16px);
+    }
+
+    .btl .hero__inner {
+        padding: 0 clamp(40px, 6vw, 120px);
+    }
+
+    .btl .hero__title {
+        font-size: clamp(42px, 4.5vw, 64px);
+        line-height: 1.3;
+    }
+
+    .btl .hero__sub {
+        font-size: clamp(24px, 2.8vw, 38px);
+        line-height: 1.4;
+    }
+
+    .btl .hero__label {
+        font-size: clamp(14px, 1.4vw, 20px);
+    }
+
+    .btl .features__row {
+        gap: 20px;
+        max-width: 100%;
+        padding: 0 32px;
+    }
+
+    .btl .features__row .feature--02,
+    .btl .features__row .feature--03 {
+        width: 48%;
+        flex: 0 0 48%;
+    }
+
+    .btl .feature--02 .thermal,
+    .btl .feature--03 .feature__media {
+        width: 100%;
+    }
+
+    .btl .feature--02 .sec-head,
+    .btl .feature--03 .sec-head {
+        width: 100%;
     }
 }

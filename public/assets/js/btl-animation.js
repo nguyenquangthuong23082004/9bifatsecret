@@ -78,7 +78,7 @@
     if (typeof ScrollTrigger !== 'undefined') {
       ScrollTrigger.create({
         trigger: heroSec,   // 🎯 Dùng .hero làm Trigger vì .hero__copy dùng display:contents trên mobile làm bounding-box = 0
-        start: 'top 95%',
+        start: 'top 100%',
         end: 'bottom top',
         onEnter: play,
         onEnterBack: play,
@@ -295,7 +295,7 @@
         if (typeof ScrollTrigger !== 'undefined') {
           ScrollTrigger.create({
             trigger: titleWrap,   // 🎯 KÍCH HOẠT KHI CHẠM ĐÚNG .career__title-wrap
-            start: 'top 95%',
+            start: 'top 80%',
             onEnter: playTitle,
             onEnterBack: playTitle,
             onLeaveBack: resetTitle
@@ -339,7 +339,7 @@
         if (typeof ScrollTrigger !== 'undefined') {
           ScrollTrigger.create({
             trigger: awardsWrap,  // 🎯 KÍCH HOẠT KHI CHẠM ĐÚNG .career__awards
-            start: 'top 95%',
+            start: 'top 80%',
             onEnter: playAwards,
             onEnterBack: playAwards,
             onLeaveBack: resetAwards
@@ -402,7 +402,7 @@
         if (typeof ScrollTrigger !== 'undefined') {
           ScrollTrigger.create({
             trigger: trophyWrap,  // 🎯 KÍCH HOẠT KHI CHẠM ĐÚNG .career__trophy-wrap
-            start: 'top 95%',
+            start: 'top 80%',
             onEnter: playTrophy,
             onEnterBack: playTrophy,
             onLeaveBack: resetTrophy
@@ -423,17 +423,20 @@
       }
     }
 
-    // --- Block 4: .career__tv (Cụm TV: LIVE + Tiêu đề + Player) ---
+    // --- Block 4: .career__tv (Cụm TV: LIVE + Tiêu đề + Player + App Badges) ---
     var tvWrap = careerSec.querySelector('.career__tv');
     if (tvWrap) {
       var liveBadge = tvWrap.querySelector('.career__live');
       var tvTitle = tvWrap.querySelector('.career__tv-title');
       var playerEl = tvWrap.querySelector('.career__player');
+      var appEls = gsap.utils.toArray(tvWrap.querySelectorAll('.career__apps img'));
 
       var tvHeadElements = [liveBadge, tvTitle].filter(Boolean);
+      var tvBounceTweens = [];
 
       if (tvHeadElements.length > 0) gsap.set(tvHeadElements, { autoAlpha: 0, y: -35 });
       if (playerEl) gsap.set(playerEl, { autoAlpha: 0, y: 45 });
+      if (appEls.length > 0) gsap.set(appEls, { autoAlpha: 0, y: -45 });
 
       var tvTl = gsap.timeline({ paused: true });
 
@@ -458,13 +461,49 @@
         }, tvHeadElements.length > 0 ? '-=0.3' : 0);
       }
 
-      function playTv() { tvTl.restart(); }
-      function resetTv() { tvTl.pause(0); }
+      // App Badges (app-1, app-2) trượt XUỐNG mượt mà -> sau đó nhún nhảy (bobbing loop)
+      if (appEls.length > 0) {
+        tvTl.to(appEls, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 1.0,
+          stagger: 0.15,
+          ease: 'power3.out',
+          clearProps: 'will-change',
+          onComplete: function () {
+            appEls.forEach(function (appImg, idx) {
+              var tw = gsap.to(appImg, {
+                y: -10,
+                duration: 1.6 + idx * 0.3,
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.easeInOut'
+              });
+              tvBounceTweens.push(tw);
+            });
+          }
+        }, '-=0.4');
+      }
+
+      function killTvBounces() {
+        tvBounceTweens.forEach(function (tw) { tw.kill(); });
+        tvBounceTweens = [];
+      }
+
+      function playTv() {
+        killTvBounces();
+        tvTl.restart();
+      }
+
+      function resetTv() {
+        killTvBounces();
+        tvTl.pause(0);
+      }
 
       if (typeof ScrollTrigger !== 'undefined') {
         ScrollTrigger.create({
           trigger: tvWrap,     // 🎯 KÍCH HOẠT KHI CHẠM ĐÚNG .career__tv
-          start: 'top 95%',
+          start: 'top 80%',
           onEnter: playTv,
           onEnterBack: playTv,
           onLeaveBack: resetTv
@@ -614,7 +653,7 @@
         if (typeof ScrollTrigger !== 'undefined') {
           ScrollTrigger.create({
             trigger: activePanel,  // 🎯 KÍCH HOẠT KHI CHẠM VÀO PANEL
-            start: 'top 95%',
+            start: 'top 80%',
             onEnter: playPanel,
             onEnterBack: playPanel,
             onLeaveBack: resetPanel
@@ -968,7 +1007,7 @@
     if (typeof ScrollTrigger !== 'undefined') {
       ScrollTrigger.create({
         trigger: consultSec,     // 🎯 Trigger gắn vào .sec.consult
-        start: 'top 95%',
+        start: 'top 80%',
         end: 'bottom top',
         onEnter: play,
         onEnterBack: play,
@@ -1787,10 +1826,21 @@
     }
   }
 
+  function startGSAPSystem() {
+    initGSAP();
+
+    // Khi toàn bộ tài nguyên load xong và trình duyệt đã restore lại vị trí scroll khi F5
+    window.addEventListener('load', function () {
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+    });
+  }
+
   // Chạy khi DOM sẵn sàng
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGSAP);
+    document.addEventListener('DOMContentLoaded', startGSAPSystem);
   } else {
-    initGSAP();
+    startGSAPSystem();
   }
 })();

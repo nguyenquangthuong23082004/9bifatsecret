@@ -45,7 +45,7 @@ $awards = [
 
         <div class="career__tv">
             <img class="career__live" src="<?= $img('badge-live.png') ?>" alt="LIVE" loading="lazy">
-            <p class="career__tv-title"><span class="hl">머니투데이 방송</span>외<br>언론사, 잡지사 다수 소개</p>
+            <p class="career__tv-title"><span class="hl">머니투데이 방송</span>외<br class="only-mo">언론사, 잡지사 다수 소개</p>
 
             <div class="career__player" role="button" tabindex="0" aria-label="방송 영상 재생" data-video="<?= base_url('videos/video1.mp4') ?>">
                 <div class="career__video-wrap" style="position: absolute; inset: 0; border-radius: 16px; overflow: hidden; z-index: 1;">
