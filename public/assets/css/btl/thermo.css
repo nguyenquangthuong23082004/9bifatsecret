@@ -110,7 +110,8 @@
 .thermo .bubble::after {
     content: "";
     position: absolute;
-    top: 100%;
+    top: calc(100% - 1px);
+    margin-top: -1px;
     width: 0;
     height: 0;
     border-style: solid;
