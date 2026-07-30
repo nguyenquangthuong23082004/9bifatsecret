@@ -5,9 +5,10 @@
 ?>
 <!-- 16. Footer -->
 <footer class="site-footer">
-    <img class="site-footer__logo" src="<?= base_url('assets/images/btl/logo-footer.png') ?>"
-         alt="비티엘 플러스" width="50" height="21">
-    <p class="site-footer__info">비티엘 플러스   대표 : 홍길동
-주소 : 부산 연제구 반송로 12 3층      전화 : <a href="tel:050713902047">0507-1390-2047</a>      사업자등록번호 : 110-81-14794
-© 2026 bitiel plus</p>
+    <?php if (!empty($_settings['logos_footer'])): ?>
+        <img class="site-footer__logo" src="<?= base_url('uploads/setting/' . $_settings['logos_footer']) ?>" alt="비티엘 플러스">
+    <?php else: ?>
+        <img class="site-footer__logo" src="<?= base_url('assets/images/btl/logo-footer.png') ?>" alt="비티엘 플러스" width="50" height="21">
+    <?php endif; ?>
+    <p class="site-footer__info"><?= esc($_settings['og_site'] ?? '') ?><?php if (!empty($_settings['email'])): ?>   이메일 : <?= esc($_settings['email']) ?><?php endif; ?><br><?php if (!empty($_settings['addr1'])): ?>주소 : <?= esc($_settings['addr1']) ?><?php endif; ?><?php if (!empty($_settings['custom_phone'])): ?>      전화 : <a href="tel:<?= preg_replace('/[^0-9]/', '', $_settings['custom_phone']) ?>"><?= esc($_settings['custom_phone']) ?></a><?php endif; ?><?php if (!empty($_settings['comnum'])): ?>      사업자등록번호 : <?= esc($_settings['comnum']) ?><?php endif; ?><br><?= esc($_settings['copyright'] ?? '') ?></p>
 </footer>

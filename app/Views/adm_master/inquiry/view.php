@@ -30,7 +30,7 @@
 </style>
 
 <div class="card shadow-sm mb-4">
-    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between" style="border-bottom: 1px solid #cbd5e1 !important;">
         <h5 class="card-title mb-0 ">
             <i class="bi bi-info-circle me-1"></i> 문의내용 상세
         </h5>
@@ -88,16 +88,14 @@
                             <td class="px-4 py-3"><?= esc($item['tel'] ?? '') ?></td>
                         </tr>
                         <tr>
-                            <th class="px-4 py-3 fw-bold text-start">직업/주업</th>
+                            <th class="px-4 py-3 fw-bold text-start">나이</th>
                             <td class="px-4 py-3"><?= esc($item['company'] ?? '') ?></td>
-                            <th class="px-4 py-3 fw-bold text-start">장기렌터카 판매 경험 여부</th>
-                            <td class="px-4 py-3"><?= ($item['location'] ?? '') == 'yes' ? '경험 있음' : '경험 없음' ?></td>
+                            <th class="px-4 py-3 fw-bold text-start">거주지역</th>
+                            <td class="px-4 py-3"><?= esc($item['location'] ?? '') ?></td>
                         </tr>
                         <tr>
-                            <th class="px-4 py-3 fw-bold text-start">제휴 희망 형태</th>
-                            <td class="px-4 py-3"><?= ($item['content'] ?? '') == 'corporate' ? 'B2B/법인 제휴' : '개인 제휴' ?></td>
                             <th class="px-4 py-3 fw-bold text-start">신청일</th>
-                            <td class="px-4 py-3"><?= esc($item['regdate'] ?? '') ?></td>
+                            <td colspan="3" class="px-4 py-3"><?= esc($item['regdate'] ?? '') ?></td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

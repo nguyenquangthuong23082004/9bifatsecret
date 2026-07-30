@@ -122,12 +122,17 @@ $setting = $setting ?? [];
                     <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-building me-1"></i> 회사 정보 설정</h5>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">대표 전화번호</label>
+                    <input type="text" name="custom_phone" value="<?= esc($setting['custom_phone'] ?? '') ?>" class="form-control" placeholder="예: 0507-1390-2047">
+                </div>
+
+                <div class="col-md-4">
                     <label class="form-label fw-bold">사업자등록번호</label>
                     <input type="text" name="comnum" value="<?= esc($setting['comnum'] ?? '') ?>" class="form-control" placeholder="예: 144-86-01453">
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label class="form-label fw-bold">대표 이메일</label>
                     <input type="email" name="email" value="<?= esc($setting['email'] ?? '') ?>" class="form-control" placeholder="예: admin01@auto-style.kr">
                 </div>

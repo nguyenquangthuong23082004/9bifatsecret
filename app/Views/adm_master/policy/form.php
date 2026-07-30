@@ -23,18 +23,12 @@
 </div>
 
 <form name="frm" id="frm" method="post" action="<?= base_url('AdmMaster/bbs/policy/save') ?>">
-    <input type="hidden" name="terms_idx" value="<?= esc($terms['bbs_idx'] ?? '') ?>" />
     <input type="hidden" name="privacy_idx" value="<?= esc($privacy['bbs_idx'] ?? '') ?>" />
 
     <!-- 탭 네비게이션 -->
     <ul class="nav nav-tabs mb-4" id="policyTabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active fw-semibold px-3" id="terms-tab" data-bs-toggle="tab" data-bs-target="#terms-pane" type="button" role="tab" aria-controls="terms-pane" aria-selected="true">
-                <i class="bi bi-file-earmark-text me-1"></i> 이용약관
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link fw-semibold px-3" id="privacy-tab" data-bs-toggle="tab" data-bs-target="#privacy-pane" type="button" role="tab" aria-controls="privacy-pane" aria-selected="false">
+            <button class="nav-link active fw-semibold px-3" id="privacy-tab" data-bs-toggle="tab" data-bs-target="#privacy-pane" type="button" role="tab" aria-controls="privacy-pane" aria-selected="true">
                 <i class="bi bi-shield-check me-1"></i> 개인정보처리방침
             </button>
         </li>
@@ -42,16 +36,8 @@
 
     <!-- 탭 컨텐츠 -->
     <div class="tab-content card shadow-sm" id="policyTabsContent">
-        <!-- 이용약관 탭 -->
-        <div class="tab-pane fade show active card-body p-4" id="terms-pane" role="tabpanel" aria-labelledby="terms-tab" tabindex="0">
-            <div class="mb-3">
-                <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-info-circle me-1"></i> 이용약관 내용 편집</h5>
-                <textarea name="terms_content" id="terms_content_" class="summernote"><?= esc($terms['contents'] ?? '') ?></textarea>
-            </div>
-        </div>
-
         <!-- 개인정보처리방침 탭 -->
-        <div class="tab-pane fade card-body p-4" id="privacy-pane" role="tabpanel" aria-labelledby="privacy-tab" tabindex="0">
+        <div class="tab-pane fade show active card-body p-4" id="privacy-pane" role="tabpanel" aria-labelledby="privacy-tab" tabindex="0">
             <div class="mb-3">
                 <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-lock me-1"></i> 개인정보처리방침 내용 편집</h5>
                 <textarea name="privacy_content" id="privacy_content_" class="summernote"><?= esc($privacy['contents'] ?? '') ?></textarea>
@@ -107,18 +93,8 @@ $(function() {
 });
 
 function send_it() {
-    if ($('#terms_content_').summernote('isEmpty')) {
-        alert("이용약관 내용을 입력해주세요.");
-        // Switch to terms tab if not active
-        var triggerEl = document.querySelector('#terms-tab');
-        bootstrap.Tab.getInstance(triggerEl).show();
-        return;
-    }
     if ($('#privacy_content_').summernote('isEmpty')) {
         alert("개인정보처리방침 내용을 입력해주세요.");
-        // Switch to privacy tab if not active
-        var triggerEl = document.querySelector('#privacy-tab');
-        bootstrap.Tab.getInstance(triggerEl).show();
         return;
     }
 

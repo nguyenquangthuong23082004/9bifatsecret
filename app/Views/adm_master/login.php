@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <?php 
-    $site_title = !empty($_settings['title']) ? $_settings['title'] : '오토스타일';
+    $site_title = !empty($_settings['browser_title']) ? $_settings['browser_title'] : '비티엘 다이어트';
     $favicon = !empty($_settings['favico']) ? base_url('uploads/setting/' . $_settings['favico']) : base_url('favicon.ico');
     ?>
     <title><?= $site_title ?> - 관리자 로그인</title>
@@ -32,10 +32,12 @@
     <div class="login-card">
         <div class="text-center mb-4">
             <div class="admin-badge">
-                <span class="badge-dot"></span>오토스타일 관리자
+                <span class="badge-dot"></span>비티엘 다이어트 관리자
             </div>
-            <h1 class="cms-title">AUTO STYLE</h1>
-            <p class="cms-subtitle">관리자 전용 로그인 페이지입니다.</p>
+            <div class="mb-3 d-flex justify-content-center align-items-center">
+                <img src="<?= base_url('assets/images/btl/logo-bitiel.png') ?>" alt="비티엘 다이어트" class="login-logo">
+            </div>
+            <p class="cms-subtitle mt-2">관리자 전용 로그인 페이지입니다.</p>
         </div>
 
         <form action="<?= base_url('AdmMaster/loginProcess') ?>" method="post" name="loginForm" autocomplete="off">
@@ -79,7 +81,7 @@
         </form>
 
         <div class="footer-text mt-5">
-            &copy; <?= date('Y') ?> AUTO STYLE. All rights reserved.
+            &copy; <?= date('Y') ?> 비티엘 다이어트 (BITIEL). All rights reserved.
         </div>
     </div>
 </div>

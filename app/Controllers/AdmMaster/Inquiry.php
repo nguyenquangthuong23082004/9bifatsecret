@@ -20,7 +20,7 @@ class Inquiry extends BaseController
             $title = '고객문의 관리';
         } else {
             $inquiryModel = new \App\Models\InquiryModel();
-            $title = '온라인문의 관리';
+            $title = '1:1 무료컨설팅 예약 관리';
         }
 
         $builder = $inquiryModel->builder();

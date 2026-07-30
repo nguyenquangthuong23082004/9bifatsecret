@@ -3,7 +3,7 @@
 
 <head>
     <?php 
-    $site_title = !empty($_settings['title']) ? $_settings['title'] : '오토스타일';
+    $site_title = !empty($_settings['browser_title']) ? $_settings['browser_title'] : '비티엘 다이어트';
     $favicon = !empty($_settings['favico']) ? base_url('uploads/setting/' . $_settings['favico']) : base_url('favicon.ico');
     ?>
     <title><?= $title ?? 'Admin Panel' ?> - <?= $site_title ?></title>
@@ -153,7 +153,7 @@
                              data-bs-parent="#sidebarAccordion">
                              <div class="nav flex-column">
                                  <a class="nav-link <?= $isInquiry1 ? 'active' : '' ?>"
-                                     href="<?= base_url('AdmMaster/inquiry/1') ?>">문의관리</a>
+                                     href="<?= base_url('AdmMaster/inquiry/1') ?>">1:1 예약 관리</a>
                                  <a class="nav-link <?= $isFaq ? 'active' : '' ?>"
                                      href="<?= base_url('AdmMaster/bbs/faq') ?>">FAQ관리</a>
                              </div>
