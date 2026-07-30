@@ -15,7 +15,7 @@ $chips = [
         <p class="sec-head__label">요요를 막고, 갱년기 지방을 녹이는 가장 확실한 방법</p>
         <h2 class="sec-head__title">
             <span class="line1">대사 <em>UP</em>, 감량속도 <em>UP</em></span><br class="only-mo">
-            <span class="line2">체온 다이어트</span>
+            <span class="line22">체온 다이어트</span>
         </h2>
     </div>
 
@@ -34,8 +34,11 @@ $chips = [
         <p class="bubble bubble--b">자연 식욕 감퇴</p>
         <p class="bubble bubble--c">타입별 전문기기 관리</p>
 
-        <div class="thermo__player" role="button" tabindex="0" aria-label="체온 다이어트 영상 재생" data-video="">
-            <img class="thermo__play" src="<?= $img('thermo-play.svg') ?>" alt="" aria-hidden="true">
+        <div class="thermo__player" role="button" tabindex="0" aria-label="체온 다이어트 영상 재생" data-video="<?= base_url('videos/video2.mp4') ?>">
+            <div class="thermo__video-wrap" style="position: absolute; inset: 0; border-radius: 20px; overflow: hidden; z-index: 1;">
+                <video class="thermo__video" src="<?= base_url('videos/video2.mp4') ?>" playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+            </div>
+            <img class="thermo__play" src="<?= $img('thermo-play.svg') ?>" alt="" aria-hidden="true" style="position: absolute; z-index: 2;">
         </div>
 
         <!-- right bubbles -->

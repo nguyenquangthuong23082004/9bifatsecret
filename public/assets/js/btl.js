@@ -157,27 +157,40 @@
       });
     }
 
-    /* ---- Video player: Phát video & ẩn nút SVG play khi click ---- */
-    var player = document.querySelector('.career__player');
-    if (player) {
+    /* ---- Video player: Logic phát video & ẩn/hiện nút play chuẩn xác ---- */
+    var players = document.querySelectorAll('.career__player, .thermo__player');
+    players.forEach(function (player) {
       var videoEl = player.querySelector('video');
-      var playBtn = player.querySelector('.play');
+      var playBtn = player.querySelector('.play, .thermo__play');
 
       if (videoEl) {
+        // Toggle play / pause khi click vào khung player
         player.addEventListener('click', function () {
           if (videoEl.paused) {
-            videoEl.play();
-            if (playBtn) playBtn.style.display = 'none';
+            var promise = videoEl.play();
+            if (promise !== undefined) {
+              promise.catch(function (error) {
+                console.log('Video play error:', error);
+              });
+            }
           } else {
             videoEl.pause();
-            if (playBtn) playBtn.style.display = 'block';
           }
+        });
+
+        // Bắt sự kiện chuẩn HTML5 của video để ẩn/hiện nút play
+        videoEl.addEventListener('play', function () {
+          if (playBtn) playBtn.style.display = 'none';
+        });
+
+        videoEl.addEventListener('pause', function () {
+          if (playBtn) playBtn.style.display = 'block';
         });
 
         videoEl.addEventListener('ended', function () {
           if (playBtn) playBtn.style.display = 'block';
         });
       }
-    }
+    });
   });
 })();
