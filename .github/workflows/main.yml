@@ -1,18 +1,33 @@
-- name: SFTP Deploy to Cafe24
-  uses: appleboy/scp-action@v0.1.7
-  with:
-    host: ${{ secrets.SFTP_HOST }}
-    username: ${{ secrets.SFTP_USER }}
-    password: ${{ secrets.SFTP_PASS }}
-    port: ${{ secrets.SFTP_PORT }}
-    source: "./*"
-    target: ${{ secrets.SFTP_REMOTE_PATH }}
-    rm: false
-    strip_components: 0
-    exclude: |
-      .git
-      .git/**
-      .github
-      .github/**
-      .gitignore
-      README.md
+name: Deploy CodeIgniter 4 to Cafe24
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: SFTP Deploy to Cafe24
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          password: ${{ secrets.SFTP_PASS }}
+          port: ${{ secrets.SFTP_PORT }}
+          source: "./*"
+          target: ${{ secrets.SFTP_REMOTE_PATH }}
+          rm: false
+          strip_components: 0
+          exclude: |
+            .git
+            .git/**
+            .github
+            .github/**
+            .gitignore
+            README.md
