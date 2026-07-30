@@ -250,7 +250,7 @@
        ===================================================== */
     .btl .philo {
         position: relative;
-        padding-top: 80px;
+        padding-top: 120px;
         padding-bottom: 160px;
         overflow: hidden;
     }
@@ -258,6 +258,7 @@
     .btl .philo__head {
         text-align: center;
         margin-bottom: 40px;
+        gap: 0;
     }
 
     .btl .philo__head .sec-head__title {
@@ -267,6 +268,7 @@
         text-transform: uppercase;
         font-family: "Nanum Square EB";
         text-align: center;
+        margin-bottom: 0;
     }
 
     .btl .philo__head .sec-head__label {
@@ -324,7 +326,7 @@
         position: relative;
         z-index: 1;
         width: 476px;
-        height: 386px;
+        height: 450px;
         display: block;
         object-fit: contain;
         margin-left: -100px;
@@ -340,7 +342,7 @@
         position: absolute;
         z-index: 2;
         left: 50%;
-        top: 48%;
+        top: 50%;
         transform: translate(-50%, -50%);
         width: 86px;
         height: auto;

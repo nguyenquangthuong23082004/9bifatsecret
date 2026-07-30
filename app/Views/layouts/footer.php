@@ -10,3 +10,6 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js" defer></script>
 <!-- Landing behaviour -->
 <script src="<?= base_url('assets/js/btl.js') ?>" defer></script>
+<!-- GSAP Animations -->
+<script src="<?= base_url('assets/js/btl-animation.js') ?>" defer></script>
+
