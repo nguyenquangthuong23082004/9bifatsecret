@@ -1501,12 +1501,35 @@
         margin-left: 48px;
         margin-right: -40px;
         height: auto;
+        /* khoá tỉ lệ 609x379 để khối không nhảy chiều cao khi đổi ảnh */
+        aspect-ratio: 609 / 379;
         display: block;
         object-fit: cover;
+        object-position: center bottom;
         margin-top: auto;
         pointer-events: none;
         position: relative;
         z-index: 1;
+    }
+
+    /* item 1 (편하게 누워서 관리) — ảnh giường cần lệch trái để khớp khung */
+    .btl .meno__care[data-meno-care="0"] .meno__care-img {
+        margin-left: -39px;
+    }
+
+    /* item 4 (중년건강케어) — riêng ảnh này là background phủ kín cả khối:
+       vùng xám/trắng là một phần của ảnh, không phải nền #f3f3f3.
+       Ảnh trong luồng được giữ lại (ẩn) để chiều cao khối không đổi so với item khác. */
+    .btl .meno__care[data-meno-care="3"] {
+        background: #f3f3f3 url(../../images/btl/menopause-bg.webp) no-repeat center / cover;
+    }
+
+    .btl .meno__care[data-meno-care="3"] .meno__care-img {
+        visibility: hidden;
+    }
+
+    .btl .meno__care[data-meno-care="3"]::after {
+        display: none;
     }
 
     .btl .meno__care::after {

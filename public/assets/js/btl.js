@@ -59,9 +59,8 @@
         menoCareImg.src = d.careImg;
         menoCareImg.alt = d.careTitle;
       }
-      if (menoCare) {
-        // menoCare.style.backgroundImage = 'url(' + d.careImg + ')';
-      }
+      // hook để CSS style riêng ảnh của từng item (vd item 0 lệch trái)
+      if (menoCare) menoCare.setAttribute('data-meno-care', idx);
       if (menoWomanImg) menoWomanImg.src = d.womanImg;
     }
 

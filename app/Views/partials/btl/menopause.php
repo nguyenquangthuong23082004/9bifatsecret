@@ -14,7 +14,7 @@ $items = [
         '열감, 가슴 두근거림, 관절약화',
         '편하게 누워서 관리',
         "운동부족 걱정 X\n무리없이 편안하게",
-        'meno-symptom-belly-fat.webp',      // ← 케어 이미지 (meno__care-img)
+        'meno-care-treatment.jpg',      // ← 케어 이미지 (meno__care-img)
         'meno-symptom-back-pain.png',      // ← 인물 이미지 (meno__woman-pc)
     ],
     [
@@ -38,7 +38,7 @@ $items = [
         '림프부종, 당뇨, 고지혈증 위험상승',
         '중년건강케어',
         "혈관노폐물, 림프독소 배출을 통해\n만성부종해결 및 대사건강회복",
-        'meno-symptom-belly-fat.webp',      // ← 케어 이미지
+        'menopause-bg.webp',      // ← 케어 이미지 (full-bleed: ảnh phủ kín cả nền)
         'menopause-woman.png',      // ← 인물 이미지
     ],
 ];
@@ -76,7 +76,7 @@ $jsData = array_map(fn($item) => [
              alt="" aria-hidden="true" loading="lazy">
 
         <!-- Khối chi tiết – cập nhật động khi chọn item -->
-        <div class="meno__care">
+        <div class="meno__care" data-meno-care="<?= $open ?>">
             <h4 id="menoCareTitle"><?= esc($items[$open][2]) ?></h4>
             <p id="menoCareDesc"><?= nl2br(esc($items[$open][3])) ?></p>
             <img id="menoCareImg" class="meno__care-img"
