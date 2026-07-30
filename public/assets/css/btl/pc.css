@@ -1553,6 +1553,10 @@
         object-fit: contain;
         pointer-events: none;
         z-index: 4;
+        /* Ảnh tràn 34px xuống dưới .meno__box (bottom: -34px).
+           Cắt đúng 34px đó ngay trên chính ảnh, thay vì overflow:hidden ở
+           .meno__box — để không ảnh hưởng các phần tử con khác. */
+        clip-path: inset(0 0 34px 0);
     }
 
     .btl .thermo__head {
