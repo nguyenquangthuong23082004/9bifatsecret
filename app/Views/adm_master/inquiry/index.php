@@ -78,7 +78,6 @@
                             <th style="width: 150px;">휴대전화</th>
                             <th style="width: 150px;">나이</th>
                             <th style="width: 150px;">거주지역</th>
-                            <th style="width: 150px;">동의여부</th>
                             <th style="width: 150px;">신청일</th>
                             <th style="width: 100px;">관리</th>
                         </tr>
@@ -132,7 +131,6 @@
                                 <td><?= esc($row['tel'] ?? '') ?></td>
                                 <td><?= esc($row['company'] ?? '') ?></td>
                                 <td><?= esc($row['location'] ?? '') ?></td>
-                                <td><?= ($row['content'] ?? '') == '1' ? '동의함' : '동의안함' ?></td>
                                 <td class="small text-muted"><?= !empty($row['regdate']) ? date('Y-m-d H:i', strtotime($row['regdate'])) : '' ?></td>
                             <?php endif; ?>
                             <td>

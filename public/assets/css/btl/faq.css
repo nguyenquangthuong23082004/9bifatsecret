@@ -24,4 +24,4 @@
 .faq__panel{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
 .faq__item.is-open .faq__panel{ max-height:400px; }
 .faq__panel p{ width:100%; max-width:100%; padding:0 20px 20px 35px; font-size:12px; line-height:1.4; letter-spacing:-.24px;
-    color:var(--c-ink); box-sizing:border-box; }
+    color:var(--c-ink); box-sizing:border-box; word-break:break-all; overflow-wrap:break-word; }

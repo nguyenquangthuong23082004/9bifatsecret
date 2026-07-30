@@ -30,7 +30,7 @@
 </style>
 
 <div class="card shadow-sm mb-4">
-    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between" style="border-bottom: 1px solid #cbd5e1 !important;">
         <h5 class="card-title mb-0 ">
             <i class="bi bi-info-circle me-1"></i> 문의내용 상세
         </h5>
@@ -94,10 +94,8 @@
                             <td class="px-4 py-3"><?= esc($item['location'] ?? '') ?></td>
                         </tr>
                         <tr>
-                            <th class="px-4 py-3 fw-bold text-start">개인정보동의 여부</th>
-                            <td class="px-4 py-3"><?= ($item['content'] ?? '') == '1' ? '동의함' : '동의안함' ?></td>
                             <th class="px-4 py-3 fw-bold text-start">신청일</th>
-                            <td class="px-4 py-3"><?= esc($item['regdate'] ?? '') ?></td>
+                            <td colspan="3" class="px-4 py-3"><?= esc($item['regdate'] ?? '') ?></td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

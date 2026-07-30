@@ -2250,6 +2250,8 @@
         text-transform: uppercase;
         color: #252525;
         font-family: "Pretendard", sans-serif;
+        word-break: break-all;
+        overflow-wrap: break-word;
     }
 
     /* =====================================================
