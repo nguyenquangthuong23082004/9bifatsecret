@@ -41,10 +41,7 @@
       });
     });
 
-    /* ---- Menopause: chọn 1 mục (chỉ đổi style is-open) ----
-       Design mới (Figma 529:580) bỏ .acc__panel mở/đóng, khối chi tiết
-       .meno__care là tĩnh — nên click chỉ chuyển trạng thái active giữa
-       các .acc__item, và luôn giữ đúng 1 mục được chọn. */
+    /* ---- Menopause: chọn 1 mục (chỉ đổi style is-open) ---- */
     var accItems = document.querySelectorAll('.accordion-btl .acc__item');
     accItems.forEach(function (item) {
       var head = item.querySelector('.acc__head');
@@ -97,25 +94,21 @@
       });
     });
 
-    /* ---- Results: Subhead block switcher (chuyển đổi rblock 1 & 2 khi click subhead title) ---- */
+    /* ---- Results: Subhead block switcher ---- */
     document.querySelectorAll('.results .rpanel').forEach(function (panel) {
       var blocks = panel.querySelectorAll('.rblock');
       if (blocks.length > 1) {
-        // Mặc định hiện rblock đầu tiên, ẩn các rblock còn lại trong panel
         blocks.forEach(function (b, idx) {
           b.style.display = idx === 0 ? 'block' : 'none';
         });
 
-        // Đăng ký sự kiện click cho các subhead title span
         blocks.forEach(function (block) {
           var subheadSpans = block.querySelectorAll('.subhead span');
           subheadSpans.forEach(function (span, targetIdx) {
             span.addEventListener('click', function () {
               blocks.forEach(function (b, bIdx) {
-                // Hiển thị rblock tương ứng với title được click
                 b.style.display = bIdx === targetIdx ? 'block' : 'none';
 
-                // Cập nhật class 'is-on' cho title active và xóa khỏi title inactive
                 var headSpans = b.querySelectorAll('.subhead span');
                 headSpans.forEach(function (s, sIdx) {
                   if (sIdx === targetIdx) {
@@ -131,26 +124,30 @@
       }
     });
 
-    /* ---- Device carousel (Swiper) ---- */
+    /* ---- Device carousel (Swiper: Tự động chạy liên tục không dừng từ trái sang phải) ---- */
     var devices = document.querySelector('.dual__devices');
     if (window.Swiper && devices) {
-      var deviceCount = devices.querySelectorAll('.swiper-slide').length;
       new window.Swiper(devices, {
         slidesPerView: 'auto',
         centeredSlides: true,
-        // mở trang là dải slide đã nằm giữa (slide ở chính giữa được chọn sẵn)
-        initialSlide: Math.floor((deviceCount - 1) / 2),
         spaceBetween: 20,
-        grabCursor: true
+        grabCursor: true,
+        loop: true,
+        autoplay: {
+          delay: 0,
+          disableOnInteraction: false,
+          reverseDirection: true
+        },
+        speed: 4000
       });
     }
 
     /* ---- Your turn: before/after case carousel (Swiper) ---- */
     if (window.Swiper && document.querySelector('.turn__swiper')) {
       new window.Swiper('.turn__swiper', {
-        slidesPerView: 1,     // one case per screen — no neighbour peeking
+        slidesPerView: 1,
         spaceBetween: 0,
-        loop: true,           // Vòng lặp vô hạn: qua slide cuối tự về slide đầu và ngược lại
+        loop: true,
         grabCursor: true,
         pagination: { el: '.turn__dots', clickable: true },
         navigation: {
@@ -177,7 +174,6 @@
           }
         });
 
-        // Khi video chạy hết, tự hiện lại nút play
         videoEl.addEventListener('ended', function () {
           if (playBtn) playBtn.style.display = 'block';
         });

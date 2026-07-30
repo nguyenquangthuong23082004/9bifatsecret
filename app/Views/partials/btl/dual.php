@@ -2,7 +2,9 @@
 $img = fn($f) => base_url('assets/images/btl/' . $f);
 $devices = [
     'device-1.webp', 'device-2.webp', 'device-3.webp',
-    'device-1.webp', 'device-2.webp', 'device-3.webp', 'device-1.webp'
+    'device-1.webp', 'device-2.webp', 'device-3.webp', 'device-1.webp',
+    'device-2.webp', 'device-3.webp', 'device-1.webp', 'device-2.webp',
+    'device-3.webp', 'device-1.webp', 'device-2.webp', 'device-3.webp',
 ];
 ?>
 <!-- 05. Dual solution (듀얼솔루션) -->

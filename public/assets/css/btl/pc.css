@@ -275,7 +275,7 @@
         font-size: 20px;
         letter-spacing: 0px;
         line-height: 30px;
-        text-transform: uppercase;
+        /* text-transform: uppercase; */
         color: #454545;
         font-family: "Pretendard";
         text-align: center;
@@ -416,7 +416,7 @@
 
     /* Item 3: phía dưới logo, căn giữa, chấm tròn ở trên cùng */
     .btl .philo__item:nth-child(3) {
-        top: 824px;
+        top: 860px;
         left: 50%;
         transform: translateX(-50%);
         flex-direction: column;
@@ -1071,7 +1071,7 @@
         font-size: 20px;
         letter-spacing: 0px;
         line-height: 32px;
-        color: #c8365a;
+        /* color: #c8365a; */
         font-weight: bold;
     }
 
@@ -1183,7 +1183,7 @@
         color: #c8365a;
         font-weight: bold;
         font-family: "Pretendard", sans-serif;
-        margin-bottom: 8px;
+        /* margin-bottom: 8px; */
     }
 
     .btl .feature .sec-head__title {
@@ -1193,11 +1193,11 @@
         text-transform: uppercase;
         color: #252525;
         font-family: "Nanum Square B", sans-serif;
-        margin-bottom: 12px;
+        /* margin-bottom: 12px; */
     }
 
     .btl .feature--01 .sec-head__title {
-        font-size: 48px;
+        font-size: 24px;
         line-height: 68px;
     }
 
@@ -2346,6 +2346,7 @@
     .feature--01 .sec-head--left {
         max-width: 1154px;
         margin: 80px auto 0;
+        gap: 0;
     }
 
     .ba-caption {
@@ -2354,5 +2355,12 @@
 
     .ba-desc {
         margin-top: 30px !important;
+    }
+
+    .sec-head .sec-head__title {
+        font-size: 48px;
+        letter-spacing: -1px;
+        line-height: 68px;
+        text-align: center;
     }
 }

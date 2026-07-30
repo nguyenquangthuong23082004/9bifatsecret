@@ -43,6 +43,12 @@
 
 .dual__devices {
    margin-top: 24px;
+   padding-top: 40px;
+   overflow: visible !important;
+}
+
+.dual__devices .swiper-wrapper {
+   transition-timing-function: linear !important;
 }
 
 /* Swiper dùng slidesPerView:'auto' -> phải tự khai width cho slide,
@@ -52,6 +58,13 @@
 .dual__devices .swiper-slide {
    width: 160px;
    height: 160px;
+   transition: transform 0.3s ease;
+}
+
+/* Luôn có cặp 2 item liên tiếp được thụt nhô lên trên (căn giữa khung hình) */
+.dual__devices .swiper-slide:nth-child(4n + 2),
+.dual__devices .swiper-slide:nth-child(4n + 3) {
+   transform: translateY(-36px);
 }
 
 .device {

@@ -3,7 +3,8 @@
 $rows = [
     ['상담대기', '구*명(50대,여)', '27분전', 'wait'],
     ['상담중',   '구*명(50대,여)', '27분전', 'active'],
-    ['상담완료', '구*명(50대,여)', '30분전', 'done'],
+    // ['상담완료', '구*명(50대,여)', '30분전', 'done'],
+    ['상담완료', '구*명(50대,여)', '30분전', 'wait'],
     ['상담완료', '구*명(50대,여)', '30분전', 'muted'],
     ['상담완료', '구*명(50대,여)', '30분전', 'muted'],
     ['상담완료', '구*명(50대,여)', '30분전', 'muted'],
@@ -12,7 +13,7 @@ $rows = [
 <section class="sec consult" id="consult">
     <div class="sec-head">
         <p class="sec-head__label">오늘의 실시간 상담 현황</p>
-        <h2 class="sec-head__title">지금도 많은 분들이<br class="only-mo">맞춤 상담을 진행하고<br class="only-mo">있습니다.</h2>
+        <h2 class="sec-head__title">지금도 많은 분들이<br class="">맞춤 상담을 진행하고<br class="only-mo">있습니다.</h2>
     </div>
 
     <ul class="consult__list">
