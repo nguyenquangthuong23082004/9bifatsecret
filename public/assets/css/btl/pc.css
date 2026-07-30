@@ -581,7 +581,7 @@
     .btl .career__tv::after {
         content: "";
         position: absolute;
-        top: 50px;
+        top: 120px;
         left: 50%;
         transform: translateX(-50%);
         width: 100%;
@@ -1025,7 +1025,7 @@
     }
 
     .btl .yoyo {
-        padding: 60px 40px 0px;
+        padding: 0px 40px 0px;
     }
 
     .btl .yoyo .sec-head__label {
@@ -1192,8 +1192,8 @@
 
     .btl .features__row .feature--02,
     .btl .features__row .feature--03 {
-        width: 559px;
-        flex: 0 0 559px;
+        width: calc((100% - 36px) / 2);
+        flex: 0 0 calc((100% - 36px) / 2);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -1203,7 +1203,7 @@
 
     .btl .feature--02 .thermal,
     .btl .feature--03 .feature__media {
-        width: 559px;
+        width: 100%;
         height: 380px;
         margin-top: 0;
         border-radius: 20px;
@@ -1257,7 +1257,7 @@
 
     .btl .feature--02 .sec-head,
     .btl .feature--03 .sec-head {
-        width: 559px;
+        width: 100%;
         margin-top: 24px;
         display: flex;
         flex-direction: column;
@@ -1677,7 +1677,7 @@
         color: #ffffff;
     }
 
-    .btl .thermo__claim p {
+    .ba-shot--gray .ba-bar {
         font-size: 32px;
         letter-spacing: -1px;
         line-height: 62px;
@@ -1884,7 +1884,7 @@
     }
 
     .btl .turn {
-        padding: 80px 40px;
+        padding: 110px 40px 60px 40px;
     }
 
     .btl .turn__head {
@@ -2279,14 +2279,34 @@
         text-align: center;
     }
 
-    .program,
-    .dual,
+    .program .sec-head {
+        gap: 0;
+    }
+
+    .dual .sec-head {
+        gap: 0;
+    }
+
     .results .sec-head {
         gap: 0;
     }
 
     .dual__block {
         gap: 0;
+    }
+
+    .ba-shot--gray .ba-bar {
+        width: 120px;
+        height: 15px;
+        left: 140px;
+        top: 61px;
+    }
+
+    .ba-shot--rose .ba-bar {
+        width: 120px;
+        height: 15px;
+        left: 152px;
+        top: 88px;
     }
 }
 

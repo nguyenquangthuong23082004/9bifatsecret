@@ -6,7 +6,7 @@ $tabs = ['집중관리', '체형관리', '부분관리', '페이스 다이어트
 <section class="sec program" id="program">
     <div class="sec-head">
         <p class="sec-head__label">체중+체형+페이스+이너순환 동시케어</p>
-        <h2 class="sec-head__title"><span class="accent">비티엘 프로그램</span><br class="only-mo">기본구성</h2>
+        <h2 class="sec-head__title"><span class="accent">비티엘 프로그램</span><br class="only-mo"> 기본구성</h2>
     </div>
 
     <div class="tabs" role="tablist" aria-label="프로그램 종류">
