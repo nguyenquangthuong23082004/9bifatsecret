@@ -9,7 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,16 +20,10 @@ jobs:
           username: ${{ secrets.SFTP_USER }}
           password: ${{ secrets.SFTP_PASS }}
           port: ${{ secrets.SFTP_PORT }}
-
-          source: |
-            app/**
-            public/assets/**
-            public/adm_assets/**
+          source: "./*"
           target: ${{ secrets.SFTP_REMOTE_PATH }}
-
           rm: false
           strip_components: 0
-
           exclude: |
             .git
             .git/**
@@ -38,23 +31,3 @@ jobs:
             .github/**
             .gitignore
             README.md
-
-            vendor
-            vendor/**
-
-            node_modules
-            node_modules/**
-
-            tests
-            tests/**
-
-            public/videos/**
-            public/uploads/**
-            public/images/uploads/**
-
-            writable/cache/**
-            writable/logs/**
-
-            *.zip
-            *.tar.gz
-            *.sql
