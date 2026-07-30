@@ -53,9 +53,11 @@
     var heroCopy = document.querySelector('.hero__copy');
     if (!heroCopy) return;
 
+    var heroSec = document.querySelector('.hero') || heroCopy;
+
     var heroElements = gsap.utils.toArray(
       heroCopy.querySelectorAll('.hero__label, .hero__title, .hero__sub')
-    );
+    ); px
     if (heroElements.length === 0) return;
 
     gsap.set(heroElements, { autoAlpha: 0, y: -45 });
@@ -75,7 +77,7 @@
 
     if (typeof ScrollTrigger !== 'undefined') {
       ScrollTrigger.create({
-        trigger: heroCopy,
+        trigger: heroSec,   // 🎯 Dùng .hero làm Trigger vì .hero__copy dùng display:contents trên mobile làm bounding-box = 0
         start: 'top 95%',
         end: 'bottom top',
         onEnter: play,
@@ -92,7 +94,7 @@
         },
         { threshold: 0 }
       );
-      observer.observe(heroCopy);
+      observer.observe(heroSec);
     } else {
       play();
     }
