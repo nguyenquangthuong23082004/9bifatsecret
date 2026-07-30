@@ -4,23 +4,15 @@
     }
 }
 
-/* =========================================================
-   pc.css — giao diện màn PC (>= 992px)
-   Nạp CUỐI CÙNG để ghi đè các file section phía trên.
-   ========================================================= */
 @media (min-width:992px) {
 
     :root {
-        /* chiều cao header = padding 20+20 + logo 40 */
         --pc-header-h: 80px;
-        /* chiều cao band "19 YEARS" — tính vào chung 1 khung hình đầu tiên */
         --pc-band-h: 58px;
-        /* khuôn nội dung PC: rộng 1440, padding trong 40px mỗi bên */
         --pc-w: 1440px;
         --pc-pad: 40px;
     }
 
-    /* Utility classes: Ẩn phần tử mobile trên PC, hiển thị phần tử PC */
     .only-mo,
     .only_mo {
         display: none !important;
@@ -36,21 +28,13 @@
         display: inline !important;
     }
 
-    /* Tắt cơ chế zoom của bản mobile (đang scale hộp 375px theo viewport).
-       .btl giữ FULL WIDTH để nền các section tràn hết bề ngang màn hình;
-       việc canh giữa do từng khuôn .*__container bên trong section lo. */
     .btl {
         zoom: 1;
         width: 100%;
         max-width: none;
     }
 
-    /* =====================================================
-       GNB — nav ngang, không còn hamburger
-       ===================================================== */
 
-    /* .gnb = thanh full-width (nền trắng tràn hết màn hình)
-       .gnb__container = khuôn 1440 canh giữa, padding 20/40 đúng như design */
     .btl .gnb {
         padding: 0;
     }
@@ -61,7 +45,7 @@
         padding: 20px var(--pc-pad);
         display: flex;
         align-items: center;
-        gap: 198px;
+        gap: 270px;
     }
 
     .btl .gnb__inner {
@@ -74,8 +58,6 @@
         border-bottom: 0;
     }
 
-    /* logo 85x40 — giữ nguyên cách crop của mobile nhưng tính lại % để
-       ảnh không bị bóp méo (ảnh gốc 866x288, phần chữ nằm trong 199,31–727,257) */
     .btl .gnb__logo {
         width: 85px;
         height: 40px;
@@ -126,21 +108,14 @@
         white-space: nowrap;
     }
 
-
-    /* =====================================================
-       01. Hero — header + hero + band = ĐÚNG 1 khung hình (100vh)
-       Copy nằm nửa trái (căn dọc giữa), main visual bám đáy-phải.
-       ===================================================== */
     .btl .hero {
         height: calc(100vh - var(--pc-header-h) - var(--pc-band-h));
         min-height: 560px;
         padding: 0;
         display: block;
-        /* phần .hero__visual thò ra ngoài hero bị cắt gọn theo mép hero */
         overflow: hidden;
     }
 
-    /* Cùng khuôn với .gnb__container -> chữ hero thẳng hàng với logo header */
     .btl .hero__inner {
         position: relative;
         height: 100%;
@@ -151,7 +126,6 @@
         align-items: center;
     }
 
-    /* Copy: nửa trái, trên cả main visual */
     .btl .hero__copy {
         display: block;
         position: relative;
@@ -218,7 +192,6 @@
         object-fit: fill;
     }
 
-    /* Lớp nền trang trí phủ cả hero — ảnh nền PC (thẻ <img> bên trong) */
     .btl .hero__bg {
         z-index: 0;
         top: 114px;
@@ -229,7 +202,6 @@
         object-position: center;
     }
 
-    /* Band nằm ngay dưới hero, khép lại khung hình đầu tiên */
     .btl .band {
         height: var(--pc-band-h);
     }
@@ -243,9 +215,6 @@
         text-align: center;
     }
 
-    /* =====================================================
-       02. Philosophy (이념) — PC Layout Position
-       ===================================================== */
     .btl .philo {
         position: relative;
         padding-top: 120px;
@@ -280,7 +249,6 @@
         margin-top: 15px;
     }
 
-    /* dòng lead thứ 2 cách 1 dòng trống theo line-height của PC */
     .btl .philo__head .philo__lead-2 {
         margin-top: 30px;
         padding: 10px;
@@ -288,7 +256,6 @@
         border-radius: 30px;
     }
 
-    /* nhãn dọc cạnh tam giác chỉ có ở design mobile */
     .btl .philo__edge {
         display: none;
     }
@@ -386,7 +353,6 @@
         justify-content: center;
     }
 
-    /* Item 1: bên trái logo, chấm tròn ở phía phải */
     .btl .philo__item:nth-child(1) {
         top: 524px;
         right: calc(50% + 238px + 15px);
@@ -399,7 +365,6 @@
         text-align: right;
     }
 
-    /* Item 2: bên phải logo, chấm tròn ở phía trái */
     .btl .philo__item:nth-child(2) {
         top: 524px;
         left: calc(50% + 238px + 15px);
@@ -412,7 +377,6 @@
         text-align: left;
     }
 
-    /* Item 3: phía dưới logo, căn giữa, chấm tròn ở trên cùng */
     .btl .philo__item:nth-child(3) {
         top: 860px;
         left: 50%;
@@ -431,9 +395,6 @@
         text-align: center;
     }
 
-    /* =====================================================
-       03. Career / Awards (경력) — PC Layout & Positioning
-       ===================================================== */
     .btl .career {
         padding-top: 100px;
         padding-bottom: 0;
@@ -498,7 +459,6 @@
         margin-top: 5px;
     }
 
-    /* 4 giải thưởng xếp thành 1 hàng ngang chuẩn theo 4 cột thiết kế */
     .btl .career__awards {
         display: flex;
         justify-content: center;
@@ -522,13 +482,11 @@
         text-align: center;
     }
 
-    /* 2 giải ở ngoài (Item 1 & Item 4) nằm thấp hơn theo thiết kế */
     .btl .award:nth-child(1),
     .btl .award:nth-child(4) {
         margin-top: 80px;
     }
 
-    /* 2 giải ở giữa (Item 2 & Item 3) nằm cao hơn */
     .btl .award:nth-child(2),
     .btl .award:nth-child(3) {
         margin-top: 0;
@@ -574,7 +532,6 @@
         margin-top: 6px;
     }
 
-    /* Cúp vàng đặt phía dưới khoảng trống của 2 giải ở giữa, không đè lên chữ */
     .btl .career__trophy-wrap {
         position: relative;
         z-index: 3;
@@ -584,7 +541,6 @@
         pointer-events: none;
     }
 
-    /* -- Confetti floating around trophy -- */
     .btl .career__confetti--l {
         left: -385px;
         top: 51px;
@@ -598,7 +554,6 @@
         width: 380px;
     }
 
-    /* -- Khối TV section -- */
     .btl .career__tv {
         position: relative;
         z-index: 4;
@@ -608,7 +563,6 @@
         text-align: center;
     }
 
-    /* Nền góc nghiêng tràn 100% chiều ngang màn hình PC */
     .btl .career__tv::before {
         content: "";
         position: absolute;
@@ -622,7 +576,6 @@
         z-index: 0;
     }
 
-    /* Nền điểm chấm trang trí min-width: 1424px */
     .btl .career__tv::after {
         content: "";
         position: absolute;
@@ -663,7 +616,6 @@
         color: #ffe034;
     }
 
-    /* Khung player 650px x 420px */
     .btl .career__player {
         position: relative;
         z-index: 2;
@@ -685,7 +637,6 @@
         height: 80px;
     }
 
-    /* Các icon app (bitiel & MTN) đính bên lề player */
     .btl .career__apps {
         position: absolute;
         top: 0;
@@ -715,9 +666,6 @@
         height: auto;
     }
 
-    /* =====================================================
-       04. Program (프로그램) — PC Styles
-       ===================================================== */
     .btl .program {
         padding: 100px 40px 120px;
         background: #ffffff;
@@ -744,7 +692,6 @@
         text-align: center;
     }
 
-    /* Cụm tabs dàn hàng ngang hết trên PC */
     .btl .program .tabs {
         display: flex;
         flex-direction: row;
@@ -830,9 +777,6 @@
         max-width: 720px;
     }
 
-    /* =====================================================
-       05. Dual Solution (듀얼솔루션) — PC Styles
-       ===================================================== */
     .btl .dual {
         padding: 100px 40px 120px;
         background: #fcf6f6;
@@ -885,7 +829,6 @@
         text-align: center;
     }
 
-    /* Swiper slide kích thước 326px x 326px trên PC */
     .btl .dual__devices {
         margin-top: 40px;
     }
@@ -919,7 +862,6 @@
         object-fit: contain;
     }
 
-    /* 2 ảnh 수기테라피 dàn 1 hàng ngang, kích thước 572px x 374px */
     .btl .dual__therapy {
         display: flex;
         flex-direction: row;
@@ -939,9 +881,6 @@
         display: block;
     }
 
-    /* =====================================================
-       06. Ticket (체험권) — PC Styles
-       ===================================================== */
     .btl .ticket {
         padding: 100px 40px 120px;
         background: #e86382;
@@ -950,7 +889,6 @@
         overflow: hidden;
     }
 
-    /* ảnh nền phủ trọn section (mobile dùng khung 988x635 cố định) */
     .btl .ticket::before {
         left: 0;
         top: 0;
@@ -974,7 +912,6 @@
         margin: 0;
     }
 
-    /* dòng giữa mới — scale theo tỉ lệ mobile->PC của title (30->48 = 1.6) */
     .btl .ticket__sub {
         font-size: 32px;
         letter-spacing: -1px;
@@ -1024,9 +961,6 @@
         object-fit: contain;
     }
 
-    /* =====================================================
-       07. Consult status (상담현황) — PC Styles
-       ===================================================== */
     .btl .consult {
         padding: 100px 40px 120px;
         background: #fafafa;
@@ -1081,9 +1015,6 @@
         font-size: 16px;
     }
 
-    /* =====================================================
-       08. Yoyo ZERO comparison table — PC Styles
-       ===================================================== */
     .btl .yoyo {
         padding: 60px 40px 0px;
     }
@@ -1113,7 +1044,6 @@
         color: #252525;
     }
 
-    /* Bảng so sánh max-width 1024px căn giữa trên PC */
     .btl .compare {
         max-width: 1024px;
         margin: 50px auto 0;
@@ -1154,7 +1084,6 @@
         transition: background-color 0.2s ease;
     }
 
-    /* Hover vào hàng nào thì background #c8365a với opacity 0.4 */
     .btl .compare tbody tr:hover {
         background-color: rgba(200, 54, 90, 0.4);
     }
@@ -1163,9 +1092,6 @@
         display: none !important;
     }
 
-    /* =====================================================
-       09. Key features 01–03 (주요특장점) — PC Styles
-       ===================================================== */
     .btl .features {
         padding: 0px 40px 120px;
     }
@@ -1213,7 +1139,6 @@
         /* margin: 0 auto 30px; */
     }
 
-    /* Feature 01 media: bg 788x544px & ticket 423x266px */
     .btl .feature--01 .feature__media {
         position: relative;
         width: 788px;
@@ -1245,7 +1170,6 @@
         display: block;
     }
 
-    /* Feature 02 và Feature 03 nằm trên CÙNG 1 HÀNG NGANG (features__row) trên PC */
     .btl .features__row {
         display: flex;
         flex-direction: row;
@@ -1268,7 +1192,6 @@
         margin: 0;
     }
 
-    /* Khối thermal và feature__media trong từng thẻ 559px */
     .btl .feature--02 .thermal,
     .btl .feature--03 .feature__media {
         width: 559px;
@@ -1323,7 +1246,6 @@
         right: 30px;
     }
 
-    /* Khối chữ sec-head bên dưới ảnh của từng thẻ 559px — CĂN TRÁI TEXT + GAP 25px */
     .btl .feature--02 .sec-head,
     .btl .feature--03 .sec-head {
         width: 559px;
@@ -1355,9 +1277,6 @@
         border-radius: 20px;
     }
 
-    /* =====================================================
-       10. Menopause (갱년기) — PC Styles
-       ===================================================== */
     .btl .meno {
         padding: 100px 40px 120px;
         background: #fcf6f6;
@@ -1390,7 +1309,6 @@
         color: #c8365a;
     }
 
-    /* Khối meno__box PC dạng 2 cột: Cột trái (544px ~ 45.2956%), Cột phải (657px ~ 54.7044%) */
     .btl .meno__box {
         max-width: 1200px;
         margin: 50px auto 0;
@@ -1450,7 +1368,6 @@
         margin: 0;
     }
 
-    /* Thẻ active mang màu hồng đỏ đậm và có mũi tên trỏ sang phải */
     .btl .acc__item.is-open .acc__head {
         background: #c8365a;
         box-shadow: 0 10px 25px rgba(200, 54, 90, 0.3);
@@ -1476,7 +1393,6 @@
         z-index: 4;
     }
 
-    /* Đưa panel chi tiết của tab active sang cột bên phải */
     .btl .acc__panel {
         max-height: none !important;
         display: none;
@@ -1579,7 +1495,6 @@
         z-index: 1;
     }
 
-    /* Lớp phủ mờ mượt từ trên nền xuống đầu ảnh theo đúng design */
     .btl .meno__care::after {
         content: "";
         position: absolute;
@@ -1592,7 +1507,6 @@
         z-index: 2;
     }
 
-    /* Ảnh phụ nữ PC: absolute theo .meno__box — không bị cut bởi panel, dễ dàng kéo sang trái/phải */
     .btl .meno__woman-pc {
         position: absolute;
         left: 360px;
@@ -1604,9 +1518,6 @@
         z-index: 4;
     }
 
-    /* =====================================================
-       11. Thermo diet (체온 다이어트) — PC Styles
-       ===================================================== */
     .btl .thermo__head {
         width: auto;
         max-width: none;
@@ -1669,7 +1580,6 @@
         white-space: nowrap;
     }
 
-    /* Stage: player 400x700 centered, speech bubbles left & right */
     .btl .thermo__stage {
         position: relative;
         height: 700px;
@@ -1698,7 +1608,6 @@
         height: 80px;
     }
 
-    /* Speech bubbles PC positioning (kích thước, hình dáng, đuôi bubble giữ nguyên 100% từ mobile) */
     .btl .thermo .bubble--a,
     .btl .thermo .bubble--b,
     .btl .thermo .bubble--c {
@@ -1770,9 +1679,6 @@
         margin: 20px 0 0;
     }
 
-    /* =====================================================
-       12. Results (결과로 증명하는 비티엘 다이어트) — PC Styles
-       ===================================================== */
     .btl .results {
         padding: 80px 40px;
     }
@@ -1968,9 +1874,6 @@
         border-radius: 16px;
     }
 
-    /* =====================================================
-       13. Your turn (이제 당신 차례입니다) — PC Styles
-       ===================================================== */
     .btl .turn {
         padding: 80px 40px;
     }
@@ -2140,7 +2043,6 @@
         z-index: 2;
     }
 
-    /* Swiper Prev/Next Navigation Buttons (40px x 40px, vertically centered relative to turn__cards) */
     .btl .turn__swiper {
         position: relative;
         max-width: 1200px;
@@ -2196,9 +2098,6 @@
         border-color: #c8365a;
     }
 
-    /* =====================================================
-       14. FAQ (자주 묻는 질문) — PC Styles
-       ===================================================== */
     .btl .faq {
         padding: 80px 40px;
     }
@@ -2254,9 +2153,6 @@
         overflow-wrap: break-word;
     }
 
-    /* =====================================================
-       15. Contact form (1:1 무료컨설팅 예약) — PC Styles
-       ===================================================== */
     .btl .contact {
         padding: 80px 40px;
     }
@@ -2309,9 +2205,6 @@
         font-family: "Pretendard", sans-serif;
     }
 
-    /* =====================================================
-       16. Site footer — PC Styles
-       ===================================================== */
     .btl .site-footer {
         padding: 60px 40px;
         background: #ffffff;
