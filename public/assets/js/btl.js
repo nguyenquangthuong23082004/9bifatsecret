@@ -41,8 +41,30 @@
       });
     });
 
-    /* ---- Menopause: chọn 1 mục (chỉ đổi style is-open) ---- */
+    /* ---- Menopause: chọn 1 mục (đổi style is-open + cập nhật meno__care & ảnh phụ) ---- */
     var accItems = document.querySelectorAll('.accordion-btl .acc__item');
+    var menoCare = document.querySelector('.meno__care');
+    var menoCareTitle = document.getElementById('menoCareTitle');
+    var menoCareDesc = document.getElementById('menoCareDesc');
+    var menoCareImg = document.getElementById('menoCareImg');
+    var menoWomanImg = document.getElementById('menoWomanImg');
+    var menoData = window.MENO_CARE_DATA || [];
+
+    function updateMenoCare(idx) {
+      var d = menoData[idx];
+      if (!d) return;
+      if (menoCareTitle) menoCareTitle.textContent = d.careTitle;
+      if (menoCareDesc) menoCareDesc.innerHTML = d.careDesc;
+      if (menoCareImg) {
+        menoCareImg.src = d.careImg;
+        menoCareImg.alt = d.careTitle;
+      }
+      if (menoCare) {
+        // menoCare.style.backgroundImage = 'url(' + d.careImg + ')';
+      }
+      if (menoWomanImg) menoWomanImg.src = d.womanImg;
+    }
+
     accItems.forEach(function (item) {
       var head = item.querySelector('.acc__head');
       if (!head) return;
@@ -54,6 +76,9 @@
         });
         item.classList.add('is-open');
         head.setAttribute('aria-expanded', 'true');
+
+        var idx = parseInt(item.getAttribute('data-meno-idx'), 10);
+        if (!isNaN(idx)) updateMenoCare(idx);
       });
     });
 
