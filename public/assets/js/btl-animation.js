@@ -57,7 +57,7 @@
 
     var heroElements = gsap.utils.toArray(
       heroCopy.querySelectorAll('.hero__label, .hero__title, .hero__sub')
-    ); px
+    );
     if (heroElements.length === 0) return;
 
     gsap.set(heroElements, { autoAlpha: 0, y: -45 });
