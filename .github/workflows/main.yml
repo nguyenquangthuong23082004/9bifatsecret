@@ -22,7 +22,10 @@ jobs:
           password: ${{ secrets.SFTP_PASS }}
           port: ${{ secrets.SFTP_PORT }}
 
-          source: "./*"
+          source: |
+            app/**
+            public/assets/**
+            public/adm_assets/**
           target: ${{ secrets.SFTP_REMOTE_PATH }}
 
           rm: false
