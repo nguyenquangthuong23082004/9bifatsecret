@@ -299,8 +299,16 @@
   function revealDown(name, trigger, els, opts) {
     opts = opts || {};
     var dist = opts.dist === undefined ? 45 : opts.dist;
+    // Bậc thang xuất phát: phần tử thứ i treo cao hơn mặt đất `dist - i*taper`.
+    // Cần khi `dist` lớn hơn khoảng cách dòng — nếu mọi dòng cùng rơi từ -dist
+    // mà lệch pha stagger, dòng dưới còn treo trên cao sẽ đè lên dòng trên đã
+    // hạ cánh, nhìn như chữ dính vào nhau. Mặc định 0: cả cụm cùng độ cao.
+    var taper = opts.taper === undefined ? 0 : opts.taper;
     return revealGroup(name, trigger, els,
-      { autoAlpha: 0, y: -d(dist) },
+      {
+        autoAlpha: 0,
+        y: function (i) { return -d(Math.max(dist - i * taper, 0)); }
+      },
       {
         autoAlpha: 1, y: 0, ease: 'none',
         duration: opts.duration || 1,
@@ -445,7 +453,8 @@
 
     var head = q(sec, '.sec-head');
     revealDown('03 philo / head', head,
-      pick(head, ['.sec-head__title', '.philo__lead-1', '.philo__lead-2']), {dist: 200, stagger: 0.2 });
+      pick(head, ['.sec-head__title', '.philo__lead-1', '.philo__lead-2']),
+      { dist: 200, taper: 60, stagger: 0.08 });
 
     // Logo và danh sách thẻ dùng CHUNG một timeline, mọi bước đặt tại `at: 0`
     // nên chúng chạy đồng thời. Trigger là .philo__logo vì nó nằm trên trong
