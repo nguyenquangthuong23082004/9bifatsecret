@@ -12,9 +12,14 @@
     var PLAY_BTN = '.play, .thermo__play';
 
     /* Trình duyệt chỉ cho autoplay khi video đang tắt tiếng. Người dùng
-       bật tiếng bằng cách click vào khung player. */
-    var RATIO_IN = 0.5;   // >=50% section lọt khung hình -> play
-    var RATIO_OUT = 0.2;  // <20% -> pause
+       bật tiếng bằng cách click vào khung player.
+
+       Điều kiện play/pause dùng isIntersecting chứ KHÔNG dùng ngưỡng %:
+       intersectionRatio là phần trăm của chính section, mà section ở đây cao
+       hơn màn hình nhiều lần — ratio của nó bị chặn trên ở mức
+       (chiều cao màn hình / chiều cao section), nên mọi ngưỡng kiểu 0.5 đều là
+       điều kiện không bao giờ thoả. Chỉ cần section chạm mép khung hình là
+       play, rời hẳn khung hình mới pause. */
 
     function init() {
         var players = document.querySelectorAll(SELECTOR);
@@ -82,17 +87,15 @@
             var section = player.closest('section') || player;
             var io = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
-                    if (entry.intersectionRatio >= RATIO_IN) {
+                    if (entry.isIntersecting) {
                         if (!pausedByUser && video.paused) play();
-                    } else if (entry.intersectionRatio < RATIO_OUT) {
-                        if (!video.paused) {
-                            video.pause();
-                            // rời tầm nhìn là do cuộn, không phải ý người dùng
-                            pausedByUser = false;
-                        }
+                    } else if (!video.paused) {
+                        video.pause();
+                        // rời tầm nhìn là do cuộn, không phải ý người dùng
+                        pausedByUser = false;
                     }
                 });
-            }, { threshold: [0, RATIO_OUT, RATIO_IN, 1] });
+            }, { threshold: 0 });
 
             io.observe(section);
         });
