@@ -1373,8 +1373,27 @@
         z-index: 3;
     }
 
+    /* Đường kẻ dưới ở PC chỉ dài 340px chứ không chạy hết bề ngang như mobile,
+       nên bỏ border thật và vẽ lại bằng ::after để canh giữa được. */
     .btl .acc__item {
+        position: relative;
         border-bottom: none;
+    }
+
+    .btl .acc__item::after {
+        content: '';
+        position: absolute;
+        left: 39%;
+        bottom: -13px;
+        transform: translateX(-50%);
+        width: 340px;
+        height: 1px;
+        background: #eee;
+    }
+
+    /* Giống mobile: mục cuối không có kẻ. */
+    .btl .acc__item:last-child::after {
+        content: none;
     }
 
     .btl .acc__head {
@@ -2004,7 +2023,7 @@
 
     .btl .results .case__shot {
         width: 850px;
-        height: 430px;
+        height: 530px;
         position: relative;
         overflow: hidden;
         margin: 46px auto 0;
@@ -2019,17 +2038,21 @@
     }
 
     .btl .results .case__shot--c3>img.is-ghost-60 {
-        width: 27.5% !important;
+        width: 37.5% !important;
         height: 153.4% !important;
-        left: 24.5% !important;
+        left: 16.5% !important;
         top: -1.7% !important;
     }
 
     .btl .results .case__shot--c3>img:not(.is-ghost-60) {
-        width: 28% !important;
+        width: 38% !important;
         height: 162.8% !important;
         left: 50.4% !important;
-        top: -2.1% !important;
+        top: 0% !important;
+    }
+
+    .ba-card__photo img.is-contain {
+        top: -13px;
     }
 
     .btl .turn {
@@ -2112,7 +2135,7 @@
         width: 118%;
         height: 162.6%;
         left: -9.8%;
-        top: -59.9%;
+        top: -61.9%;
         object-fit: cover;
         background: none;
     }
