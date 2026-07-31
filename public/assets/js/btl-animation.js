@@ -113,7 +113,7 @@
       }
 
       /* Trạng thái khi cuộn tới tầm nhìn */
-      .btl-anim.in-view:not(.anim-fade):not(.anim-pop-l):not(.anim-pop-r):not(.anim-bounce-icon) {
+      .btl-anim.in-view:not(.anim-fade):not(.anim-pop-l):not(.anim-pop-r):not(.anim-bounce-icon):not(.anim-bubble) {
         opacity: 1 !important;
         transform: translate(0, 0) scale(1) !important;
       }
@@ -141,6 +141,40 @@
         opacity: 1 !important;
         animation: iconBounceContinuous 2.4s ease-in-out infinite !important;
       }
+
+      /* ================================================================
+         BONG BÓNG THERMO: HIỆN RA RỒI NHÚN NHẢY LIÊN TỤC
+         ================================================================ */
+      @keyframes bubbleFloat {
+        0%, 100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-12px) scale(1.03);
+        }
+      }
+
+      .anim-bubble {
+        opacity: 0;
+        will-change: transform, opacity;
+        transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .anim-bubble.in-view {
+        opacity: 1 !important;
+        animation: bubbleFloat 3s ease-in-out infinite !important;
+      }
+
+      /* Lệch pha từng bong bóng — nếu cả 6 cái cùng lên cùng xuống thì nhìn
+         như một khối cứng đang trượt, không ra cảm giác bồng bềnh.
+         Delay ÂM: bắt đầu ngay lập tức nhưng ở giữa chu kỳ, thay vì đứng im
+         chờ tới lượt. */
+      .thermo .bubble--a.in-view { animation-delay: -0.0s !important; }
+      .thermo .bubble--b.in-view { animation-delay: -0.5s !important; }
+      .thermo .bubble--c.in-view { animation-delay: -1.0s !important; }
+      .thermo .bubble--d.in-view { animation-delay: -0.25s !important; }
+      .thermo .bubble--e.in-view { animation-delay: -0.75s !important; }
+      .thermo .bubble--f.in-view { animation-delay: -1.25s !important; }
 
       .career__apps .app-1.in-view {
         animation-delay: 0s !important;
@@ -281,14 +315,35 @@
       threshold: 0.05
     };
 
+    /* Vùng đệm để reset trạng thái, tính bằng px kể từ mép khung hình.
+       PHẢI lớn hơn quãng đường xa nhất mà một anim dịch chuyển (65px của
+       .anim-bounce-icon), nếu không sẽ có vòng lặp vô tận:
+
+         IntersectionObserver đo hộp ĐÃ BỊ TRANSFORM. Phần tử .anim-down nằm
+         ngay mép dưới khung hình đang bị đẩy lên 50px nên lọt vào tầm nhìn →
+         gán in-view → transform về 0 → nó tụt xuống 50px và ra khỏi tầm nhìn
+         → gỡ in-view → lại bị đẩy lên → lặp lại. Phần tử rung liên tục dù
+         người dùng không hề cuộn.
+
+       Chỉ reset khi phần tử đã ra hẳn khỏi khung một khoảng đủ lớn thì việc
+       đổi trạng thái không thể tự kéo nó trở vào, vòng lặp bị cắt tại gốc. */
+    var RESET_GAP = 120;
+
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
-        } else {
-          if (window.scrollY > 150) {
-            entry.target.classList.remove('in-view');
-          }
+          return;
+        }
+
+        if (window.scrollY <= 150) return;
+
+        var r = entry.boundingClientRect;
+        var farAbove = r.bottom < -RESET_GAP;
+        var farBelow = r.top > (window.innerHeight || 0) + RESET_GAP;
+
+        if (farAbove || farBelow) {
+          entry.target.classList.remove('in-view');
         }
       });
     }, observerOptions);
@@ -360,6 +415,7 @@
       { sel: '.thermo .sec-head__title', anim: 'anim-down', delay: 0.18 },
       { sel: '.thermo__chips .chip', anim: 'anim-down', stagger: 0.12 },
       { sel: '.thermo__stage', anim: 'anim-up', delay: 0.25 },
+      { sel: '.thermo .bubble', anim: 'anim-bubble', stagger: 0.12 },
 
       // 11. Menopause (Section 11)
       { sel: '.meno .sec-head__label', anim: 'anim-down', delay: 0 },
