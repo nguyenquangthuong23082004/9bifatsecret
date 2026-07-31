@@ -41,9 +41,26 @@
     window.scrollTo(0, 0);
   }
 
-  /** Ghim về đầu trang. Gọi lại vài lần vì trình duyệt có thể khôi phục muộn. */
+  /**
+   * SETTLED = người dùng đã cầm lái. Từ thời điểm này trở đi, KHÔNG được phép
+   * tự ý dời vị trí cuộn của họ nữa, dù với bất kỳ lý do gì.
+   *
+   * Cột mốc này là bắt buộc, không phải phòng xa: ảnh trong trang đều
+   * loading="lazy" nên chúng tải rải rác trong lúc người dùng cuộn, mỗi lần
+   * tải xong lại kéo theo một lần ScrollTrigger.refresh(). Nếu refresh nào
+   * cũng ép về đầu trang thì người dùng cuộn tới đâu sẽ bị đá về đầu tới đó.
+   */
+  var SETTLED = false;
+
+  function markSettled() { SETTLED = true; }
+
+  ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (evt) {
+    window.addEventListener(evt, markSettled, { once: true, passive: true });
+  });
+
+  /** Ghim về đầu trang. Chỉ có tác dụng trong giai đoạn trang đang tự dựng. */
   function forceTop() {
-    if (HAS_HASH) return;
+    if (HAS_HASH || SETTLED) return;
     window.scrollTo(0, 0);
   }
 
@@ -119,9 +136,29 @@
 
   var M = MOTION.desktop;   // token đang áp dụng, do matchMedia gán
 
+  /** Có được phép ghim (pin) hay không — do matchMedia gán. */
+  var CAN_PIN = false;
+
   /** Quy đổi khoảng cách px theo breakpoint. */
   function d(px) {
     return Math.round(px * M.scale);
+  }
+
+  /**
+   * Đẩy phần tử lên layer riêng của GPU.
+   *
+   * Cần cho những khối bị scrub liên tục: mỗi khung hình cuộn là một lần trình
+   * duyệt phải vẽ lại. Nếu phần tử còn nằm trong một khung có `overflow:hidden`
+   * kèm `border-radius` thì trình duyệt phải cắt tròn góc lại từ đầu ở MỖI
+   * khung hình — đó chính là cảm giác giật.
+   *
+   * `will-change: transform` bảo trình duyệt tách phần tử ra một lớp riêng và
+   * nướng sẵn phần cắt gọt đó một lần; `force3D` ép GSAP dùng translate3d để
+   * chuyển động chạy trên GPU thay vì CPU.
+   */
+  function gpu(els) {
+    if (isEmpty(els)) return;
+    gsap.set(els, { willChange: 'transform', force3D: true });
   }
 
   // --- Tiện ích DOM (luôn an toàn với null) ---
@@ -206,6 +243,18 @@
         start: config.start || M.start,
         end: config.end || M.end,
         scrub: config.scrub !== undefined ? config.scrub : M.scrub,
+        // Ghim: quãng cuộn start→end không đẩy trang đi nữa mà được tiêu vào
+        // việc chạy timeline. Truyền vào phần tử cụ thể chứ không phải `true`,
+        // để chọn đúng thứ được bọc bởi pin-spacer.
+        pin: config.pin || false,
+        // Chừa khoảng trống bằng đúng quãng ghim để nội dung dưới không bị đè.
+        pinSpacing: true,
+        // Chuyển sang position:fixed sớm 1 nhịp, tránh giật ở khoảnh khắc ghim.
+        anticipatePin: config.pin ? 1 : 0,
+        // Neo về trạng thái sạch khi người dùng dừng tay. Cần cho khối bị ghim:
+        // cuộn nhanh làm animation tụt lại phía sau, snap kéo nó về đúng một
+        // trong các mốc đã định thay vì để nằm dở dang giữa hai nhịp.
+        snap: config.snap || false,
         // Tính lại giá trị start của mọi tween mỗi lần refresh — cần thiết vì
         // khoảng cách px phụ thuộc breakpoint và layout còn dịch khi ảnh load.
         invalidateOnRefresh: true,
@@ -293,57 +342,100 @@
      ============================================================ */
 
   /**
-   * 01. Hero – KHÔNG scrub.
-   * Hero nằm trên màn hình đầu tiên, lúc đó chưa có gì để cuộn, nên nó phải
-   * tự chạy khi trang load. Đây là ngoại lệ duy nhất đúng của mô hình scrub.
+   * 01 + 02. Hero (.hero__copy) và Band 19 YEARS (.band p) – MỘT timeline.
+   *
+   * Cả hai đều nằm ở đỉnh trang (scrollY = 0), nơi chưa tồn tại quãng cuộn nào
+   * để buộc animation vào — đây là ngoại lệ duy nhất đúng của mô hình scrub.
+   * Chúng chạy khi trang load, theo một mạch liền: chữ hero trượt xuống, rồi
+   * chữ band gõ ra nối tiếp.
+   *
+   * "Không scrub được" khác với "không lặp lại được": cuộn xuống rồi quay lên
+   * vẫn là sự kiện bắt được bình thường, nên cả cụm vẫn chạy lại.
+   *
+   * Trigger là .hero (KHÔNG phải .hero__copy): trên mobile .hero__copy dùng
+   * display:contents nên bounding-box = 0, ScrollTrigger sẽ đo sai.
    */
-  function initHero() {
+  function initHeroBand() {
     var copy = document.querySelector('.hero__copy');
     if (!copy) { logBad('01 hero', 'KHÔNG TÌM THẤY .hero__copy'); return; }
+
+    var heroSec = document.querySelector('.hero') || copy;
 
     var els = qq(copy, '.hero__label, .hero__title, .hero__sub');
     if (els.length === 0) { logBad('01 hero', 'KHÔNG CÓ .hero__label/.hero__title/.hero__sub'); return; }
 
-    gsap.timeline({ delay: 0.15 }).fromTo(els,
+    /* --- Chuẩn bị chữ cho band -------------------------------------------
+       Đây là khối DUY NHẤT ghi đè lên nội dung thật của trang, nên phải cẩn
+       thận hơn mọi khối khác: chuỗi gốc cất vào data-attribute chứ KHÔNG đọc
+       lại từ textContent — vì textContent đã bị chính hiệu ứng này xoá, lần
+       dựng lại sau (đổi breakpoint) sẽ đọc phải chuỗi rỗng và mất chữ vĩnh
+       viễn.                                                                */
+    var pEl = q(document.querySelector('.band'), 'p');
+    var fullText = '';
+
+    if (pEl) {
+      fullText = pEl.getAttribute('data-btl-text');
+      if (fullText === null) {
+        fullText = pEl.textContent.trim();
+        pEl.setAttribute('data-btl-text', fullText);
+      }
+      if (!fullText) { logBad('02 band', '.band p RỖNG'); pEl = null; }
+    } else {
+      logBad('02 band', 'KHÔNG TÌM THẤY .band p');
+    }
+
+    function write(n) { if (pEl) pEl.textContent = fullText.slice(0, n); }
+
+    /* --- Timeline chung --------------------------------------------------- */
+    var progress = { count: 0 };
+    var tl = gsap.timeline({ paused: true });
+
+    tl.fromTo(els,
       { autoAlpha: 0, y: -d(45) },
       { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.18, ease: 'power3.out' }
     );
-    logOk('01 hero (chạy khi load, không scrub)', 'phần tử=' + els.length);
-    report.push({ block: '01 hero', status: 'ok (load)', els: els.length });
-  }
 
-  /**
-   * 02. Band 19 YEARS – máy đánh chữ, cũng KHÔNG scrub.
-   * Chữ viết dở dang khi người dùng dừng giữa chừng sẽ trông như lỗi, nên
-   * hiệu ứng này chạy trọn vẹn một lượt.
-   */
-  function initBand() {
-    var band = document.querySelector('.band');
-    var pEl = q(band, 'p');
-    if (!pEl) { logBad('02 band', 'KHÔNG TÌM THẤY .band p'); return; }
+    if (pEl) {
+      // '-=0.6': chữ band bắt đầu gõ khi hero còn đang trượt, để hai khối nối
+      // vào nhau thành một mạch thay vì hai lượt rời rạc.
+      tl.to(progress, {
+        count: fullText.length,
+        duration: 1.5,
+        ease: 'none',
+        onUpdate: function () { write(Math.floor(progress.count)); }
+      }, '-=0.6');
+    }
 
-    var fullText = pEl.textContent.trim();
-    if (!fullText) { logBad('02 band', '.band p RỖNG'); return; }
+    function play() { write(0); tl.restart(); }
 
-    var progress = { count: 0 };
-    pEl.textContent = '';
+    /* Nạp đạn cho lượt chạy sau: ẩn chữ hero, NHƯNG giữ nguyên chữ band.
+       Band là nội dung thật của trang và nó nằm ngay dưới hero — khi người
+       dùng cuộn qua khỏi hero thì band vẫn đang hiển thị trên màn hình, xoá
+       chữ lúc đó là làm mất nội dung ngay trước mắt họ. */
+    function reset() { tl.pause(0); write(fullText.length); }
 
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: band,
-        start: 'top 92%',
-        toggleActions: 'restart none none reset'
-      }
-    }).to(progress, {
-      count: fullText.length,
-      duration: 1.5,
-      ease: 'none',
-      onUpdate: function () {
-        pEl.textContent = fullText.slice(0, Math.floor(progress.count));
+    tl.pause(0); write(0);            // trạng thái ẩn trước khi vẽ khung hình đầu
+    gsap.delayedCall(0.15, play);     // lượt chạy đầu tiên khi vào trang
+
+    /* --- Cho phép chạy lại -----------------------------------------------
+       Chủ động dùng callback thay vì toggleActions: ở đỉnh trang, trigger đã
+       nằm sau mốc start ngay từ khi tạo, nên không thể trông chờ onEnter bắn.
+       Lưu ý: ScrollTrigger ở đây CHỈ dùng để chạy lại khi quay về đầu trang.
+       Lượt chạy đầu tiên hoàn toàn không phụ thuộc scrollY. */
+    ScrollTrigger.create({
+      trigger: heroSec,
+      start: 'top bottom',
+      end: 'bottom top',
+      onLeave: reset,
+      onEnterBack: function () {
+        logInfo('▶ 01+02 hero + band chạy lại');
+        play();
       }
     });
-    logOk('02 band (typewriter, không scrub)', fullText.length + ' ký tự');
-    report.push({ block: '02 band', status: 'ok (typewriter)', els: 1 });
+
+    logOk('01+02 hero + band (một timeline, chạy khi load + lặp lại)',
+      'hero=' + els.length + ' phần tử, band=' + (pEl ? fullText.length + ' ký tự' : 'không có'));
+    report.push({ block: '01+02 hero + band', status: 'ok (load+replay)', els: els.length + (pEl ? 1 : 0) });
   }
 
   /** 03. Philosophy – tiêu đề, logo, danh sách thẻ. */
@@ -355,13 +447,35 @@
     revealDown('03 philo / head', head,
       pick(head, ['.sec-head__title', '.philo__lead-1', '.philo__lead-2']), { stagger: 0.2 });
 
+    // Logo và danh sách thẻ dùng CHUNG một timeline, mọi bước đặt tại `at: 0`
+    // nên chúng chạy đồng thời. Trigger là .philo__logo vì nó nằm trên trong
+    // DOM — khối đứng trước quyết định thời điểm cho cả cụm.
     var logo = q(sec, '.philo__logo');
-    revealDown('03 philo / logo', logo,
-      pick(logo, ['.philo__logo-mark', '.philo__logo-text']), { dist: 40, stagger: 0.2 });
-
     var items = qq(sec, '.philo__item');
-    revealUp('03 philo / items', firstOf(q(sec, '.philo__list'), items), items,
-      { dist: 30, stagger: 0.12, duration: 0.8 });
+    reveal({
+      name: '03 philo / logo + items (đồng thời)',
+      trigger: firstOf(logo, q(sec, '.philo__list'), items),
+      steps: [
+        {
+          el: q(logo, '.philo__logo-mark'),
+          from: { autoAlpha: 0, y: -d(40) },
+          to: { autoAlpha: 1, y: 0, duration: 0.9, ease: 'none' },
+          at: 0
+        },
+        {
+          el: q(logo, '.philo__logo-text'),
+          from: { autoAlpha: 0, y: -d(40) },
+          to: { autoAlpha: 1, y: 0, duration: 0.9, ease: 'none' },
+          at: 0
+        },
+        {
+          el: items,
+          from: { autoAlpha: 0, y: d(30) },
+          to: { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'none' },
+          at: 0
+        }
+      ]
+    });
   }
 
   /** 04. Career – tiêu đề, giải thưởng, cúp + pháo hoa, cụm TV, player. */
@@ -597,15 +711,119 @@
       };
     }
 
+    /* --- Feature 01 --------------------------------------------------------
+       .feature__media ở đây KHÔNG trong suốt: nó có nền xám #f5f5f5, bo góc
+       20px và overflow:hidden. Cái khung đó luôn hiện sẵn trên trang.
+
+       Hai hệ quả quyết định cách làm khối này:
+
+       1. KHÔNG dùng fade. Ảnh mờ dần trên nền xám nhạt thì mắt thường gần như
+          không thấy gì. Thay vào đó cho ảnh trượt hẳn từ ngoài khung vào —
+          overflow:hidden biến chuyển động đó thành một cú "đổ xuống" rõ ràng,
+          nhìn thấy được bất kể màu nền.
+          Vì vậy dùng yPercent (tính theo chiều cao của chính ảnh) chứ không
+          phải px: -100% là ảnh nằm trọn phía trên mép khung, bị cắt sạch.
+
+       2. Được phép bắt đầu MUỘN. Khung xám đã hiện sẵn nên không sợ khoảng
+          trống; ta chờ tới khi người dùng thật sự nhìn vào khung rồi mới cho
+          ảnh đổ xuống. Bản trước bắt đầu ở 'top 90%' nên chạy xong từ lúc
+          khối còn chưa vào tầm mắt.                                          */
     var f1 = q(sec, '.feature--01');
+    var media1 = q(f1, '.feature__media');
+    var bg1 = q(f1, '.feature__bg');
+    var ticket1 = q(f1, '.feature__ticket');
+
+    // Cả khung lẫn hai ảnh đều lên layer GPU. Khung phải lên cùng, vì chính
+    // nó mới là thứ giữ border-radius + overflow:hidden.
+    gpu([media1, bg1, ticket1].filter(Boolean));
+
+    /* --- Ghim: cuộn khựng lại chờ vé rơi xong ------------------------------
+       Ảnh nền đổ xuống vào chỗ, rồi trang ngừng trôi cho tới khi tấm vé rơi
+       xong mới đi tiếp. Cả hai vẫn bám tay người dùng (scrub) — chỉ khác là
+       không thể cuộn vượt qua giữa chừng.
+
+       BỐN CHỐT AN TOÀN, mỗi cái chặn đúng một lỗi đã gặp:
+
+       1. Ghim `.feature--01`, KHÔNG ghim `.feature__media`.
+          ScrollTrigger bọc phần tử bị ghim vào <div class="pin-spacer"> và
+          chuyển margin sang thẻ bọc. `.feature--01 .feature__media` đang dựa
+          vào margin-top:16px, margin âm -7px/-8px và aspect-ratio — bọc nó là
+          cả bốn thứ đó lệch. `.feature--01` thì không có margin nào, và đã
+          kiểm tra: không CSS nào dùng combinator con/anh-em (`>`, `+`, `~`)
+          tới nó, `.sec.features` cũng chỉ là block thường (position:relative),
+          nên chèn thêm một thẻ bọc không đổi gì.
+
+       2. start 'top top' — khối áp sát mép trên trong suốt lúc ghim. Mốc khác
+          sẽ để lại một dải trống đứng im trước mắt suốt vài giây.
+
+       3. Tự tắt khi khối cao hơn màn hình. Ghim đỉnh khối vào mép trên trong
+          khi khối cao hơn viewport = phần dưới bị cắt cụt mà không cuộn xuống
+          xem được, vì trang đang bị giữ.
+
+       4. Tự tắt trên mobile và màn hình thấp (CAN_PIN).                       */
+    var pinFits = !!(f1 && f1.offsetHeight <= window.innerHeight * 0.95);
+    var doPin = CAN_PIN && pinFits;
+
+    if (CAN_PIN && !pinFits) {
+      logInfo('10 features / 01: BỎ ghim — khối cao %dpx > màn hình %dpx',
+        f1 ? f1.offsetHeight : 0, window.innerHeight);
+    }
+
     reveal({
-      name: '10 features / 01',
-      trigger: f1,
+      name: '10 features / 01 media' + (doPin ? ' (ghim)' : ''),
+      trigger: doPin ? f1 : media1,
+      start: doPin ? 'top top' : 'top 78%',
+      // Hàm chứ không phải chuỗi: quãng ghim được tính lại mỗi lần refresh,
+      // nên đổi cỡ cửa sổ hay xoay màn hình vẫn đúng.
+      end: doPin
+        ? function () { return '+=' + Math.round(window.innerHeight * 0.9); }
+        : 'bottom 45%',
+      pin: doPin ? f1 : false,
+      // Khi ghim thì bám SÁT tay (0.4), không lười (1.2).
+      // `scrub` là số GIÂY TRỄ. Cuộn chậm thì độ trễ lớn đọc ra là "mượt";
+      // cuộn nhanh thì vị trí cuộn nhảy vọt còn animation lê phía sau, phải
+      // đuổi bù cả một quãng dài sau khi người dùng đã buông tay — và vì trang
+      // đang bị ghim đứng yên nên không có gì che lấp độ lệch đó.
+      scrub: doPin ? 0.4 : 1.2,
+      // Người dùng buông tay ở đâu thì kéo về mốc gần nhất trong ba mốc sạch:
+      //   0   = chưa gì cả
+      //   0.5 = ảnh nền vừa vào chỗ (timeline dài 2, nền chiếm nửa đầu)
+      //   1   = vé đã rơi xong
+      // Nhờ vậy cuộn nhanh mấy cũng không để lại trạng thái dở dang giữa nhịp.
+      snap: doPin ? {
+        snapTo: [0, 0.5, 1],
+        duration: { min: 0.15, max: 0.45 },
+        delay: 0.05,
+        ease: 'power2.inOut'
+      } : false,
       steps: [
-        { el: q(f1, '.feature__bg'), from: { autoAlpha: 0, y: -d(35) }, to: { autoAlpha: 1, y: 0, duration: 0.8, ease: 'none' }, at: 0 },
-        { el: q(f1, '.feature__ticket'), from: { autoAlpha: 0, y: -d(35) }, to: { autoAlpha: 1, y: 0, duration: 0.8, ease: 'none' }, at: 0 },
-        headStep(f1)
+        {
+          // Ảnh nền đổ xuống TRƯỚC — nó là bối cảnh, lớp dưới cùng.
+          // ease 'none': với tween bị scrub, đường cong easing chồng lên độ
+          // trễ của scrub tạo ra hai lớp gia/giảm tốc đánh nhau — mắt đọc ra
+          // thành giật. Tốc độ ở đây đã do chính tay người dùng quyết định.
+          el: bg1,
+          from: { yPercent: -100 },
+          to: { yPercent: 0, duration: 1, ease: 'none' },
+          at: 0
+        },
+        {
+          // '>' = bắt đầu đúng lúc bước trước kết thúc, không chồng lấn.
+          // Vé đi xa hơn nền (-140% so với -100%) để tách lớp.
+          el: ticket1,
+          from: { yPercent: -140 },
+          to: { yPercent: 0, duration: 1, ease: 'none' },
+          at: '>'
+        }
       ]
+    });
+
+    // Cụm chữ có trigger RIÊNG, đo trên chính nó. Trước đây nó dùng chung
+    // trigger với khung ảnh nên cũng chạy xong trước khi người dùng đọc tới.
+    reveal({
+      name: '10 features / 01 head',
+      trigger: q(f1, '.sec-head'),
+      steps: [headStep(f1)]
     });
 
     var f2 = q(sec, '.feature--02');
@@ -692,8 +910,7 @@
 
   function buildAll() {
     report.length = 0;
-    initHero();
-    initBand();
+    initHeroBand();
     initPhilo();
     initCareer();
     initProgram();
@@ -777,12 +994,20 @@
 
     // Chỉ đăng ký listener là KHÔNG đủ: nếu script chạy sau khi 'load' đã bắn
     // (defer / bfcache / trang trong cache) thì listener không bao giờ chạy.
+    //
+    // 'load' cũng là mốc kết thúc giai đoạn trang tự dựng: mọi ảnh không-lazy
+    // đã có kích thước thật, chiều cao trang đã ổn định. Từ đây trở đi trang
+    // thuộc về người dùng — những lần refresh sau (ảnh lazy tải dần trong lúc
+    // cuộn) vẫn chạy bình thường nhưng không được đụng vào vị trí cuộn nữa.
     if (document.readyState === 'complete') {
+      forceTop();
       refreshSoon('đã complete');
+      markSettled();
     } else {
       window.addEventListener('load', function () {
         forceTop();          // ngay lập tức, không chờ debounce
         refreshSoon('load');
+        markSettled();
       }, { once: true });
     }
 
@@ -816,15 +1041,28 @@
     gsap.matchMedia().add({
       isMobile: '(max-width: 767px)',
       isDesktop: '(min-width: 768px)',
+      // Chiều cao cũng là breakpoint. Việc ghim có khả thi hay không phụ thuộc
+      // hoàn toàn vào nó, nên khai báo ở đây để GSAP dựng lại (và đánh giá lại
+      // điều kiện ghim) khi người dùng đổi cỡ cửa sổ qua mốc này.
+      isShort: '(max-height: 820px)',
       reduce: '(prefers-reduced-motion: reduce)'
     }, function (ctx) {
-      if (ctx.conditions.reduce) {
+      var c = ctx.conditions;
+
+      if (c.reduce) {
         logInfo('prefers-reduced-motion BẬT → bỏ qua toàn bộ animation');
         return;
       }
-      M = ctx.conditions.isMobile ? MOTION.mobile : MOTION.desktop;
-      logInfo('breakpoint=%s | start=%s end=%s scrub=%s scale=%s',
-        ctx.conditions.isMobile ? 'mobile' : 'desktop', M.start, M.end, M.scrub, M.scale);
+
+      M = c.isMobile ? MOTION.mobile : MOTION.desktop;
+
+      // Ghim là thao tác đắt nhất của ScrollTrigger (chuyển position:fixed qua
+      // lại + chèn thẻ bọc). Chỉ cho phép ở nơi nó chắc chắn an toàn.
+      CAN_PIN = !c.isMobile && !c.isShort;
+
+      logInfo('breakpoint=%s | start=%s end=%s scrub=%s scale=%s | màn hình cao %dpx | ghim=%s',
+        c.isMobile ? 'mobile' : 'desktop', M.start, M.end, M.scrub, M.scale,
+        window.innerHeight, CAN_PIN ? 'CHO PHÉP' : 'TẮT');
       buildAll();
     });
 
