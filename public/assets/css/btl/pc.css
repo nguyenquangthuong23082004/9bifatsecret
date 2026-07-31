@@ -1568,7 +1568,7 @@
         top: auto;
         max-width: none;
         width: calc(100% + 80px);
-        margin-left: 48px;
+        margin-left: -34px;
         margin-right: -40px;
         height: auto;
         /* khoá tỉ lệ 609x379 để khối không nhảy chiều cao khi đổi ảnh */
@@ -1591,7 +1591,19 @@
        vùng xám/trắng là một phần của ảnh, không phải nền #f3f3f3.
        Ảnh trong luồng được giữ lại (ẩn) để chiều cao khối không đổi so với item khác. */
     .btl .meno__care[data-meno-care="3"] {
-        background: #f3f3f3 url(../../images/btl/menopause-bg.webp) no-repeat center / cover;
+        background: #f3f3f3 url(../../images/btl/menopause-bg.webp) no-repeat;
+        /* Ảnh gốc vuông 768x768, người nằm giữa. `cover` sẽ canh giữa người
+           trong khối 657x~603 → người vừa nhỏ vừa đè lên chữ. Design phóng to
+           125% và đẩy sang phải để chừa vùng be trống bên trái cho chữ. */
+        background-size: 125% auto;
+        /* Khối 657x603, ảnh sau khi phóng là 821x821 nên tràn ra cả hai chiều.
+           background-position theo % tính bằng (cỡ_khối - cỡ_ảnh) x p, mà vế
+           đầu ở đây âm, nên % dương lại kéo ảnh ngược lên/sang trái:
+             x = 0     -> mép trái ảnh trùng mép trái khối
+             y = 21.6% -> (603-821) x 0.216 = -47px, tức nhấc ảnh lên 47px để
+                          nguyên cánh tay giơ lên lọt trong khung như design.
+           Dùng % thay px để khối co giãn theo viewport vẫn giữ đúng bố cục. */
+        background-position: 0 21.6%;
     }
 
     .btl .meno__care[data-meno-care="3"] .meno__care-img {
