@@ -1,2186 +1,839 @@
 /* =========================================================
-   BITIEL Landing – GSAP Animations System
-   Section-Scoped & Element-Scoped Architecture:
-   01. Hero Section (.hero__copy)
-   02. 19 YEARS Band (.band)
-   03. Philosophy Section (.sec.philo)
-   04. Career Section (.sec.career)
-   05. Program Section (.sec.program)
-   06. Dual Solution Section (.sec.dual)
-   07. Experience Ticket Section (.sec.ticket):
-       - .ticket__head: Label, Sub, Title trượt xuống
-       - .ticket__visual: Tấm vé ticket-img trượt nhô lên + Vòng tròn ticket-circle bung pop-in
+   BITIEL Landing – GSAP Scroll Animation System
+   -----------------------------------------------------------------
+   TƯ DUY: animation KHÔNG "được kích hoạt rồi tự chạy".
+   Nó bị BUỘC vào vị trí thanh cuộn (scrub).
+
+     tiến độ animation = f(scrollY)
+
+   Hệ quả:
+   • Cuộn lên là animation chạy lùi chính xác từng frame → lặp lại vô hạn,
+     không cần restart()/pause() hay cờ trạng thái nào.
+   • Không thể có bug "kẹt ở opacity:0", vì trạng thái luôn được suy ra từ
+     vị trí cuộn hiện tại chứ không phải từ một sự kiện đã lỡ mất.
+   • Cảm giác mượt đến từ `scrub: <số giây>` — animation đuổi theo con lăn
+     với một quán tính, chứ không phải từ easing.
+
+   CẤU TRÚC
+     Phần A – Hạ tầng: log chẩn đoán + token chuyển động + hàm reveal()
+     Phần B – Khai báo từng section
+     Phần C – Khởi động, breakpoint, giữ toạ độ trigger luôn đúng
    ========================================================= */
 (function () {
   'use strict';
 
-  // Khởi tạo GSAP và đăng ký Plugins
-  function initGSAP() {
-    if (typeof gsap === 'undefined') return;
+  /* ============================================================
+     PHẦN A00 – ÉP VỀ ĐẦU TRANG KHI F5
+     Mặc định trình duyệt tự khôi phục vị trí cuộn cũ sau khi F5, NHƯNG nó làm
+     việc đó trước khi ảnh tải xong, tức là ở một layout hoàn toàn khác. Kết
+     quả: người dùng bị thả xuống giữa một section với animation dở dang, và
+     ScrollTrigger thì tính toạ độ trên chiều cao trang chưa đúng.
+     Chặn từ gốc: tự quản lý vị trí cuộn, luôn bắt đầu từ 0.
+     Đoạn này CỐ Ý nằm ngoài mọi hàm để chạy ngay khi file được nạp.
+     ============================================================ */
 
-    if (typeof ScrollTrigger !== 'undefined') {
-      gsap.registerPlugin(ScrollTrigger);
+  // Có hash (#contact, #faq...) thì người dùng đang chủ động tới một mục cụ
+  // thể — tôn trọng điều đó, không kéo về đầu.
+  var HAS_HASH = !!(location.hash && location.hash.length > 1);
+
+  if (!HAS_HASH && 'scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  }
+
+  /** Ghim về đầu trang. Gọi lại vài lần vì trình duyệt có thể khôi phục muộn. */
+  function forceTop() {
+    if (HAS_HASH) return;
+    window.scrollTo(0, 0);
+  }
+
+  /* ============================================================
+     PHẦN A0 – LOG CHẨN ĐOÁN
+     Bật/tắt: đổi DEBUG bên dưới, hoặc thêm ?animdebug=0 vào URL.
+     ============================================================ */
+
+  var DEBUG = true;
+
+  try {
+    if (location.search.indexOf('animdebug=0') !== -1) DEBUG = false;
+    if (location.search.indexOf('animdebug=1') !== -1) DEBUG = true;
+  } catch (e) {}
+
+  var TAG = '%c[BTL]';
+  var CSS_OK = 'color:#0a0;font-weight:bold';
+  var CSS_BAD = 'color:#c00;font-weight:bold';
+  var CSS_INFO = 'color:#06c;font-weight:bold';
+
+  var report = [];   // gom kết quả từng block để in bảng tổng kết
+
+  function logInfo() {
+    if (!DEBUG) return;
+    var args = Array.prototype.slice.call(arguments);
+    console.log.apply(console, [TAG + ' ' + args.shift(), CSS_INFO].concat(args));
+  }
+
+  function logOk(name, detail) {
+    if (!DEBUG) return;
+    console.log(TAG + ' %c✓ ' + name, CSS_INFO, CSS_OK, detail || '');
+  }
+
+  function logBad(name, reason) {
+    if (!DEBUG) return;
+    console.log(TAG + ' %c✗ ' + name + '  → ' + reason, CSS_INFO, CSS_BAD);
+  }
+
+  /** Mô tả ngắn gọn một phần tử DOM để in ra console. */
+  function describe(el) {
+    if (!el) return 'null';
+    var s = el.tagName ? el.tagName.toLowerCase() : '?';
+    if (el.className && typeof el.className === 'string') {
+      s += '.' + el.className.trim().split(/\s+/).slice(0, 3).join('.');
     }
+    return s;
+  }
 
-    gsap.defaults({
-      ease: 'power3.out',
-      duration: 1.2
-    });
+  function count(el) {
+    if (!el) return 0;
+    return Array.isArray(el) ? el.length : 1;
+  }
 
-    initHeroAnimation();
-    initBandAnimation();
-    initPhiloAnimation();
-    initCareerAnimation();
-    initProgramAnimation();
-    initDualAnimation();
-    initTicketAnimation();
-    initConsultAnimation();
-    initYoyoAnimation();
-    initFeaturesAnimation();
-    initThermoAnimation();
-    initMenoAnimation();
-    initResultsAnimation();
-    initTurnHeadAnimation();
-    initFaqHeadAnimation();
-    initContactHeadAnimation();
+  /* ============================================================
+     PHẦN A – HẠ TẦNG
+     ============================================================ */
+
+  /**
+   * Token chuyển động. Đổi ở đây là đổi cảm giác của cả trang.
+   *
+   *  start / end : quãng cuộn mà animation diễn ra. 'top 90%' → 'top 40%'
+   *                nghĩa là: bắt đầu khi đỉnh phần tử chạm mốc 90% chiều cao
+   *                màn hình, kết thúc khi nó lên tới mốc 40%. Tức đúng 50vh
+   *                cuộn cho mọi khối, bất kể khối đó cao hay thấp.
+   *  scrub       : độ trễ (giây) khi animation đuổi theo con lăn.
+   *                0 = dính chặt, 1 = mượt, 2+ = lười biếng/điện ảnh.
+   *  scale       : hệ số nhân cho mọi khoảng cách px (mobile đi ít hơn).
+   */
+  var MOTION = {
+    desktop: { start: 'top 90%', end: 'top 40%', scrub: 1,   scale: 1 },
+    mobile:  { start: 'top 95%', end: 'top 45%', scrub: 0.8, scale: 0.55 }
+  };
+
+  var M = MOTION.desktop;   // token đang áp dụng, do matchMedia gán
+
+  /** Quy đổi khoảng cách px theo breakpoint. */
+  function d(px) {
+    return Math.round(px * M.scale);
+  }
+
+  // --- Tiện ích DOM (luôn an toàn với null) ---
+  function q(root, sel) { return root ? root.querySelector(sel) : null; }
+  function qq(root, sel) { return root ? gsap.utils.toArray(root.querySelectorAll(sel)) : []; }
+
+  function pick(root, selectors) {
+    if (!root) return [];
+    return selectors.map(function (s) { return root.querySelector(s); }).filter(Boolean);
+  }
+
+  function firstOf() {
+    for (var i = 0; i < arguments.length; i++) {
+      var el = arguments[i];
+      if (Array.isArray(el)) { if (el.length) return el[0]; continue; }
+      if (el) return el;
+    }
+    return null;
+  }
+
+  function isEmpty(el) {
+    return !el || (Array.isArray(el) && el.length === 0);
   }
 
   /**
-   * 01. Hero Section Animation (Slide Down Stagger)
-   * Target: .hero__label -> .hero__title -> .hero__sub
+   * reveal() – Buộc một timeline vào quãng cuộn của phần tử trigger.
+   *
+   * @param {string}   config.name     Tên block, chỉ dùng cho log.
+   * @param {Element}  config.trigger  Phần tử làm mốc cuộn (bắt buộc).
+   * @param {string}   [config.start]  Mặc định M.start.
+   * @param {string}   [config.end]    Mặc định M.end.
+   * @param {number}   [config.scrub]  Mặc định M.scrub.
+   * @param {Array}    config.steps    [{ el, from, to, at }]
+   *        `duration` trong `to` KHÔNG còn là giây — nó là TRỌNG SỐ tương
+   *        đối, vì cả timeline bị kéo giãn cho vừa quãng cuộn start→end.
+   * @param {Function} [config.loop]   Trả về mảng tween lặp vô hạn. Tween lặp
+   *        phải dùng thuộc tính KHÁC tween reveal (yPercent vs y).
    */
-  function initHeroAnimation() {
-    var heroCopy = document.querySelector('.hero__copy');
-    if (!heroCopy) return;
+  function reveal(config) {
+    var name = config.name || '(chưa đặt tên)';
 
-    var heroSec = document.querySelector('.hero') || heroCopy;
+    if (!config.trigger) {
+      logBad(name, 'KHÔNG TÌM THẤY TRIGGER');
+      report.push({ block: name, status: 'no trigger', els: 0 });
+      return null;
+    }
 
-    var heroElements = gsap.utils.toArray(
-      heroCopy.querySelectorAll('.hero__label, .hero__title, .hero__sub')
+    var all = config.steps || [];
+    var steps = all.filter(function (s) { return s && !isEmpty(s.el); });
+
+    if (steps.length === 0) {
+      logBad(name, 'KHÔNG CÓ PHẦN TỬ NÀO (trigger=' + describe(config.trigger) + ')');
+      report.push({ block: name, status: 'no elements', els: 0 });
+      return null;
+    }
+
+    var total = 0;
+    steps.forEach(function (s) { total += count(s.el); });
+
+    if (steps.length < all.length) {
+      logInfo('%s: bỏ qua %d/%d bước vì thiếu phần tử',
+        name, all.length - steps.length, all.length);
+    }
+
+    var loopTweens = [];
+
+    function killLoops() {
+      loopTweens.forEach(function (tw) { tw.kill(); });
+      loopTweens = [];
+    }
+
+    function startLoops() {
+      killLoops();
+      if (config.loop) loopTweens = config.loop() || [];
+    }
+
+    var st = null;
+
+    var tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: config.trigger,
+        start: config.start || M.start,
+        end: config.end || M.end,
+        scrub: config.scrub !== undefined ? config.scrub : M.scrub,
+        // Tính lại giá trị start của mọi tween mỗi lần refresh — cần thiết vì
+        // khoảng cách px phụ thuộc breakpoint và layout còn dịch khi ảnh load.
+        invalidateOnRefresh: true,
+        onEnter: DEBUG ? function () { logInfo('▶ %s vào tầm nhìn', name); } : null,
+        onLeaveBack: DEBUG ? function () { logInfo('◀ %s ra khỏi tầm nhìn', name); } : null
+      },
+      onComplete: startLoops,
+      onReverseComplete: killLoops
+    });
+
+    steps.forEach(function (step) {
+      if (step.at === undefined) {
+        tl.fromTo(step.el, step.from, step.to);
+      } else {
+        tl.fromTo(step.el, step.from, step.to, step.at);
+      }
+    });
+
+    st = tl.scrollTrigger;
+    logOk(name, 'trigger=' + describe(config.trigger) + '  phần tử=' + total);
+    report.push({ block: name, status: 'ok', els: total, st: st, trigger: config.trigger });
+
+    return tl;
+  }
+
+  /** Rút gọn cho khối chỉ có 1 nhóm phần tử. */
+  function revealGroup(name, trigger, el, from, to, opts) {
+    return reveal({
+      name: name,
+      trigger: trigger,
+      start: opts && opts.start,
+      end: opts && opts.end,
+      scrub: opts && opts.scrub,
+      steps: [{ el: el, from: from, to: to }]
+    });
+  }
+
+  /* --- Ba từ vựng chuyển động dùng chung cả trang --------------------
+     Tiêu đề đi XUỐNG, nội dung đi LÊN, điểm nhấn thì BUNG ra.           */
+
+  /** Trượt từ trên xuống – dùng cho mọi cụm tiêu đề. */
+  function revealDown(name, trigger, els, opts) {
+    opts = opts || {};
+    var dist = opts.dist === undefined ? 45 : opts.dist;
+    return revealGroup(name, trigger, els,
+      { autoAlpha: 0, y: -d(dist) },
+      {
+        autoAlpha: 1, y: 0, ease: 'none',
+        duration: opts.duration || 1,
+        stagger: opts.stagger === undefined ? 0.25 : opts.stagger
+      },
+      opts);
+  }
+
+  /** Trượt từ dưới lên – dùng cho nội dung, ảnh, thẻ. */
+  function revealUp(name, trigger, els, opts) {
+    opts = opts || {};
+    var dist = opts.dist === undefined ? 40 : opts.dist;
+    return revealGroup(name, trigger, els,
+      { autoAlpha: 0, y: d(dist) },
+      {
+        autoAlpha: 1, y: 0, ease: 'none',
+        duration: opts.duration || 1,
+        stagger: opts.stagger === undefined ? 0.2 : opts.stagger
+      },
+      opts);
+  }
+
+  var HEAD_2LINE = ['.sec-head__label', '.sec-head__title .line1', '.sec-head__title .line2'];
+  var HEAD_PLAIN = ['.sec-head__label', '.sec-head__title'];
+  var EASE_POP = 'back.out(1.7)';
+
+  /** Tìm section theo class chính, có selector dự phòng. Log nếu không thấy. */
+  function section(name, sel, alt) {
+    var el = document.querySelector(sel) || (alt ? document.querySelector(alt) : null);
+    if (!el) {
+      logBad(name, 'KHÔNG TÌM THẤY SECTION (' + sel + (alt ? ' | ' + alt : '') + ')');
+      report.push({ block: name, status: 'no section', els: 0 });
+    }
+    return el;
+  }
+
+  /* ============================================================
+     PHẦN B – KHAI BÁO TỪNG SECTION
+     ============================================================ */
+
+  /**
+   * 01. Hero – KHÔNG scrub.
+   * Hero nằm trên màn hình đầu tiên, lúc đó chưa có gì để cuộn, nên nó phải
+   * tự chạy khi trang load. Đây là ngoại lệ duy nhất đúng của mô hình scrub.
+   */
+  function initHero() {
+    var copy = document.querySelector('.hero__copy');
+    if (!copy) { logBad('01 hero', 'KHÔNG TÌM THẤY .hero__copy'); return; }
+
+    var els = qq(copy, '.hero__label, .hero__title, .hero__sub');
+    if (els.length === 0) { logBad('01 hero', 'KHÔNG CÓ .hero__label/.hero__title/.hero__sub'); return; }
+
+    gsap.timeline({ delay: 0.15 }).fromTo(els,
+      { autoAlpha: 0, y: -d(45) },
+      { autoAlpha: 1, y: 0, duration: 1.1, stagger: 0.18, ease: 'power3.out' }
     );
-    if (heroElements.length === 0) return;
-
-    gsap.set(heroElements, { autoAlpha: 0, y: -45 });
-
-    var heroTl = gsap.timeline({ paused: true });
-    heroTl.to(heroElements, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 1.3,
-      stagger: 0.25,
-      ease: 'power3.out',
-      clearProps: 'will-change'
-    });
-
-    function play() { heroTl.restart(); }
-    function reset() { heroTl.pause(0); }
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: heroSec,   // 🎯 Dùng .hero làm Trigger vì .hero__copy dùng display:contents trên mobile làm bounding-box = 0
-        start: 'top 100%',
-        end: 'bottom top',
-        onEnter: play,
-        onEnterBack: play,
-        onLeave: reset,
-        onLeaveBack: reset
-      });
-    } else if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { play(); } else { reset(); }
-          });
-        },
-        { threshold: 0 }
-      );
-      observer.observe(heroSec);
-    } else {
-      play();
-    }
+    logOk('01 hero (chạy khi load, không scrub)', 'phần tử=' + els.length);
+    report.push({ block: '01 hero', status: 'ok (load)', els: els.length });
   }
 
   /**
-   * 02. 19 YEARS Band Typewriter Animation (.band p)
+   * 02. Band 19 YEARS – máy đánh chữ, cũng KHÔNG scrub.
+   * Chữ viết dở dang khi người dùng dừng giữa chừng sẽ trông như lỗi, nên
+   * hiệu ứng này chạy trọn vẹn một lượt.
    */
-  function initBandAnimation() {
-    var bandEl = document.querySelector('.band');
-    if (!bandEl) return;
-
-    var pEl = bandEl.querySelector('p');
-    if (!pEl) return;
+  function initBand() {
+    var band = document.querySelector('.band');
+    var pEl = q(band, 'p');
+    if (!pEl) { logBad('02 band', 'KHÔNG TÌM THẤY .band p'); return; }
 
     var fullText = pEl.textContent.trim();
-    if (!fullText) return;
+    if (!fullText) { logBad('02 band', '.band p RỖNG'); return; }
 
-    var progressObj = { count: 0 };
-    var bandTl = gsap.timeline({ paused: true });
+    var progress = { count: 0 };
+    pEl.textContent = '';
 
-    bandTl.to(progressObj, {
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: band,
+        start: 'top 92%',
+        toggleActions: 'restart none none reset'
+      }
+    }).to(progress, {
       count: fullText.length,
       duration: 1.5,
       ease: 'none',
       onUpdate: function () {
-        var currentCount = Math.floor(progressObj.count);
-        pEl.textContent = fullText.slice(0, currentCount);
+        pEl.textContent = fullText.slice(0, Math.floor(progress.count));
       }
     });
+    logOk('02 band (typewriter, không scrub)', fullText.length + ' ký tự');
+    report.push({ block: '02 band', status: 'ok (typewriter)', els: 1 });
+  }
 
-    function playTypewriter() {
-      pEl.textContent = '';
-      bandTl.restart();
-    }
+  /** 03. Philosophy – tiêu đề, logo, danh sách thẻ. */
+  function initPhilo() {
+    var sec = section('03 philo', '.sec.philo', '#philosophy');
+    if (!sec) return;
 
-    function resetTypewriter() {
-      pEl.textContent = '';
-      bandTl.pause(0);
-    }
+    var head = q(sec, '.sec-head');
+    revealDown('03 philo / head', head,
+      pick(head, ['.sec-head__title', '.philo__lead-1', '.philo__lead-2']), { stagger: 0.2 });
 
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: bandEl,
-        start: 'top 100%',
-        end: 'bottom top',
-        onEnter: playTypewriter,
-        onEnterBack: playTypewriter,
-        onLeave: resetTypewriter,
-        onLeaveBack: resetTypewriter
-      });
-    } else if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { playTypewriter(); } else { resetTypewriter(); }
-          });
+    var logo = q(sec, '.philo__logo');
+    revealDown('03 philo / logo', logo,
+      pick(logo, ['.philo__logo-mark', '.philo__logo-text']), { dist: 40, stagger: 0.2 });
+
+    var items = qq(sec, '.philo__item');
+    revealUp('03 philo / items', firstOf(q(sec, '.philo__list'), items), items,
+      { dist: 30, stagger: 0.12, duration: 0.8 });
+  }
+
+  /** 04. Career – tiêu đề, giải thưởng, cúp + pháo hoa, cụm TV, player. */
+  function initCareer() {
+    var sec = section('04 career', '.sec.career', '#career');
+    if (!sec) return;
+
+    var titleWrap = q(sec, '.career__title-wrap');
+    revealDown('04 career / title', titleWrap,
+      pick(titleWrap, ['.career__arc', '.career__title .l1', '.career__title .l2']));
+
+    var awards = q(sec, '.career__awards');
+    revealUp('04 career / awards', awards, qq(awards, '.award'), { dist: 45 });
+
+    var trophyWrap = q(sec, '.career__trophy-wrap');
+    reveal({
+      name: '04 career / trophy',
+      trigger: trophyWrap,
+      steps: [
+        {
+          el: q(trophyWrap, '.career__trophy'),
+          from: { autoAlpha: 0, y: d(50), scale: 0.9 },
+          to: { autoAlpha: 1, y: 0, scale: 1, duration: 1.15, ease: 'none' }
         },
-        { threshold: 0 }
-      );
-      observer.observe(bandEl);
-    } else {
-      playTypewriter();
-    }
-  }
+        {
+          el: qq(trophyWrap, '.career__confetti'),
+          from: { autoAlpha: 0, scale: 0.6 },
+          to: { autoAlpha: 1, scale: 1, duration: 0.9, stagger: 0.15, ease: EASE_POP },
+          at: '-=0.4'
+        }
+      ]
+    });
 
-  /**
-   * 03. Philosophy Section Animations (.sec.philo)
-   * Kích hoạt độc lập từng khối khi cuộn chạm đúng phần tử đó:
-   * - Block 1: .sec-head (Tiêu đề & Lead lines trượt xuống)
-   * - Block 2: .philo__logo (Logo mark & logo text trượt xuống)
-   * - Block 3: .philo__list (Các thẻ .philo__item trượt lên)
-   */
-  function initPhiloAnimation() {
-    var philoSec = document.querySelector('.sec.philo') || document.querySelector('#philosophy');
-    if (!philoSec) return;
+    var tvWrap = q(sec, '.career__tv');
+    var liveBadge = q(tvWrap, '.career__live');
+    var tvTitle = q(tvWrap, '.career__tv-title');
+    revealDown('04 career / tv-head', firstOf(tvTitle, liveBadge, tvWrap),
+      [liveBadge, tvTitle].filter(Boolean), { dist: 35, stagger: 0.22 });
 
-    // --- Block 1: .sec-head (Tiêu đề & Lead lines) ---
-    var headWrap = philoSec.querySelector('.sec-head');
-    if (headWrap) {
-      var headElements = [
-        headWrap.querySelector('.sec-head__title'),
-        headWrap.querySelector('.philo__lead-1'),
-        headWrap.querySelector('.philo__lead-2')
-      ].filter(Boolean);
-
-      if (headElements.length > 0) {
-        gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-        var headTl = gsap.timeline({ paused: true });
-        headTl.to(headElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.0,
-          stagger: 0.15,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playHead() { headTl.restart(); }
-        function resetHead() { headTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: headWrap,
-            start: 'top 85%',
-            onEnter: playHead,
-            onEnterBack: playHead,
-            onLeaveBack: resetHead
+    var player = q(sec, '.career__player');
+    var apps = qq(sec, '.career__apps img');
+    reveal({
+      name: '04 career / player',
+      trigger: player,
+      steps: [
+        {
+          el: player,
+          from: { autoAlpha: 0, y: d(45) },
+          to: { autoAlpha: 1, y: 0, duration: 1.1, ease: 'none' }
+        },
+        {
+          el: apps,
+          from: { autoAlpha: 0, y: -d(45) },
+          to: { autoAlpha: 1, y: 0, duration: 1, stagger: 0.18, ease: 'none' },
+          at: '-=0.4'
+        }
+      ],
+      // Nhún trên trục yPercent, KHÔNG dùng y — y đang thuộc quyền tween scrub.
+      loop: function () {
+        return apps.map(function (img, idx) {
+          return gsap.to(img, {
+            yPercent: -8, duration: 1.6 + idx * 0.3,
+            repeat: -1, yoyo: true, ease: 'sine.inOut'
           });
-        } else if ('IntersectionObserver' in window) {
-          var obsHead = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playHead(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsHead.observe(headWrap);
-        } else {
-          playHead();
-        }
-      }
-    }
-
-    // --- Block 2: .philo__logo (Logo mark & Logo text) ---
-    var logoWrap = philoSec.querySelector('.philo__logo');
-    if (logoWrap) {
-      var logoElements = [
-        logoWrap.querySelector('.philo__logo-mark'),
-        logoWrap.querySelector('.philo__logo-text')
-      ].filter(Boolean);
-
-      if (logoElements.length > 0) {
-        gsap.set(logoElements, { autoAlpha: 0, y: -40 });
-
-        var logoTl = gsap.timeline({ paused: true });
-        logoTl.to(logoElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.0,
-          stagger: 0.15,
-          ease: 'power3.out',
-          clearProps: 'will-change'
         });
-
-        function playLogo() { logoTl.restart(); }
-        function resetLogo() { logoTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: logoWrap,
-            start: 'top 85%',
-            onEnter: playLogo,
-            onEnterBack: playLogo,
-            onLeaveBack: resetLogo
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsLogo = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playLogo(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsLogo.observe(logoWrap);
-        } else {
-          playLogo();
-        }
-      }
-    }
-
-    // --- Block 3: .philo__list (Các thẻ .philo__item) ---
-    var listWrap = philoSec.querySelector('.philo__list');
-    var listElements = gsap.utils.toArray(philoSec.querySelectorAll('.philo__item'));
-    var listTrigger = listWrap || (listElements.length > 0 ? listElements[0] : null);
-
-    if (listTrigger && listElements.length > 0) {
-      gsap.set(listElements, { autoAlpha: 0, y: 30 });
-
-      var listTl = gsap.timeline({ paused: true });
-      listTl.to(listElements, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.65,
-        stagger: 0.08,
-        ease: 'power3.out',
-        clearProps: 'will-change'
-      });
-
-      function playList() { listTl.restart(); }
-      function resetList() { listTl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: listTrigger,
-          start: 'top 92%',
-          onEnter: playList,
-          onEnterBack: playList,
-          onLeaveBack: resetList
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsList = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playList(); }
-            });
-          },
-          { threshold: 0.05 }
-        );
-        obsList.observe(listTrigger);
-      } else {
-        playList();
-      }
-    }
-  }
-
-  /**
-   * 04. Career Section Animations (.sec.career)
-   * Kích hoạt độc lập từng khối khi cuộn chạm đúng phần tử đó:
-   * - Block 1: .career__title-wrap (Tiêu đề chữ trượt xuống)
-   * - Block 2: .career__awards (Các thẻ .award trượt lên)
-   * - Block 3: .career__trophy-wrap (.career__trophy hiện trước, sau đó tới pháo hoa)
-   * - Block 4: .career__tv tiêu đề (Live badge & TV title trượt xuống)
-   * - Block 5: .career__player (Cụm Player video & App badges trượt lên khi chạm tới Player)
-   */
-  function initCareerAnimation() {
-    var careerSec = document.querySelector('.sec.career') || document.querySelector('#career');
-    if (!careerSec) return;
-
-    // --- Block 1: .career__title-wrap (Trượt xuống cho chữ bên trong) ---
-    var titleWrap = careerSec.querySelector('.career__title-wrap');
-    if (titleWrap) {
-      var titleElements = [
-        titleWrap.querySelector('.career__arc'),
-        titleWrap.querySelector('.career__title .l1'),
-        titleWrap.querySelector('.career__title .l2')
-      ].filter(Boolean);
-
-      if (titleElements.length > 0) {
-        gsap.set(titleElements, { autoAlpha: 0, y: -45 });
-
-        var titleTl = gsap.timeline({ paused: true });
-        titleTl.to(titleElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.2,
-          stagger: 0.22,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playTitle() { titleTl.restart(); }
-        function resetTitle() { titleTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: titleWrap,
-            start: 'top 85%',
-            onEnter: playTitle,
-            onEnterBack: playTitle,
-            onLeaveBack: resetTitle
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsTitle = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playTitle(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsTitle.observe(titleWrap);
-        } else {
-          playTitle();
-        }
-      }
-    }
-
-    // --- Block 2: .career__awards (Các item class="award" trượt lên) ---
-    var awardsWrap = careerSec.querySelector('.career__awards');
-    if (awardsWrap) {
-      var awardItems = gsap.utils.toArray(awardsWrap.querySelectorAll('.award'));
-      if (awardItems.length > 0) {
-        gsap.set(awardItems, { autoAlpha: 0, y: 45 });
-
-        var awardsTl = gsap.timeline({ paused: true });
-        awardsTl.to(awardItems, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playAwards() { awardsTl.restart(); }
-        function resetAwards() { awardsTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: awardsWrap,
-            start: 'top 85%',
-            onEnter: playAwards,
-            onEnterBack: playAwards,
-            onLeaveBack: resetAwards
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsAwards = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playAwards(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsAwards.observe(awardsWrap);
-        } else {
-          playAwards();
-        }
-      }
-    }
-
-    // --- Block 3: .career__trophy-wrap (.career__trophy hiện trước, đến pháo hoa) ---
-    var trophyWrap = careerSec.querySelector('.career__trophy-wrap');
-    if (trophyWrap) {
-      var trophyImg = trophyWrap.querySelector('.career__trophy');
-      var confettiImgs = gsap.utils.toArray(trophyWrap.querySelectorAll('.career__confetti'));
-
-      if (trophyImg) {
-        gsap.set(trophyImg, { autoAlpha: 0, y: 50, scale: 0.9 });
-        if (confettiImgs.length > 0) {
-          gsap.set(confettiImgs, { autoAlpha: 0, scale: 0.6 });
-        }
-
-        var trophyTl = gsap.timeline({ paused: true });
-
-        // Bước 1: Trái Cúp trượt lên và nhô to lên
-        trophyTl.to(trophyImg, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.15,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        // Bước 2: Pháo hoa (Confetti) bung ra 2 bên
-        if (confettiImgs.length > 0) {
-          trophyTl.to(confettiImgs, {
-            autoAlpha: 1,
-            scale: 1,
-            duration: 0.9,
-            stagger: 0.15,
-            ease: 'back.out(1.7)',
-            clearProps: 'will-change'
-          }, '-=0.4');
-        }
-
-        function playTrophy() { trophyTl.restart(); }
-        function resetTrophy() { trophyTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: trophyWrap,
-            start: 'top 85%',
-            onEnter: playTrophy,
-            onEnterBack: playTrophy,
-            onLeaveBack: resetTrophy
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsTrophy = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playTrophy(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsTrophy.observe(trophyWrap);
-        } else {
-          playTrophy();
-        }
-      }
-    }
-
-    // --- Block 4: .career__tv Header (LIVE badge & TV title) ---
-    var tvWrap = careerSec.querySelector('.career__tv');
-    if (tvWrap) {
-      var liveBadge = tvWrap.querySelector('.career__live');
-      var tvTitle = tvWrap.querySelector('.career__tv-title');
-      var tvHeadElements = [liveBadge, tvTitle].filter(Boolean);
-
-      if (tvHeadElements.length > 0) {
-        gsap.set(tvHeadElements, { autoAlpha: 0, y: -35 });
-
-        var tvHeadTl = gsap.timeline({ paused: true });
-        tvHeadTl.to(tvHeadElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playTvHead() { tvHeadTl.restart(); }
-        function resetTvHead() { tvHeadTl.pause(0); }
-
-        var tvHeadTrigger = tvTitle || liveBadge || tvWrap;
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: tvHeadTrigger,
-            start: 'top 85%',
-            onEnter: playTvHead,
-            onEnterBack: playTvHead,
-            onLeaveBack: resetTvHead
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsTvHead = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playTvHead(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsTvHead.observe(tvHeadTrigger);
-        } else {
-          playTvHead();
-        }
-      }
-
-      // --- Block 5: .career__player (Video Player & App Badges) ---
-      var playerEl = tvWrap.querySelector('.career__player');
-      var appEls = gsap.utils.toArray(tvWrap.querySelectorAll('.career__apps img'));
-      var tvBounceTweens = [];
-
-      if (playerEl) {
-        gsap.set(playerEl, { autoAlpha: 0, y: 45 });
-        if (appEls.length > 0) gsap.set(appEls, { autoAlpha: 0, y: -45 });
-
-        var playerTl = gsap.timeline({ paused: true });
-        playerTl.to(playerEl, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        if (appEls.length > 0) {
-          playerTl.to(appEls, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 1.0,
-            stagger: 0.15,
-            ease: 'power3.out',
-            clearProps: 'will-change',
-            onComplete: function () {
-              appEls.forEach(function (appImg, idx) {
-                var tw = gsap.to(appImg, {
-                  y: -10,
-                  duration: 1.6 + idx * 0.3,
-                  repeat: -1,
-                  yoyo: true,
-                  ease: 'sine.easeInOut'
-                });
-                tvBounceTweens.push(tw);
-              });
-            }
-          }, '-=0.4');
-        }
-
-        function killTvBounces() {
-          tvBounceTweens.forEach(function (tw) { tw.kill(); });
-          tvBounceTweens = [];
-        }
-
-        function playPlayer() {
-          killTvBounces();
-          playerTl.restart();
-        }
-
-        function resetPlayer() {
-          killTvBounces();
-          playerTl.pause(0);
-        }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: playerEl,
-            start: 'top 85%',
-            onEnter: playPlayer,
-            onEnterBack: playPlayer,
-            onLeaveBack: resetPlayer
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsPlayer = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playPlayer(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsPlayer.observe(playerEl);
-        } else {
-          playPlayer();
-        }
-      }
-    }
-  }
-
-  /**
-   * 05. Program Section Animations (.sec.program)
-   * Kích hoạt độc lập từng khối khi cuộn chạm đúng phần tử đó:
-   * - Block 1: .sec-head (Tiêu đề trượt xuống khi cuộn chạm vào .sec-head)
-   * - Block 2: .tabs (Các nút Tab trượt lên khi cuộn chạm vào .tabs)
-   * - Block 3: .program__card (Card hiển thị trượt lên khi cuộn chạm vào Card)
-   * - Block 4: .program__desc (Mô tả chương trình trượt lên khi cuộn chạm vào Desc)
-   */
-  function initProgramAnimation() {
-    var programSec = document.querySelector('.sec.program') || document.querySelector('#program');
-    if (!programSec) return;
-
-    // --- Block 1: .sec-head (Tiêu đề trượt xuống) ---
-    var programHead = programSec.querySelector('.sec-head');
-    if (programHead) {
-      var headElements = [
-        programHead.querySelector('.sec-head__label'),
-        programHead.querySelector('.sec-head__title')
-      ].filter(Boolean);
-
-      if (headElements.length > 0) {
-        gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-        var headTl = gsap.timeline({ paused: true });
-        headTl.to(headElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.2,
-          stagger: 0.22,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playHead() { headTl.restart(); }
-        function resetHead() { headTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: programHead,
-            start: 'top 85%',
-            onEnter: playHead,
-            onEnterBack: playHead,
-            onLeaveBack: resetHead
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsHead = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playHead(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsHead.observe(programHead);
-        } else {
-          playHead();
-        }
-      }
-    }
-
-    // --- Block 2: .tabs (Các nút Tab trượt lên) ---
-    var tabsWrap = programSec.querySelector('.tabs');
-    if (tabsWrap) {
-      var tabButtons = gsap.utils.toArray(tabsWrap.querySelectorAll('.tab'));
-      if (tabButtons.length > 0) {
-        gsap.set(tabButtons, { autoAlpha: 0, y: 35 });
-
-        var tabsTl = gsap.timeline({ paused: true });
-        tabsTl.to(tabButtons, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.0,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playTabs() { tabsTl.restart(); }
-        function resetTabs() { tabsTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: tabsWrap,
-            start: 'top 85%',
-            onEnter: playTabs,
-            onEnterBack: playTabs,
-            onLeaveBack: resetTabs
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsTabs = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playTabs(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsTabs.observe(tabsWrap);
-        } else {
-          playTabs();
-        }
-      }
-    }
-
-    // --- Block 3 & 4: Từng Panel (.program__card & .program__desc) ---
-    var panels = gsap.utils.toArray(programSec.querySelectorAll('.program__panel'));
-    panels.forEach(function (panel) {
-      var card = panel.querySelector('.program__card');
-      var desc = panel.querySelector('.program__desc');
-
-      // Block 3: .program__card (Card hiển thị trượt lên khi cuộn chạm vào Card)
-      if (card) {
-        gsap.set(card, { autoAlpha: 0, y: 45 });
-
-        var cardTl = gsap.timeline({ paused: true });
-        cardTl.to(card, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playCard() { cardTl.restart(); }
-        function resetCard() { cardTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: card,
-            start: 'top 85%',
-            onEnter: playCard,
-            onEnterBack: playCard,
-            onLeaveBack: resetCard
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsCard = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playCard(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsCard.observe(card);
-        } else {
-          playCard();
-        }
-      }
-
-      // Block 4: .program__desc (Text mô tả trượt lên khi cuộn chạm vào Desc)
-      if (desc) {
-        gsap.set(desc, { autoAlpha: 0, y: 30 });
-
-        var descTl = gsap.timeline({ paused: true });
-        descTl.to(desc, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playDesc() { descTl.restart(); }
-        function resetDesc() { descTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: desc,
-            start: 'top 85%',
-            onEnter: playDesc,
-            onEnterBack: playDesc,
-            onLeaveBack: resetDesc
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsDesc = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playDesc(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsDesc.observe(desc);
-        } else {
-          playDesc();
-        }
       }
     });
   }
 
-  /**
-   * 06. Dual Solution Section Animations (.sec.dual)
-   * Kích hoạt độc lập từng khối khi cuộn chạm đúng phần tử đó:
-   * - Block 1: .sec-head (Tiêu đề trượt xuống)
-   * - Block 2: .dual__block (lần 1 - 최신기기: h3 + check-list)
-   * - Block 3: .dual__devices & .dual__plus (Carousel thiết bị + dấu +)
-   * - Block 4: .dual__block (lần 2 - 수기테라피: h3 + check-list)
-   * - Block 5: .dual__therapy (Ảnh 수기테라피)
-   */
-  function initDualAnimation() {
-    var dualSec = document.querySelector('.sec.dual') || document.querySelector('#dual');
-    if (!dualSec) return;
+  /** 05. Program – tiêu đề, tabs, và từng panel (card + mô tả). */
+  function initProgram() {
+    var sec = section('05 program', '.sec.program', '#program');
+    if (!sec) return;
 
-    // --- Block 1: .sec-head (Tiêu đề trượt xuống) ---
-    var headWrap = dualSec.querySelector('.sec-head');
-    if (headWrap) {
-      var headElements = [
-        headWrap.querySelector('.sec-head__label'),
-        headWrap.querySelector('.sec-head__title')
-      ].filter(Boolean);
+    var head = q(sec, '.sec-head');
+    revealDown('05 program / head', head, pick(head, HEAD_PLAIN));
 
-      if (headElements.length > 0) {
-        gsap.set(headElements, { autoAlpha: 0, y: -45 });
+    var tabs = q(sec, '.tabs');
+    revealUp('05 program / tabs', tabs, qq(tabs, '.tab'),
+      { dist: 35, stagger: 0.12, duration: 0.8 });
 
-        var headTl = gsap.timeline({ paused: true });
-        headTl.to(headElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.1,
-          stagger: 0.22,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
+    qq(sec, '.program__panel').forEach(function (panel, i) {
+      var card = q(panel, '.program__card');
+      revealUp('05 program / card#' + i, card, card, { dist: 45, duration: 1.1 });
 
-        function playHead() { headTl.restart(); }
-        function resetHead() { headTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: headWrap,
-            start: 'top 85%',
-            onEnter: playHead,
-            onEnterBack: playHead,
-            onLeaveBack: resetHead
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsHead = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playHead(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsHead.observe(headWrap);
-        } else {
-          playHead();
-        }
-      }
-    }
-
-    var blocks = dualSec.querySelectorAll('.dual__block');
-
-    // --- Block 2: .dual__block (Block 1 - 최신기기) ---
-    var block1 = blocks[0];
-    if (block1) {
-      var block1H3 = block1.querySelector('h3');
-      var block1Lis = gsap.utils.toArray(block1.querySelectorAll('.check-list li'));
-
-      if (block1H3) gsap.set(block1H3, { autoAlpha: 0, y: -25 });
-      if (block1Lis.length > 0) gsap.set(block1Lis, { autoAlpha: 0, x: -30 });
-
-      var block1Tl = gsap.timeline({ paused: true });
-      if (block1H3) {
-        block1Tl.to(block1H3, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-      }
-      if (block1Lis.length > 0) {
-        block1Tl.to(block1Lis, {
-          autoAlpha: 1,
-          x: 0,
-          duration: 0.85,
-          stagger: 0.15,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, block1H3 ? '-=0.4' : 0);
-      }
-
-      function playBlock1() { block1Tl.restart(); }
-      function resetBlock1() { block1Tl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: block1,
-          start: 'top 85%',
-          onEnter: playBlock1,
-          onEnterBack: playBlock1,
-          onLeaveBack: resetBlock1
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsBlock1 = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playBlock1(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsBlock1.observe(block1);
-      } else {
-        playBlock1();
-      }
-    }
-
-    // --- Block 3: .dual__devices & .dual__plus (Thiết bị & Dấu +) ---
-    var devicesWrap = dualSec.querySelector('.dual__devices');
-    var plusIcon = dualSec.querySelector('.dual__plus');
-    if (devicesWrap) {
-      gsap.set(devicesWrap, { autoAlpha: 0, y: 35 });
-      if (plusIcon) gsap.set(plusIcon, { autoAlpha: 0, scale: 0.5 });
-
-      var devicesTl = gsap.timeline({ paused: true });
-      devicesTl.to(devicesWrap, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        clearProps: 'will-change'
-      });
-      if (plusIcon) {
-        devicesTl.to(plusIcon, {
-          autoAlpha: 1,
-          scale: 1,
-          duration: 0.6,
-          ease: 'back.out(1.7)',
-          clearProps: 'will-change'
-        }, '-=0.2');
-      }
-
-      function playDevices() { devicesTl.restart(); }
-      function resetDevices() { devicesTl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: devicesWrap,
-          start: 'top 85%',
-          onEnter: playDevices,
-          onEnterBack: playDevices,
-          onLeaveBack: resetDevices
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsDevices = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playDevices(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsDevices.observe(devicesWrap);
-      } else {
-        playDevices();
-      }
-    }
-
-    // --- Block 4: .dual__block (Block 2 - 수기테라피) ---
-    var block2 = blocks[1];
-    if (block2) {
-      var block2H3 = block2.querySelector('h3');
-      var block2Lis = gsap.utils.toArray(block2.querySelectorAll('.check-list li'));
-
-      if (block2H3) gsap.set(block2H3, { autoAlpha: 0, y: -25 });
-      if (block2Lis.length > 0) gsap.set(block2Lis, { autoAlpha: 0, x: -30 });
-
-      var block2Tl = gsap.timeline({ paused: true });
-      if (block2H3) {
-        block2Tl.to(block2H3, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-      }
-      if (block2Lis.length > 0) {
-        block2Tl.to(block2Lis, {
-          autoAlpha: 1,
-          x: 0,
-          duration: 0.85,
-          stagger: 0.15,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, block2H3 ? '-=0.4' : 0);
-      }
-
-      function playBlock2() { block2Tl.restart(); }
-      function resetBlock2() { block2Tl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: block2,
-          start: 'top 85%',
-          onEnter: playBlock2,
-          onEnterBack: playBlock2,
-          onLeaveBack: resetBlock2
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsBlock2 = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playBlock2(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsBlock2.observe(block2);
-      } else {
-        playBlock2();
-      }
-    }
-
-    // --- Block 5: .dual__therapy (Ảnh 수기테라피) ---
-    var therapyWrap = dualSec.querySelector('.dual__therapy');
-    if (therapyWrap) {
-      gsap.set(therapyWrap, { autoAlpha: 0, y: 35 });
-
-      var therapyTl = gsap.timeline({ paused: true });
-      therapyTl.to(therapyWrap, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        clearProps: 'will-change'
-      });
-
-      function playTherapy() { therapyTl.restart(); }
-      function resetTherapy() { therapyTl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: therapyWrap,
-          start: 'top 85%',
-          onEnter: playTherapy,
-          onEnterBack: playTherapy,
-          onLeaveBack: resetTherapy
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsTherapy = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playTherapy(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsTherapy.observe(therapyWrap);
-      } else {
-        playTherapy();
-      }
-    }
+      var desc = q(panel, '.program__desc');
+      revealUp('05 program / desc#' + i, desc, desc, { dist: 30, duration: 0.9 });
+    });
   }
 
-  /**
-   * 07. Experience Ticket Section Animations (.sec.ticket)
-   * Kích hoạt độc lập từng khối khi cuộn chạm đúng phần tử đó:
-   * - Block 1: .ticket__head (Label, Sub, Title) trượt xuống khi chạm .ticket__head
-   * - Block 2: .ticket__visual (Tấm vé ticket-img trượt nhô lên + Vòng tròn ticket-circle bung pop-in) khi chạm .ticket__visual
-   */
-  function initTicketAnimation() {
-    var ticketSec = document.querySelector('.sec.ticket') || document.querySelector('#ticket');
-    if (!ticketSec) return;
+  /** 06. Dual Solution – 2 khối text + carousel thiết bị + ảnh therapy. */
+  function initDual() {
+    var sec = section('06 dual', '.sec.dual', '#dual');
+    if (!sec) return;
 
-    // --- Block 1: .ticket__head (Label, Sub, Title) ---
-    var headWrap = ticketSec.querySelector('.ticket__head');
-    if (headWrap) {
-      var headElements = [
-        headWrap.querySelector('.ticket__label'),
-        headWrap.querySelector('.ticket__sub'),
-        headWrap.querySelector('.ticket__title')
-      ].filter(Boolean);
+    var head = q(sec, '.sec-head');
+    revealDown('06 dual / head', head, pick(head, HEAD_PLAIN));
 
-      if (headElements.length > 0) {
-        gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-        var headTl = gsap.timeline({ paused: true });
-        headTl.to(headElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.15,
-          stagger: 0.22,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playHead() { headTl.restart(); }
-        function resetHead() { headTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: headWrap,
-            start: 'top 85%',
-            onEnter: playHead,
-            onEnterBack: playHead,
-            onLeaveBack: resetHead
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsHead = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playHead(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsHead.observe(headWrap);
-        } else {
-          playHead();
-        }
-      }
-    }
-
-    // --- Block 2: .ticket__visual (Tấm vé & Vòng tròn quay) ---
-    var visualWrap = ticketSec.querySelector('.ticket__visual');
-    if (visualWrap) {
-      var ticketImg = visualWrap.querySelector('.ticket-img');
-      var ticketCircle = visualWrap.querySelector('.ticket-circle');
-      var rotateTween = null;
-
-      if (ticketImg) gsap.set(ticketImg, { autoAlpha: 0, y: 50, scale: 0.9 });
-      if (ticketCircle) gsap.set(ticketCircle, { autoAlpha: 0, scale: 0.6, rotation: -15 });
-
-      var visualTl = gsap.timeline({ paused: true });
-
-      if (ticketImg) {
-        visualTl.to(ticketImg, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-      }
-
-      if (ticketCircle) {
-        visualTl.to(ticketCircle, {
-          autoAlpha: 1,
-          scale: 1,
-          rotation: 0,
-          duration: 0.9,
-          ease: 'back.out(1.7)',
-          clearProps: 'will-change',
-          onComplete: function () {
-            if (!rotateTween) {
-              rotateTween = gsap.to(ticketCircle, {
-                rotation: 360,
-                duration: 12,
-                repeat: -1,
-                ease: 'none'
-              });
-            } else {
-              rotateTween.play();
-            }
+    qq(sec, '.dual__block').forEach(function (block, i) {
+      reveal({
+        name: '06 dual / block#' + i,
+        trigger: block,
+        steps: [
+          {
+            el: q(block, 'h3'),
+            from: { autoAlpha: 0, y: -d(25) },
+            to: { autoAlpha: 1, y: 0, duration: 0.9, ease: 'none' }
+          },
+          {
+            el: qq(block, '.check-list li'),
+            from: { autoAlpha: 0, x: -d(30) },
+            to: { autoAlpha: 1, x: 0, duration: 0.85, stagger: 0.15, ease: 'none' },
+            at: '-=0.4'
           }
-        }, ticketImg ? '-=0.5' : 0);
-      }
-
-      function playVisual() {
-        if (rotateTween) rotateTween.pause(0);
-        visualTl.restart();
-      }
-
-      function resetVisual() {
-        if (rotateTween) rotateTween.pause(0);
-        visualTl.pause(0);
-      }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: visualWrap,
-          start: 'top 85%',
-          onEnter: playVisual,
-          onEnterBack: playVisual,
-          onLeaveBack: resetVisual
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsVisual = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playVisual(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsVisual.observe(visualWrap);
-      } else {
-        playVisual();
-      }
-    }
-  }
-
-  /**
-   * 08. Real-time Consult Status Section Animations (.sec.consult)
-   * Kích hoạt độc lập từng khối khi cuộn chạm đúng phần tử đó:
-   * - Block 1: .sec-head (Label & Title) trượt xuống khi cuộn chạm vào .sec-head
-   * - Block 2: .consult__list các dòng .consult__row trượt lên lần lượt khi cuộn chạm vào .consult__list
-   */
-  function initConsultAnimation() {
-    var consultSec = document.querySelector('.sec.consult') || document.querySelector('#consult');
-    if (!consultSec) return;
-
-    // --- Block 1: .sec-head (Label & Title trượt xuống) ---
-    var headWrap = consultSec.querySelector('.sec-head');
-    if (headWrap) {
-      var headElements = [
-        headWrap.querySelector('.sec-head__label'),
-        headWrap.querySelector('.sec-head__title')
-      ].filter(Boolean);
-
-      if (headElements.length > 0) {
-        gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-        var headTl = gsap.timeline({ paused: true });
-        headTl.to(headElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.15,
-          stagger: 0.22,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playHead() { headTl.restart(); }
-        function resetHead() { headTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: headWrap,
-            start: 'top 85%',
-            onEnter: playHead,
-            onEnterBack: playHead,
-            onLeaveBack: resetHead
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsHead = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playHead(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsHead.observe(headWrap);
-        } else {
-          playHead();
-        }
-      }
-    }
-
-    // --- Block 2: .consult__list (Các dòng .consult__row trượt lên lần lượt) ---
-    var consultList = consultSec.querySelector('.consult__list');
-    var consultRows = gsap.utils.toArray(consultSec.querySelectorAll('.consult__row'));
-    var triggerWrap = consultList || (consultRows.length > 0 ? consultRows[0] : null);
-
-    if (triggerWrap && consultRows.length > 0) {
-      gsap.set(consultRows, { autoAlpha: 0, y: 40 });
-
-      var listTl = gsap.timeline({ paused: true });
-      listTl.to(consultRows, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.95,
-        stagger: 0.15,
-        ease: 'power3.out',
-        clearProps: 'will-change'
+        ]
       });
+    });
 
-      function playList() { listTl.restart(); }
-      function resetList() { listTl.pause(0); }
+    var devices = q(sec, '.dual__devices');
+    reveal({
+      name: '06 dual / devices',
+      trigger: devices,
+      steps: [
+        {
+          el: devices,
+          from: { autoAlpha: 0, y: d(35) },
+          to: { autoAlpha: 1, y: 0, duration: 0.9, ease: 'none' }
+        },
+        {
+          el: q(sec, '.dual__plus'),
+          from: { autoAlpha: 0, scale: 0.5 },
+          to: { autoAlpha: 1, scale: 1, duration: 0.6, ease: EASE_POP },
+          at: '-=0.2'
+        }
+      ]
+    });
 
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: triggerWrap,
-          start: 'top 85%',
-          onEnter: playList,
-          onEnterBack: playList,
-          onLeaveBack: resetList
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsList = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playList(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsList.observe(triggerWrap);
-      } else {
-        playList();
-      }
-    }
+    var therapy = q(sec, '.dual__therapy');
+    revealUp('06 dual / therapy', therapy, therapy, { dist: 35, duration: 0.9 });
   }
 
-  /**
-   * 09. Yoyo ZERO Section Animations (.sec.yoyo & preceding .sec-head)
-   * - Block 1: .sec-head (Label & Title) trượt xuống khi cuộn chạm vào .sec-head
-   * - Block 2: .sec.yoyo (.compare bảng so sánh & .swipe-hint) trượt lên khi cuộn chạm vào .sec.yoyo
-   */
-  function initYoyoAnimation() {
-    var yoyoSec = document.querySelector('.sec.yoyo') || document.querySelector('#yoyo');
-    if (!yoyoSec) return;
+  /** 07. Experience Ticket – tiêu đề, tấm vé nhô lên, vòng tròn bung & xoay. */
+  function initTicket() {
+    var sec = section('07 ticket', '.sec.ticket', '#ticket');
+    if (!sec) return;
 
-    // Tìm sec-head ngay trước sec.yoyo hoặc sec-head có chứa nhãn Yoyo
-    var yoyoHead = yoyoSec.previousElementSibling && yoyoSec.previousElementSibling.classList.contains('sec-head')
-      ? yoyoSec.previousElementSibling
+    var head = q(sec, '.ticket__head');
+    revealDown('07 ticket / head', head,
+      pick(head, ['.ticket__label', '.ticket__sub', '.ticket__title']));
+
+    var visual = q(sec, '.ticket__visual');
+    var circle = q(visual, '.ticket-circle');
+    reveal({
+      name: '07 ticket / visual',
+      trigger: visual,
+      steps: [
+        {
+          el: q(visual, '.ticket-img'),
+          from: { autoAlpha: 0, y: d(50), scale: 0.9 },
+          to: { autoAlpha: 1, y: 0, scale: 1, duration: 1.1, ease: 'none' }
+        },
+        {
+          // Không đụng tới `rotation` ở đây: rotation thuộc quyền tween xoay
+          // vô hạn bên dưới, hai bên ghi cùng lúc là giật.
+          el: circle,
+          from: { autoAlpha: 0, scale: 0.6 },
+          to: { autoAlpha: 1, scale: 1, duration: 0.9, ease: EASE_POP },
+          at: '-=0.5'
+        }
+      ],
+      loop: function () {
+        if (!circle) return [];
+        return [gsap.to(circle, { rotation: 360, duration: 12, repeat: -1, ease: 'none' })];
+      }
+    });
+  }
+
+  /** 08. Consult – tiêu đề & các dòng tư vấn trượt lên lần lượt. */
+  function initConsult() {
+    var sec = section('08 consult', '.sec.consult', '#consult');
+    if (!sec) return;
+
+    var head = q(sec, '.sec-head');
+    revealDown('08 consult / head', head, pick(head, HEAD_PLAIN));
+
+    var rows = qq(sec, '.consult__row');
+    revealUp('08 consult / rows', firstOf(q(sec, '.consult__list'), rows), rows,
+      { dist: 40, stagger: 0.15, duration: 0.95 });
+  }
+
+  /** 09. Yoyo ZERO – sec-head nằm NGOÀI section, bảng so sánh nằm trong. */
+  function initYoyo() {
+    var sec = section('09 yoyo', '.sec.yoyo', '#yoyo');
+    if (!sec) return;
+
+    var prev = sec.previousElementSibling;
+    var head = (prev && prev.classList.contains('sec-head'))
+      ? prev
       : document.querySelector('.sec-head[style*="padding:74px"]');
+    revealDown('09 yoyo / head', head, pick(head, HEAD_2LINE));
 
-    // --- Block 1: sec-head (Label & Title trượt xuống khi cuộn chạm đúng sec-head) ---
-    if (yoyoHead) {
-      var headElements = [
-        yoyoHead.querySelector('.sec-head__label'),
-        yoyoHead.querySelector('.sec-head__title .line1'),
-        yoyoHead.querySelector('.sec-head__title .line2')
-      ].filter(Boolean);
-
-      if (headElements.length > 0) {
-        gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-        var headTl = gsap.timeline({ paused: true });
-        headTl.to(headElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 1.15,
-          stagger: 0.22,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-
-        function playHead() { headTl.restart(); }
-        function resetHead() { headTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: yoyoHead,     // 🎯 Trigger riêng gắn vào .sec-head
-            start: 'top 85%',
-            onEnter: playHead,
-            onEnterBack: playHead,
-            onLeaveBack: resetHead
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsHead = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playHead(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsHead.observe(yoyoHead);
-        } else {
-          playHead();
+    reveal({
+      name: '09 yoyo / compare',
+      trigger: sec,
+      steps: [
+        {
+          el: q(sec, '.compare'),
+          from: { autoAlpha: 0, y: d(40), scale: 0.98 },
+          to: { autoAlpha: 1, y: 0, scale: 1, duration: 1.1, ease: 'none' }
+        },
+        {
+          el: q(sec, '.swipe-hint'),
+          from: { autoAlpha: 0, y: d(25) },
+          to: { autoAlpha: 1, y: 0, duration: 0.9, ease: 'none' },
+          at: '-=0.4'
         }
-      }
-    }
-
-    // --- Block 2: .sec.yoyo (.compare bảng so sánh & .swipe-hint trượt lên) ---
-    var compareWrap = yoyoSec.querySelector('.compare');
-    var swipeHint = yoyoSec.querySelector('.swipe-hint');
-
-    if (compareWrap || swipeHint) {
-      if (compareWrap) gsap.set(compareWrap, { autoAlpha: 0, y: 40, scale: 0.98 });
-      if (swipeHint) gsap.set(swipeHint, { autoAlpha: 0, y: 25 });
-
-      var yoyoTl = gsap.timeline({ paused: true });
-
-      if (compareWrap) {
-        yoyoTl.to(compareWrap, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        });
-      }
-
-      if (swipeHint) {
-        yoyoTl.to(swipeHint, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, compareWrap ? '-=0.4' : 0);
-      }
-
-      function playYoyo() { yoyoTl.restart(); }
-      function resetYoyo() { yoyoTl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: yoyoSec,     // 🎯 Trigger riêng gắn vào .sec.yoyo
-          start: 'top 85%',
-          onEnter: playYoyo,
-          onEnterBack: playYoyo,
-          onLeaveBack: resetYoyo
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsYoyo = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playYoyo(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsYoyo.observe(yoyoSec);
-      } else {
-        playYoyo();
-      }
-    }
+      ]
+    });
   }
 
-  /**
-   * 10. Key Features Section Animations (.sec.features)
-   * Kích hoạt độc lập từng block khi cuộn chạm đúng phần tử đó.
-   * Các phần tử bên trong mỗi feature xuất hiện đồng thời ngay từ mốc 0, nhanh và đồng bộ:
-   * - Feature 01 (.feature--01): Ảnh nền, vé & tiêu đề trượt xuất hiện đồng thời
-   * - Feature 02 (.feature--02 trong features__row): Cụm Thermal (cột, tag, badge) & tiêu đề xuất hiện đồng thời
-   * - Feature 03 (.feature--03 trong features__row): Cụm PT media & tiêu đề xuất hiện đồng thời
-   */
-  function initFeaturesAnimation() {
-    var featuresSec = document.querySelector('.sec.features') || document.querySelector('#features');
-    if (!featuresSec) return;
+  /** 10. Key Features – 3 feature, mọi phần tử bên trong chạy đồng thời (at: 0). */
+  function initFeatures() {
+    var sec = section('10 features', '.sec.features', '#features');
+    if (!sec) return;
 
-    // --- Block 1: .feature--01 ---
-    var feat1 = featuresSec.querySelector('.feature--01');
-    if (feat1) {
-      var bgImg1 = feat1.querySelector('.feature__bg');
-      var ticketImg1 = feat1.querySelector('.feature__ticket');
-      var headElements1 = [
-        feat1.querySelector('.sec-head__label'),
-        feat1.querySelector('.sec-head__title'),
-        feat1.querySelector('.feature__desc')
-      ].filter(Boolean);
-
-      if (bgImg1) gsap.set(bgImg1, { autoAlpha: 0, y: -35 });
-      if (ticketImg1) gsap.set(ticketImg1, { autoAlpha: 0, y: -35 });
-      if (headElements1.length > 0) gsap.set(headElements1, { autoAlpha: 0, y: -30 });
-
-      var feat1Tl = gsap.timeline({ paused: true });
-
-      if (bgImg1) {
-        feat1Tl.to(bgImg1, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (ticketImg1) {
-        feat1Tl.to(ticketImg1, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (headElements1.length > 0) {
-        feat1Tl.to(headElements1, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      function play1() { feat1Tl.restart(); }
-      function reset1() { feat1Tl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: feat1,
-          start: 'top 88%',
-          onEnter: play1,
-          onEnterBack: play1,
-          onLeaveBack: reset1
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obs1 = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { play1(); }
-            });
-          },
-          { threshold: 0.1 }
-        );
-        obs1.observe(feat1);
-      } else {
-        play1();
-      }
+    var HEAD_SELS = ['.sec-head__label', '.sec-head__title', '.feature__desc'];
+    function headStep(root) {
+      return {
+        el: pick(root, HEAD_SELS),
+        from: { autoAlpha: 0, y: -d(30) },
+        to: { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'none' },
+        at: 0
+      };
     }
 
-    // --- Block 2: .feature--02 (trong features__row) ---
-    var feat2 = featuresSec.querySelector('.feature--02');
-    if (feat2) {
-      var thermalCols = gsap.utils.toArray(feat2.querySelectorAll('.thermal__col'));
-      var thermalTags = gsap.utils.toArray(feat2.querySelectorAll('.thermal__tag'));
-      var thermalBadge = feat2.querySelector('.thermal__badge');
-      var headElements2 = [
-        feat2.querySelector('.sec-head__label'),
-        feat2.querySelector('.sec-head__title'),
-        feat2.querySelector('.feature__desc')
-      ].filter(Boolean);
-
-      if (thermalCols.length > 0) gsap.set(thermalCols, { autoAlpha: 0, y: 30 });
-      if (thermalTags.length > 0) gsap.set(thermalTags, { autoAlpha: 0 });
-      if (thermalBadge) gsap.set(thermalBadge, { autoAlpha: 0, scale: 0.6 });
-      if (headElements2.length > 0) gsap.set(headElements2, { autoAlpha: 0, y: -30 });
-
-      var feat2Tl = gsap.timeline({ paused: true });
-
-      if (thermalCols.length > 0) {
-        feat2Tl.to(thermalCols, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (thermalTags.length > 0) {
-        feat2Tl.to(thermalTags, {
-          autoAlpha: 1,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (thermalBadge) {
-        feat2Tl.to(thermalBadge, {
-          autoAlpha: 1,
-          scale: 1,
-          duration: 0.75,
-          ease: 'back.out(1.7)',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (headElements2.length > 0) {
-        feat2Tl.to(headElements2, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      function play2() { feat2Tl.restart(); }
-      function reset2() { feat2Tl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: feat2,
-          start: 'top 88%',
-          onEnter: play2,
-          onEnterBack: play2,
-          onLeaveBack: reset2
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obs2 = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { play2(); }
-            });
-          },
-          { threshold: 0.1 }
-        );
-        obs2.observe(feat2);
-      } else {
-        play2();
-      }
-    }
-
-    // --- Block 3: .feature--03 (trong features__row) ---
-    var feat3 = featuresSec.querySelector('.feature--03');
-    if (feat3) {
-      var media3 = feat3.querySelector('.feature__media');
-      var headElements3 = [
-        feat3.querySelector('.sec-head__label'),
-        feat3.querySelector('.sec-head__title'),
-        feat3.querySelector('.feature__desc')
-      ].filter(Boolean);
-
-      if (media3) gsap.set(media3, { autoAlpha: 0, y: 30, scale: 0.96 });
-      if (headElements3.length > 0) gsap.set(headElements3, { autoAlpha: 0, y: -30 });
-
-      var feat3Tl = gsap.timeline({ paused: true });
-
-      if (media3) {
-        feat3Tl.to(media3, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (headElements3.length > 0) {
-        feat3Tl.to(headElements3, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      function play3() { feat3Tl.restart(); }
-      function reset3() { feat3Tl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: feat3,
-          start: 'top 88%',
-          onEnter: play3,
-          onEnterBack: play3,
-          onLeaveBack: reset3
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obs3 = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { play3(); }
-            });
-          },
-          { threshold: 0.1 }
-        );
-        obs3.observe(feat3);
-      } else {
-        play3();
-      }
-    }
-  }
-
-  /**
-   * 11. Thermo Diet Section Animations (.sec.thermo)
-   * Kích hoạt độc lập từng khối khi cuộn chạm đúng phần tử đó.
-   * Các phần tử bên trong mỗi khối xuất hiện đồng thời ngay từ mốc 0, nhanh và không bắt chờ đợi lần lượt:
-   * - Block 1: .thermo__head & .thermo__chips (Tiêu đề & 3 chip hashtag xuất hiện đồng thời)
-   * - Block 2: .thermo__stage (Video Player & các Bong bóng thoại xuất hiện đồng thời, sau đó nhún nhảy)
-   * - Block 3: .thermo__claim (Tiêu đề & mô tả claim 700kcal xuất hiện đồng thời)
-   */
-  function initThermoAnimation() {
-    var thermoSec = document.querySelector('.sec.thermo') || document.querySelector('#thermo');
-    if (!thermoSec) return;
-
-    // --- Block 1: .thermo__head & .thermo__chips ---
-    var headWrap = thermoSec.querySelector('.thermo__head');
-    var chipItems = gsap.utils.toArray(thermoSec.querySelectorAll('.thermo__chips .chip'));
-    var headTrigger = headWrap || (chipItems.length > 0 ? chipItems[0] : null);
-
-    if (headTrigger) {
-      var headElements = headWrap ? [
-        headWrap.querySelector('.sec-head__label'),
-        headWrap.querySelector('.sec-head__title')
-      ].filter(Boolean) : [];
-
-      if (headElements.length > 0) gsap.set(headElements, { autoAlpha: 0, y: -35 });
-      if (chipItems.length > 0) gsap.set(chipItems, { autoAlpha: 0, y: -30 });
-
-      var headTl = gsap.timeline({ paused: true });
-
-      if (headElements.length > 0) {
-        headTl.to(headElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (chipItems.length > 0) {
-        headTl.to(chipItems, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.08,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      function playHead() { headTl.restart(); }
-      function resetHead() { headTl.pause(0); }
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: headTrigger,
-          start: 'top 85%',
-          onEnter: playHead,
-          onEnterBack: playHead,
-          onLeaveBack: resetHead
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsHead = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playHead(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsHead.observe(headTrigger);
-      } else {
-        playHead();
-      }
-    }
-
-    // --- Block 2: .thermo__stage (Video Player & Bubbles) ---
-    var stageWrap = thermoSec.querySelector('.thermo__stage');
-    if (stageWrap) {
-      var playerEl = stageWrap.querySelector('.thermo__player');
-      var bubbleEls = gsap.utils.toArray(stageWrap.querySelectorAll('.bubble'));
-      var bounceTweens = [];
-
-      if (playerEl) gsap.set(playerEl, { autoAlpha: 0, y: 35, scale: 0.96 });
-      if (bubbleEls.length > 0) gsap.set(bubbleEls, { autoAlpha: 0, y: -35 });
-
-      var stageTl = gsap.timeline({ paused: true });
-
-      if (playerEl) {
-        stageTl.to(playerEl, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.85,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-      }
-
-      if (bubbleEls.length > 0) {
-        stageTl.to(bubbleEls, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.75,
-          stagger: 0.06,
-          ease: 'power3.out',
-          clearProps: 'will-change',
-          onComplete: function () {
-            bubbleEls.forEach(function (bubble, idx) {
-              var tw = gsap.to(bubble, {
-                y: -8,
-                duration: 1.5 + (idx % 3) * 0.2,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.easeInOut'
-              });
-              bounceTweens.push(tw);
-            });
-          }
-        }, 0);
-      }
-
-      function killBounces() {
-        bounceTweens.forEach(function (tw) { tw.kill(); });
-        bounceTweens = [];
-      }
-
-      function playStage() {
-        killBounces();
-        stageTl.restart();
-      }
-
-      function resetStage() {
-        killBounces();
-        stageTl.pause(0);
-      }
-
-      var stageTrigger = playerEl || stageWrap;
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          trigger: stageTrigger,
-          start: 'top 85%',
-          onEnter: playStage,
-          onEnterBack: playStage,
-          onLeaveBack: resetStage
-        });
-      } else if ('IntersectionObserver' in window) {
-        var obsStage = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) { playStage(); }
-            });
-          },
-          { threshold: 0.15 }
-        );
-        obsStage.observe(stageTrigger);
-      } else {
-        playStage();
-      }
-    }
-
-    // --- Block 3: .thermo__claim ---
-    var claimWrap = thermoSec.querySelector('.thermo__claim');
-    if (claimWrap) {
-      var claimElements = [
-        claimWrap.querySelector('h3'),
-        claimWrap.querySelector('p')
-      ].filter(Boolean);
-
-      if (claimElements.length > 0) {
-        gsap.set(claimElements, { autoAlpha: 0, y: 30 });
-
-        var claimTl = gsap.timeline({ paused: true });
-        claimTl.to(claimElements, {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          clearProps: 'will-change'
-        }, 0);
-
-        function playClaim() { claimTl.restart(); }
-        function resetClaim() { claimTl.pause(0); }
-
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.create({
-            trigger: claimWrap,
-            start: 'top 85%',
-            onEnter: playClaim,
-            onEnterBack: playClaim,
-            onLeaveBack: resetClaim
-          });
-        } else if ('IntersectionObserver' in window) {
-          var obsClaim = new IntersectionObserver(
-            function (entries) {
-              entries.forEach(function (entry) {
-                if (entry.isIntersecting) { playClaim(); }
-              });
-            },
-            { threshold: 0.15 }
-          );
-          obsClaim.observe(claimWrap);
-        } else {
-          playClaim();
-        }
-      }
-    }
-  }
-
-  /**
-   * 12. Menopause Section Animations (.sec.meno - Chỉ dành riêng cho sec-head)
-   * Kích hoạt khi cuộn chạm vào đúng .sec-head của section Menopause:
-   * - sec-head__label & sec-head__title trượt XUỐNG
-   */
-  function initMenoAnimation() {
-    var menoSec = document.querySelector('.sec.meno') || document.querySelector('#menopause');
-    if (!menoSec) return;
-
-    var menoHead = menoSec.querySelector('.sec-head');
-    if (!menoHead) return;
-
-    var headElements = [
-      menoHead.querySelector('.sec-head__label'),
-      menoHead.querySelector('.sec-head__title .line1'),
-      menoHead.querySelector('.sec-head__title .line2')
-    ].filter(Boolean);
-
-    if (headElements.length === 0) return;
-
-    gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-    var menoTl = gsap.timeline({ paused: true });
-    menoTl.to(headElements, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 1.15,
-      stagger: 0.22,
-      ease: 'power3.out',
-      clearProps: 'will-change'
+    var f1 = q(sec, '.feature--01');
+    reveal({
+      name: '10 features / 01',
+      trigger: f1,
+      steps: [
+        { el: q(f1, '.feature__bg'), from: { autoAlpha: 0, y: -d(35) }, to: { autoAlpha: 1, y: 0, duration: 0.8, ease: 'none' }, at: 0 },
+        { el: q(f1, '.feature__ticket'), from: { autoAlpha: 0, y: -d(35) }, to: { autoAlpha: 1, y: 0, duration: 0.8, ease: 'none' }, at: 0 },
+        headStep(f1)
+      ]
     });
 
-    function play() { menoTl.restart(); }
-    function reset() { menoTl.pause(0); }
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: menoHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .sec-head của Menopause
-        start: 'top 85%',
-        onEnter: play,
-        onEnterBack: play,
-        onLeaveBack: reset
-      });
-    } else if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { play(); }
-          });
-        },
-        { threshold: 0.15 }
-      );
-      observer.observe(menoHead);
-    } else {
-      play();
-    }
-  }
-
-  /**
-   * 13. Results Section Animations (.sec.results - Chỉ dành riêng cho sec-head results__head)
-   * Kích hoạt khi cuộn chạm vào đúng .results__head (.sec-head):
-   * - sec-head__label & sec-head__title trượt XUỐNG
-   */
-  function initResultsAnimation() {
-    var resultsSec = document.querySelector('.sec.results') || document.querySelector('#results');
-    if (!resultsSec) return;
-
-    var resultsHead = resultsSec.querySelector('.results__head') || resultsSec.querySelector('.sec-head');
-    if (!resultsHead) return;
-
-    var headElements = [
-      resultsHead.querySelector('.sec-head__label'),
-      resultsHead.querySelector('.sec-head__title .line1'),
-      resultsHead.querySelector('.sec-head__title .line2')
-    ].filter(Boolean);
-
-    if (headElements.length === 0) return;
-
-    gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-    var resultsTl = gsap.timeline({ paused: true });
-    resultsTl.to(headElements, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 1.15,
-      stagger: 0.22,
-      ease: 'power3.out',
-      clearProps: 'will-change'
+    var f2 = q(sec, '.feature--02');
+    reveal({
+      name: '10 features / 02',
+      trigger: f2,
+      steps: [
+        { el: qq(f2, '.thermal__col'), from: { autoAlpha: 0, y: d(30) }, to: { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'none' }, at: 0 },
+        { el: qq(f2, '.thermal__tag'), from: { autoAlpha: 0 }, to: { autoAlpha: 1, duration: 0.7, stagger: 0.12, ease: 'none' }, at: 0 },
+        { el: q(f2, '.thermal__badge'), from: { autoAlpha: 0, scale: 0.6 }, to: { autoAlpha: 1, scale: 1, duration: 0.75, ease: EASE_POP }, at: 0 },
+        headStep(f2)
+      ]
     });
 
-    function play() { resultsTl.restart(); }
-    function reset() { resultsTl.pause(0); }
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: resultsHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .results__head
-        start: 'top 85%',
-        onEnter: play,
-        onEnterBack: play,
-        onLeaveBack: reset
-      });
-    } else if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { play(); }
-          });
-        },
-        { threshold: 0.15 }
-      );
-      observer.observe(resultsHead);
-    } else {
-      play();
-    }
+    var f3 = q(sec, '.feature--03');
+    reveal({
+      name: '10 features / 03',
+      trigger: f3,
+      steps: [
+        { el: q(f3, '.feature__media'), from: { autoAlpha: 0, y: d(30), scale: 0.96 }, to: { autoAlpha: 1, y: 0, scale: 1, duration: 0.8, ease: 'none' }, at: 0 },
+        headStep(f3)
+      ]
+    });
   }
 
-  /**
-   * 14. Turn Section Animations (.sec.turn - Chỉ dành riêng cho sec-head turn__head)
-   * Kích hoạt khi cuộn chạm vào đúng .turn__head (.sec-head):
-   * - sec-head__label & sec-head__title trượt XUỐNG
-   */
-  function initTurnHeadAnimation() {
-    var turnSec = document.querySelector('.sec.turn') || document.querySelector('#turn');
-    if (!turnSec) return;
+  /** 11. Thermo Diet – tiêu đề + chip, sân khấu video + bong bóng, claim. */
+  function initThermo() {
+    var sec = section('11 thermo', '.sec.thermo', '#thermo');
+    if (!sec) return;
 
-    var turnHead = turnSec.querySelector('.turn__head') || turnSec.querySelector('.sec-head');
-    if (!turnHead) return;
-
-    var headElements = [
-      turnHead.querySelector('.sec-head__label'),
-      turnHead.querySelector('.sec-head__title .line1'),
-      turnHead.querySelector('.sec-head__title .line2')
-    ].filter(Boolean);
-
-    if (headElements.length === 0) return;
-
-    gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-    var turnTl = gsap.timeline({ paused: true });
-    turnTl.to(headElements, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 1.15,
-      stagger: 0.22,
-      ease: 'power3.out',
-      clearProps: 'will-change'
+    var head = q(sec, '.thermo__head');
+    var chips = qq(sec, '.thermo__chips .chip');
+    reveal({
+      name: '11 thermo / head+chips',
+      trigger: firstOf(head, chips),
+      steps: [
+        { el: pick(head, HEAD_PLAIN), from: { autoAlpha: 0, y: -d(35) }, to: { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'none' }, at: 0 },
+        { el: chips, from: { autoAlpha: 0, y: -d(30) }, to: { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'none' }, at: 0 }
+      ]
     });
 
-    function play() { turnTl.restart(); }
-    function reset() { turnTl.pause(0); }
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: turnHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .turn__head
-        start: 'top 85%',
-        onEnter: play,
-        onEnterBack: play,
-        onLeaveBack: reset
-      });
-    } else if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { play(); }
+    var stage = q(sec, '.thermo__stage');
+    var player = q(stage, '.thermo__player');
+    var bubbles = qq(stage, '.bubble');
+    reveal({
+      name: '11 thermo / stage',
+      trigger: firstOf(player, stage),
+      steps: [
+        { el: player, from: { autoAlpha: 0, y: d(35), scale: 0.96 }, to: { autoAlpha: 1, y: 0, scale: 1, duration: 0.85, ease: 'none' }, at: 0 },
+        { el: bubbles, from: { autoAlpha: 0, y: -d(35) }, to: { autoAlpha: 1, y: 0, duration: 0.75, stagger: 0.08, ease: 'none' }, at: 0 }
+      ],
+      loop: function () {
+        return bubbles.map(function (bubble, idx) {
+          return gsap.to(bubble, {
+            yPercent: -6, duration: 1.5 + (idx % 3) * 0.2,
+            repeat: -1, yoyo: true, ease: 'sine.inOut'
           });
-        },
-        { threshold: 0.15 }
-      );
-      observer.observe(turnHead);
-    } else {
-      play();
-    }
-  }
-
-  /**
-   * 15. FAQ Section Animations (.sec.faq - Chỉ dành riêng cho sec-head faq__head)
-   * Kích hoạt khi cuộn chạm vào đúng .faq__head (.sec-head):
-   * - sec-head__label & sec-head__title trượt XUỐNG
-   */
-  function initFaqHeadAnimation() {
-    var faqSec = document.querySelector('.sec.faq') || document.querySelector('#faq');
-    if (!faqSec) return;
-
-    var faqHead = faqSec.querySelector('.faq__head') || faqSec.querySelector('.sec-head');
-    if (!faqHead) return;
-
-    var headElements = [
-      faqHead.querySelector('.sec-head__label'),
-      faqHead.querySelector('.sec-head__title')
-    ].filter(Boolean);
-
-    if (headElements.length === 0) return;
-
-    gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-    var faqTl = gsap.timeline({ paused: true });
-    faqTl.to(headElements, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 1.15,
-      stagger: 0.22,
-      ease: 'power3.out',
-      clearProps: 'will-change'
+        });
+      }
     });
 
-    function play() { faqTl.restart(); }
-    function reset() { faqTl.pause(0); }
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: faqHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .faq__head
-        start: 'top 85%',
-        onEnter: play,
-        onEnterBack: play,
-        onLeaveBack: reset
-      });
-    } else if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { play(); }
-          });
-        },
-        { threshold: 0.15 }
-      );
-      observer.observe(faqHead);
-    } else {
-      play();
-    }
+    var claim = q(sec, '.thermo__claim');
+    revealUp('11 thermo / claim', claim, pick(claim, ['h3', 'p']),
+      { dist: 30, stagger: 0.12, duration: 0.8 });
   }
+
+  /** 12–16. Các section chỉ animate phần tiêu đề. */
+  var HEAD_ONLY_SECTIONS = [
+    { name: '12 meno',    sec: '.sec.meno',    alt: '#menopause', head: '.sec-head',      sels: HEAD_2LINE },
+    { name: '13 results', sec: '.sec.results', alt: '#results',   head: '.results__head', sels: HEAD_2LINE },
+    { name: '14 turn',    sec: '.sec.turn',    alt: '#turn',      head: '.turn__head',    sels: HEAD_2LINE },
+    { name: '15 faq',     sec: '.sec.faq',     alt: '#faq',       head: '.faq__head',     sels: HEAD_PLAIN },
+    { name: '16 contact', sec: '.sec.contact', alt: '#contact',   head: '.contact__head', sels: HEAD_2LINE }
+  ];
+
+  function initHeadOnlySections() {
+    HEAD_ONLY_SECTIONS.forEach(function (item) {
+      var sec = section(item.name, item.sec, item.alt);
+      if (!sec) return;
+      var head = q(sec, item.head) || q(sec, '.sec-head');
+      revealDown(item.name + ' / head', head, pick(head, item.sels));
+    });
+  }
+
+  function buildAll() {
+    report.length = 0;
+    initHero();
+    initBand();
+    initPhilo();
+    initCareer();
+    initProgram();
+    initDual();
+    initTicket();
+    initConsult();
+    initYoyo();
+    initFeatures();
+    initThermo();
+    initHeadOnlySections();
+    printSummary();
+  }
+
+  /** Bảng tổng kết sau khi dựng xong. */
+  function printSummary() {
+    if (!DEBUG) return;
+    var ok = report.filter(function (r) { return r.status.indexOf('ok') === 0; }).length;
+    var bad = report.length - ok;
+    logInfo('TỔNG KẾT: %d block OK, %d block LỖI, %d ScrollTrigger đang sống',
+      ok, bad, ScrollTrigger.getAll().length);
+
+    if (bad > 0) {
+      console.table(report.filter(function (r) { return r.status.indexOf('ok') !== 0; })
+        .map(function (r) { return { block: r.block, 'vấn đề': r.status }; }));
+    }
+
+    // Vị trí thực tế của từng trigger, tính bằng pixel tuyệt đối trong trang.
+    window.btlAnimReport = function () {
+      console.table(report.filter(function (r) { return r.st; }).map(function (r) {
+        return {
+          block: r.block,
+          'phần tử': r.els,
+          'start (px)': Math.round(r.st.start),
+          'end (px)': Math.round(r.st.end),
+          'tiến độ': r.st.progress.toFixed(2)
+        };
+      }));
+    };
+    logInfo('Gõ btlAnimReport() trong console để xem vị trí px của từng trigger.');
+  }
+
+  /* ============================================================
+     PHẦN C – KHỞI ĐỘNG
+     ============================================================ */
 
   /**
-   * 16. Contact Form Section Animations (.sec.contact - Chỉ dành riêng cho sec-head contact__head)
-   * Kích hoạt khi cuộn chạm vào đúng .contact__head (.sec-head):
-   * - sec-head__label & sec-head__title trượt XUỐNG
+   * ScrollTrigger tính toạ độ theo layout tại thời điểm tạo. Trang này có rất
+   * nhiều ảnh không khai báo kích thước, nên layout còn dịch hàng nghìn pixel
+   * SAU khi script chạy. Mỗi lần layout đổi mà không refresh là một lần
+   * animation chạy sai chỗ.
    */
-  function initContactHeadAnimation() {
-    var contactSec = document.querySelector('.sec.contact') || document.querySelector('#contact');
-    if (!contactSec) return;
+  function setupRefreshGuards() {
+    var pending = null;
+    var n = 0;
 
-    var contactHead = contactSec.querySelector('.contact__head') || contactSec.querySelector('.sec-head');
-    if (!contactHead) return;
-
-    var headElements = [
-      contactHead.querySelector('.sec-head__label'),
-      contactHead.querySelector('.sec-head__title .line1'),
-      contactHead.querySelector('.sec-head__title .line2')
-    ].filter(Boolean);
-
-    if (headElements.length === 0) return;
-
-    gsap.set(headElements, { autoAlpha: 0, y: -45 });
-
-    var contactTl = gsap.timeline({ paused: true });
-    contactTl.to(headElements, {
-      autoAlpha: 1,
-      y: 0,
-      duration: 1.15,
-      stagger: 0.22,
-      ease: 'power3.out',
-      clearProps: 'will-change'
-    });
-
-    function play() { contactTl.restart(); }
-    function reset() { contactTl.pause(0); }
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.create({
-        trigger: contactHead,     // 🎯 Trigger kích hoạt riêng khi chạm đúng .contact__head
-        start: 'top 85%',
-        onEnter: play,
-        onEnterBack: play,
-        onLeaveBack: reset
-      });
-    } else if ('IntersectionObserver' in window) {
-      var observer = new IntersectionObserver(
-        function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) { play(); }
-          });
-        },
-        { threshold: 0.15 }
-      );
-      observer.observe(contactHead);
-    } else {
-      play();
-    }
-  }
-
-  function startGSAPSystem() {
-    initGSAP();
-
-    // Khi toàn bộ tài nguyên load xong và trình duyệt đã restore lại vị trí scroll khi F5
-    window.addEventListener('load', function () {
-      if (typeof ScrollTrigger !== 'undefined') {
+    function refreshSoon(why) {
+      if (pending) clearTimeout(pending);
+      pending = setTimeout(function () {
+        pending = null;
+        // Ghim về đầu TRƯỚC khi đo lại, để mọi trigger được tính trên đúng
+        // layout cuối cùng và ở đúng mốc scroll = 0.
+        forceTop();
         ScrollTrigger.refresh();
-      }
+        logInfo('refresh #%d (%s) – chiều cao trang: %dpx',
+          ++n, why || '?', document.documentElement.scrollHeight);
+      }, 120);
+    }
+
+    var imgs = gsap.utils.toArray(document.querySelectorAll('img'));
+    var pendingImgs = imgs.filter(function (i) { return !i.complete; });
+    logInfo('ảnh: %d tổng, %d chưa tải xong', imgs.length, pendingImgs.length);
+
+    pendingImgs.forEach(function (img) {
+      img.addEventListener('load', function () { refreshSoon('ảnh'); }, { once: true });
+      img.addEventListener('error', function () { refreshSoon('ảnh lỗi'); }, { once: true });
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { refreshSoon('font'); }).catch(function () {});
+    }
+
+    // Chỉ đăng ký listener là KHÔNG đủ: nếu script chạy sau khi 'load' đã bắn
+    // (defer / bfcache / trang trong cache) thì listener không bao giờ chạy.
+    if (document.readyState === 'complete') {
+      refreshSoon('đã complete');
+    } else {
+      window.addEventListener('load', function () {
+        forceTop();          // ngay lập tức, không chờ debounce
+        refreshSoon('load');
+      }, { once: true });
+    }
+
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) { forceTop(); refreshSoon('bfcache'); }
     });
   }
 
-  // Chạy khi DOM sẵn sàng
+  function start() {
+    if (typeof gsap === 'undefined') {
+      console.error('[BTL] gsap CHƯA ĐƯỢC NẠP — kiểm tra thẻ <script> gsap.min.js');
+      return;
+    }
+    if (typeof ScrollTrigger === 'undefined') {
+      console.error('[BTL] ScrollTrigger CHƯA ĐƯỢC NẠP — kiểm tra thẻ <script> ScrollTrigger.min.js');
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+    // Xoá vị trí cuộn mà ScrollTrigger tự nhớ giữa các lần load, và bảo nó
+    // đừng nhờ trình duyệt khôi phục.
+    if (!HAS_HASH) ScrollTrigger.clearScrollMemory('manual');
+    gsap.defaults({ ease: 'none' });
+
+    forceTop();
+
+    logInfo('GSAP %s | ScrollTrigger OK | readyState=%s | viewport=%dx%d',
+      gsap.version, document.readyState, window.innerWidth, window.innerHeight);
+
+    gsap.matchMedia().add({
+      isMobile: '(max-width: 767px)',
+      isDesktop: '(min-width: 768px)',
+      reduce: '(prefers-reduced-motion: reduce)'
+    }, function (ctx) {
+      if (ctx.conditions.reduce) {
+        logInfo('prefers-reduced-motion BẬT → bỏ qua toàn bộ animation');
+        return;
+      }
+      M = ctx.conditions.isMobile ? MOTION.mobile : MOTION.desktop;
+      logInfo('breakpoint=%s | start=%s end=%s scrub=%s scale=%s',
+        ctx.conditions.isMobile ? 'mobile' : 'desktop', M.start, M.end, M.scrub, M.scale);
+      buildAll();
+    });
+
+    setupRefreshGuards();
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startGSAPSystem);
+    document.addEventListener('DOMContentLoaded', start);
   } else {
-    startGSAPSystem();
+    start();
   }
 })();
