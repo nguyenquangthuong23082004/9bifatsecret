@@ -209,7 +209,7 @@
 .thermo__claim h3 {
     margin: 0;
     font-family: var(--f-title);
-    font-weight: 800;
+    font-weight: 500;
     font-size: 30px;
     line-height: 1.4;
     letter-spacing: -.6px;
@@ -220,6 +220,7 @@
     background: #0f1520;
     padding: 0 8px;
     line-height: 38px;
+    font-weight: 500;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
     color: #fff;

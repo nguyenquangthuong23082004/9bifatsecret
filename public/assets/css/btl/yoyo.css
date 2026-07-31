@@ -2,11 +2,16 @@
    08. Yoyo ZERO compare table (좌우로 스와이프)
    ========================================================= */
 .yoyo {
-   /* padding: 34px 0 0; */
+   padding: 74px 0 0;
 }
 
 .yoyo .sec-head {
    padding-inline: 16px;
+}
+
+.yoyo .sec-head__label {
+   color: #454545;
+   font-weight: 500;
 }
 
 .yoyo .sec-head__title .line2 {
@@ -27,22 +32,37 @@
 
 .compare table {
    width: 540px;
-   border-collapse: collapse;
+   border-collapse: separate;
+   border-spacing: 0;
 }
 
 .compare th,
 .compare td {
-   padding: 10px 8px;
-   font-size: 14px;
+   position: relative;
+   padding: 10px 6px;
+   font-size: 13px;
    letter-spacing: -.28px;
    vertical-align: middle;
+   text-align: center;
 }
 
-/* nền đặt luôn ở hàng: các ô th cạnh nhau hay hở 1 khe trắng do làm tròn
-   subpixel khi chia cột, nền của tr bịt khe đó lại */
-.compare thead,
+/* Left-align all body data cells (stars and text) */
+.compare tbody td {
+   text-align: left;
+   padding-left: 10px;
+   color: var(--c-ink-2);
+}
+
+.compare tbody td.td-desc {
+   color: #777;
+   font-size: 12px;
+   line-height: 1.4;
+   text-align: left;
+   padding-left: 10px;
+}
+
 .compare thead tr {
-   background: #c8365a;
+   background: transparent;
 }
 
 .compare thead th {
@@ -50,58 +70,121 @@
    color: #fff;
    font-weight: 400;
    text-align: center;
-   height: 46px;
+   height: 44px;
 }
 
 .compare thead th:first-child {
-   border-radius: 0;
+   border-top-left-radius: 12px;
+   border-bottom-left-radius: 12px;
 }
 
-.compare thead th.dim {
-   opacity: .4;
+.compare thead th:last-child {
+   border-top-right-radius: 12px;
+   border-bottom-right-radius: 12px;
 }
 
-/* cột đối thủ: chữ chìm vào nền hồng, sáng lên khi hover */
+/* Short vertical tick divider in header */
+.compare thead th:not(:last-child)::after {
+   content: "";
+   position: absolute;
+   right: 0;
+   top: 50%;
+   transform: translateY(-50%);
+   width: 1px;
+   height: 12px;
+   background: rgba(255, 255, 255, 0.25);
+}
+
 .compare thead th.dim-hover {
-   color: #d56883;
-   transition: color .2s ease;
+   color: rgba(255, 255, 255, 0.4) !important;
+   font-weight: 400;
    cursor: default;
 }
 
-.compare thead th.dim-hover:hover {
-   color: #fff;
+.compare thead th.th-bitiel {
+   color: #ffffff !important;
+   font-weight: 700;
 }
 
-.compare tbody tr {
-   border-bottom: 1px solid #eee;
+.compare tbody tr:not(.row-highlight) th,
+.compare tbody tr:not(.row-highlight) td {
+   border-bottom: 1px solid #eaeaea;
+}
+
+.compare tbody td:not(:last-child)::after,
+.compare tbody th:not(:last-child)::after {
+   content: "";
+   position: absolute;
+   right: 0;
+   top: 50%;
+   transform: translateY(-50%);
+   width: 1px;
+   height: 14px;
+   background: #eaeaea;
 }
 
 .compare tbody th {
-   text-align: left;
+   text-align: center;
    font-weight: 500;
    color: var(--c-ink);
-   width: 96px;
-   white-space: nowrap;
 }
 
 .compare tbody td {
    text-align: center;
-   color: var(--c-muted);
+   color: var(--c-ink-2);
+}
+
+.compare tbody td.td-desc {
+   color: #777;
+   font-size: 12px;
+   line-height: 1.4;
+   text-align: center;
 }
 
 .compare td.bitiel {
    color: var(--c-ink);
-   font-weight: 500;
+   font-weight: 600;
 }
 
+.compare,
+.compare *,
+.compare *::before,
+.compare *::after {
+   transition: none !important;
+}
+
+/* HOVER STATE: Red border box + Soft Pink Background on hovered row */
+.compare tbody tr:hover th,
+.compare tbody tr:hover td {
+   border-top: 2px solid #c8365a !important;
+   border-bottom: 2px solid #c8365a !important;
+   background: #fdf2f4 !important;
+}
+
+.compare tbody tr:hover th:first-child {
+   border-left: 2px solid #c8365a !important;
+   border-radius: 0 !important;
+}
+
+.compare tbody tr:hover td:last-child {
+   border-right: 2px solid #c8365a !important;
+   border-radius: 0 !important;
+}
+
+.compare tbody tr:hover th:not(:last-child)::after,
+.compare tbody tr:hover td:not(:last-child)::after {
+   background: rgba(200, 54, 90, 0.15);
+}
+
+/* Stars sizing */
 .compare .stars {
    display: inline-flex;
-   gap: 1px;
+   gap: 2px;
 }
 
 .compare .stars svg {
-   width: 14px;
-   height: 14px;
+   width: 16px;
+   height: 16px;
 }
 
 .swipe-hint {
@@ -129,11 +212,3 @@
    font-size: 12px;
    letter-spacing: -.24px;
 }
-
-/* .sec-head__title .line2 {
-   color: #C8365A;
-} */
-
-/* .sec-head .sec-head__title .line2 {
-   color: #C8365A;
-} */

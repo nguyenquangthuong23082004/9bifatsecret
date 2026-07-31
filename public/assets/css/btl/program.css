@@ -51,7 +51,7 @@
     background: #454545;
     color: #fff;
     border-color: #454545;
-    box-shadow: 0 6px 5px rgba(0, 0, 0, .25);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .22);
 }
 
 /* -- panel : mọi thẻ đều cao 240, phần mô tả nằm dưới thẻ -- */

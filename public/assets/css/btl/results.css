@@ -19,8 +19,9 @@
     margin-top: 40px;
 }
 
+.case + .case,
 .case--simple {
-    margin-top: 60px;
+    margin-top: 90px;
 }
 
 .case__who {
@@ -94,7 +95,7 @@
     background: var(--c-ink-2);
     border-color: var(--c-ink-2);
     color: #fff;
-    filter: drop-shadow(0 6px 5px rgba(0, 0, 0, .25));
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
 }
 
 .rpanel {

@@ -48,7 +48,7 @@ $chips = [
     </div>
 
     <div class="thermo__claim">
-        <h3><span class="mark">비티엘 관리 1회시 평균 약</span><br class="only-mo"><span class="mark">700kcal소모</span></h3>
+        <h3><span class="mark">비티엘 관리 1회시 평균 약 <br class="only-mo">700kcal 소모</span></h3>
         <p>누워서 관리 1회<br class="only-mo">=빠르게 걷기 1시간<br class="only-mo">=러닝머신 1시간</p>
     </div>
 </section>

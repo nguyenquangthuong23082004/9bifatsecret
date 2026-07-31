@@ -1,9 +1,3 @@
-@media (min-width:1921px) {
-    .btl .gnb__container {
-        margin-inline: auto;
-    }
-}
-
 @media (min-width:992px) {
 
     :root {
@@ -41,11 +35,11 @@
 
     .btl .gnb__container {
         max-width: var(--pc-w);
-        /* margin-inline: auto; */
+        margin-inline: auto;
         padding: 20px var(--pc-pad);
         display: flex;
         align-items: center;
-        gap: 270px;
+        justify-content: space-between;
     }
 
     .btl .gnb__inner {
@@ -109,8 +103,9 @@
     }
 
     .btl .hero {
-        height: calc(100vh - var(--pc-header-h) - var(--pc-band-h));
-        min-height: 560px;
+        height: 700px;
+        max-height: 700px;
+        min-height: 700px;
         padding: 0;
         display: block;
         overflow: hidden;
@@ -167,30 +162,23 @@
 
     .btl .hero__visual {
         left: auto;
-        right: 131px;
+        right: 200px;
         top: auto;
-        bottom: -393px;
-        /* width: 46%; */
-        width: 640px;
-        max-width: 640px;
+        bottom: -365px;
+        width: 580px;
+        max-width: 580px;
         height: auto;
         overflow: visible;
         z-index: 1;
     }
 
-    @media (max-height: 850px) {
-        .btl .hero__visual {
-            width: 548px;
-        }
-    }
-
     .btl .hero__visual img {
         position: static;
         display: block;
-        width: 100%;
+        width: 580px;
+        max-width: 580px;
         height: auto;
-        max-width: none;
-        object-fit: fill;
+        object-fit: contain;
     }
 
     .btl .hero__bg {
@@ -234,7 +222,7 @@
         letter-spacing: -1px;
         line-height: 68px;
         text-transform: uppercase;
-        font-family: "Nanum Square EB";
+        font-family: "Nanum Square B";
         text-align: center;
         margin-bottom: 0;
     }
@@ -281,7 +269,7 @@
         letter-spacing: -6px;
         text-transform: uppercase;
         color: #fdecec;
-        font-family: "Nanum Square EB";
+        font-family: "Nanum Square B";
         text-align: center;
         white-space: nowrap;
         pointer-events: none;
@@ -308,7 +296,7 @@
         position: absolute;
         z-index: 2;
         left: 50%;
-        top: 50%;
+        top: 54%;
         transform: translate(-50%, -50%);
         width: 86px;
         height: auto;
@@ -453,7 +441,7 @@
         line-height: 76px;
         text-transform: uppercase;
         color: #d4a565;
-        font-family: "Nanum Square EB";
+        font-family: "Nanum Square B";
         text-align: center;
         filter: drop-shadow(0px 6px 2px rgba(99, 30, 43, 0.15));
         display: block;
@@ -690,7 +678,7 @@
         line-height: 68px;
         text-transform: uppercase;
         /* color: #c8365a; */
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -737,6 +725,7 @@
         background-color: #454545;
         color: #ffffff;
         border-color: #454545;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
 
     .btl .program__panel {
@@ -842,7 +831,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #252525;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -978,7 +967,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #ffffff;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
         margin: 0;
     }
@@ -1033,7 +1022,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #252525;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -1066,15 +1055,15 @@
     }
 
     .btl .yoyo {
-        padding: 0px 40px 0px;
+        padding: 100px 40px 0px;
     }
 
     .btl .yoyo .sec-head__label {
         font-size: 20px;
         letter-spacing: 0px;
         line-height: 32px;
-        color: #c8365a;
-        font-weight: bold;
+        color: #454545;
+        font-weight: 500;
         font-family: "Pretendard", sans-serif;
         text-align: center;
         margin-bottom: 12px;
@@ -1086,56 +1075,187 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #252525;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
     .btl .yoyo .sec-head__title .line2 {
-        color: #252525;
+        color: #c8365a;
     }
 
     .btl .compare {
-        max-width: 1024px;
-        margin: 50px auto 0;
+        max-width: 850px;
+        margin: 40px auto 0;
         padding-inline: 0;
         overflow-x: visible;
     }
 
     .btl .compare table {
         width: 100%;
-        max-width: 1024px;
+        max-width: 850px;
         margin: 0 auto;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
     }
 
     .btl .compare th,
     .btl .compare td {
-        padding: 16px 12px;
-        font-size: 20px;
+        position: relative;
+        height: 85px;
+        padding: 0 12px;
+        font-size: 16px;
         letter-spacing: 0px;
-        line-height: 30px;
-        text-transform: uppercase;
+        line-height: 24px;
         font-family: "Pretendard", sans-serif;
         text-align: center;
+        vertical-align: middle;
+        box-sizing: border-box;
     }
 
-    .btl .compare thead th.dim {
-        opacity: 0.4;
+    /* Left-align all body data cells (stars and text) close to the grey vertical tick line */
+    .btl .compare tbody td {
+        text-align: left;
+        padding-left: 16px;
+    }
+
+    .btl .compare tbody td.td-desc {
+        color: #666666;
+        font-size: 15px;
+        text-align: left;
+        padding-left: 16px;
+        vertical-align: middle;
+    }
+
+    .btl .compare thead tr {
+        height: 70px;
+    }
+
+    .btl .compare thead th {
+        height: 70px;
+        font-size: 17px;
+        font-weight: 400;
+        background: #c8365a;
         color: #ffffff;
-        font-size: 20px;
-        letter-spacing: 0px;
-        line-height: 30px;
-        text-transform: uppercase;
-        font-family: "Pretendard", sans-serif;
-        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* Competitor headers dimmed with 0.4 opacity */
+    .btl .compare thead th.dim-hover {
+        color: rgba(255, 255, 255, 0.4) !important;
+        font-weight: 400;
+    }
+
+    .btl .compare thead th.th-bitiel {
+        color: #ffffff !important;
+        font-weight: 700;
+    }
+
+    .btl .compare thead th:first-child {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+
+    .btl .compare thead th:last-child {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    /* Short vertical tick divider in header (between columns) */
+    .btl .compare thead th:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    .btl .compare,
+    .btl .compare *,
+    .btl .compare *::before,
+    .btl .compare *::after {
+        transition: none !important;
     }
 
     .btl .compare tbody tr {
-        transition: background-color 0.2s ease;
+        height: 85px;
     }
 
-    .btl .compare tbody tr:hover {
-        background-color: #fcf3f5;
+    .btl .compare tbody tr th,
+    .btl .compare tbody tr td {
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    /* Short vertical tick divider in body */
+    .btl .compare tbody td:not(:last-child)::after,
+    .btl .compare tbody th:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 20px;
+        background: #eaeaea;
+    }
+
+    .btl .compare tbody th {
+        font-weight: 500;
+        color: #252525;
+        vertical-align: middle;
+    }
+
+    .btl .compare tbody td.td-desc {
+        color: #666666;
+        font-size: 15px;
+        text-align: left;
+        padding-left: 16px;
+        vertical-align: middle;
+    }
+
+    .btl .compare td.bitiel {
+        font-weight: 600;
+        color: #252525;
+        vertical-align: middle;
+    }
+
+    /* HOVER STATE: Red border box + Soft Pink Background on hovered row */
+    .btl .compare tbody tr:hover th,
+    .btl .compare tbody tr:hover td {
+        border-top: 2px solid #c8365a !important;
+        border-bottom: 2px solid #c8365a !important;
+        background: #fdf2f4 !important;
+        height: 85px;
+        vertical-align: middle;
+    }
+
+    .btl .compare tbody tr:hover th:first-child {
+        border-left: 2px solid #c8365a !important;
+        border-radius: 0 !important;
+    }
+
+    .btl .compare tbody tr:hover td:last-child {
+        border-right: 2px solid #c8365a !important;
+        border-radius: 0 !important;
+    }
+
+    .btl .compare tbody tr:hover th:not(:last-child)::after,
+    .btl .compare tbody tr:hover td:not(:last-child)::after {
+        background: rgba(200, 54, 90, 0.15);
+    }
+
+    /* Star Icons */
+    .btl .compare .stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .btl .compare .stars svg {
+        width: 24px;
+        height: 24px;
     }
 
     .btl .swipe-hint {
@@ -1201,8 +1321,8 @@
     .btl .feature--01 .feature__media .feature__bg {
         position: absolute;
         left: 50%;
-        top: 0;
-        transform: translateX(-50%);
+        top: 53%;
+        transform: translate(-50%, -50%);
         width: 788px;
         height: 544px;
         object-fit: cover;
@@ -1213,8 +1333,8 @@
     .btl .feature--01 .feature__media .feature__ticket {
         position: absolute;
         left: 50%;
-        bottom: 149px;
-        transform: translateX(-50%);
+        top: 50%;
+        transform: translate(-50%, -50%);
         width: 458px;
         height: 390px;
         object-fit: contain;
@@ -1352,7 +1472,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #252525;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -1445,11 +1565,10 @@
     .btl .acc__item.is-open .acc__head {
         /* chỉ item đang mở mới có chuyển cảnh (khi xuất hiện) */
         transition: background-color .3s ease, color .3s ease,
-                    margin-left .3s ease, padding .3s ease;
+            margin-left .3s ease, padding .3s ease;
         background: #c8365a;
         /* drop-shadow bám theo hình (gồm cả mũi tên ::after) thay vì hộp chữ nhật */
-        filter: drop-shadow(0 6px 12px rgba(120, 20, 45, .14))
-                drop-shadow(0 2px 4px rgba(120, 20, 45, .10));
+        filter: drop-shadow(0 6px 12px rgba(120, 20, 45, .14)) drop-shadow(0 2px 4px rgba(120, 20, 45, .10));
         border-color: #c8365a;
         margin-left: -60px;
         max-width: 420px;
@@ -1662,7 +1781,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #ffffff;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -1783,8 +1902,8 @@
         font-size: 32px;
         letter-spacing: -1px;
         line-height: 62px;
-        text-transform: uppercase;
-        font-family: "Nanum Square B", sans-serif;
+        font-family: "Pretendard", sans-serif;
+        font-weight: 500;
         text-align: center;
         background: #0f1520;
         padding: 4px 16px;
@@ -1823,7 +1942,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #252525;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -1860,6 +1979,10 @@
         margin: 50px auto 0;
     }
 
+    .btl .results .case + .case {
+        margin-top: 100px;
+    }
+
     .btl .results .results__tabs {
         display: flex;
         justify-content: center;
@@ -1880,8 +2003,8 @@
     }
 
     .btl .results .rtab.is-active {
-        /* background: #c8365a;*/
         color: #ffffff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
 
     .btl .results .ba-row {
@@ -2058,8 +2181,7 @@
         width: 75% !important;
     }
 
-    .btl .results .case__shot--c2>img:not(.is-ghost-20) {
-    }
+    .btl .results .case__shot--c2>img:not(.is-ghost-20) {}
 
     .btl .results .case__shot--c3>img.is-ghost-60 {
         width: 37.5% !important;
@@ -2104,7 +2226,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #252525;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -2195,8 +2317,8 @@
         align-items: center;
         justify-content: center;
         position: absolute;
-        left: 50%;
-        top: 52%;
+        left: 44%;
+        top: 44%;
         transform: translate(-50%, -50%);
         z-index: 5;
     }
@@ -2343,7 +2465,7 @@
         line-height: 68px;
         text-transform: uppercase;
         /* color: #252525; */
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -2356,6 +2478,12 @@
         font-size: 22px;
     }
 
+    .btl .faq__label {
+        font-size: 20px;
+        letter-spacing: -0.5px;
+        line-height: 28px;
+    }
+
     .btl .faq__panel p {
         width: 100%;
         max-width: 100%;
@@ -2363,8 +2491,7 @@
         padding: 0 40px 30px 40px;
         font-size: 18px;
         letter-spacing: 0px;
-        line-height: 26px;
-        text-transform: uppercase;
+        line-height: 28px;
         color: #252525;
         font-family: "Pretendard", sans-serif;
         word-break: break-all;
@@ -2398,7 +2525,7 @@
         line-height: 68px;
         text-transform: uppercase;
         color: #252525;
-        font-family: "Nanum Square EB", sans-serif;
+        font-family: "Nanum Square B", sans-serif;
         text-align: center;
     }
 
@@ -2544,7 +2671,7 @@
     }
 
     .btl .contact__agree-box::after {
-        /* left: 10px; */ 
+        /* left: 10px; */
         top: -1px;
         width: 18px;
         height: 19px;
