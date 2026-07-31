@@ -145,13 +145,18 @@
       /* ================================================================
          BONG BÓNG THERMO: HIỆN RA RỒI NHÚN NHẢY LIÊN TỤC
          ================================================================ */
-      @keyframes bubbleFloat {
-        0%, 100% {
-          transform: translateY(0) scale(1);
-        }
-        50% {
-          transform: translateY(-12px) scale(1.03);
-        }
+      /* Bật lên nhanh rồi rơi xuống, chạm đáy thì bẹp nhẹ (squash) và bung
+         lại (stretch) — đây mới ra cảm giác "nảy"; nếu chỉ lên xuống đều thì
+         chỉ là trôi bồng bềnh. scaleX/scaleY ngược chiều để giữ khối bong bóng
+         không bị phồng to ra. */
+      @keyframes bubbleBounce {
+        0%   { transform: translateY(0) scale(1, 1); }
+        12%  { transform: translateY(2px) scale(1.06, 0.94); }
+        35%  { transform: translateY(-16px) scale(0.97, 1.04); }
+        55%  { transform: translateY(-18px) scale(1, 1); }
+        78%  { transform: translateY(3px) scale(1.07, 0.93); }
+        90%  { transform: translateY(-5px) scale(0.99, 1.01); }
+        100% { transform: translateY(0) scale(1, 1); }
       }
 
       .anim-bubble {
@@ -162,19 +167,20 @@
 
       .anim-bubble.in-view {
         opacity: 1 !important;
-        animation: bubbleFloat 3s ease-in-out infinite !important;
+        /* gốc biến dạng ở đáy pill để cú bẹp trông như đang tì xuống đất */
+        transform-origin: 50% 100%;
+        animation: bubbleBounce 2.6s ease-in-out infinite !important;
       }
 
-      /* Lệch pha từng bong bóng — nếu cả 6 cái cùng lên cùng xuống thì nhìn
-         như một khối cứng đang trượt, không ra cảm giác bồng bềnh.
-         Delay ÂM: bắt đầu ngay lập tức nhưng ở giữa chu kỳ, thay vì đứng im
-         chờ tới lượt. */
-      .thermo .bubble--a.in-view { animation-delay: -0.0s !important; }
-      .thermo .bubble--b.in-view { animation-delay: -0.5s !important; }
-      .thermo .bubble--c.in-view { animation-delay: -1.0s !important; }
-      .thermo .bubble--d.in-view { animation-delay: -0.25s !important; }
-      .thermo .bubble--e.in-view { animation-delay: -0.75s !important; }
-      .thermo .bubble--f.in-view { animation-delay: -1.25s !important; }
+      /* Lệch pha từng bong bóng — 6 cái cùng nảy một nhịp thì nhìn như một
+         khối cứng đang trượt. Delay ÂM để bắt đầu ngay ở giữa chu kỳ thay vì
+         đứng im chờ tới lượt. */
+      .thermo .bubble--a.in-view { animation-delay: 0s !important; }
+      .thermo .bubble--b.in-view { animation-delay: -0.45s !important; }
+      .thermo .bubble--c.in-view { animation-delay: -0.9s !important; }
+      .thermo .bubble--d.in-view { animation-delay: -0.2s !important; }
+      .thermo .bubble--e.in-view { animation-delay: -0.65s !important; }
+      .thermo .bubble--f.in-view { animation-delay: -1.1s !important; }
 
       .career__apps .app-1.in-view {
         animation-delay: 0s !important;
@@ -315,23 +321,14 @@
       threshold: 0.05
     };
 
-    var RESET_GAP = 120;
-
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
-          return;
-        }
-
-        if (window.scrollY <= 150) return;
-
-        var r = entry.boundingClientRect;
-        var farAbove = r.bottom < -RESET_GAP;
-        var farBelow = r.top > (window.innerHeight || 0) + RESET_GAP;
-
-        if (farAbove || farBelow) {
-          entry.target.classList.remove('in-view');
+        } else {
+          if (window.scrollY > 150) {
+            entry.target.classList.remove('in-view');
+          }
         }
       });
     }, observerOptions);
@@ -425,11 +422,7 @@
       { sel: '.ba-card--before', anim: 'anim-left', delay: 0.18 },
       { sel: '.ba-card--after', anim: 'anim-right', delay: 0.3 },
       { sel: '.ba-card__label', anim: 'anim-down', delay: 0.25 },
-      // anim-fade chứ không phải anim-scale: badge tự canh giữa bằng
-      // transform: translate(-50%…), mà mọi anim có dịch chuyển đều ghi đè
-      // TOÀN BỘ transform khi vào tầm nhìn → badge bị đẩy lệch đúng nửa kích
-      // thước của nó. Fade chỉ đụng opacity nên vị trí CSS được giữ nguyên.
-      { sel: '.turn__badge', anim: 'anim-fade', delay: 0.35 },
+      { sel: '.turn__badge', anim: 'anim-scale', delay: 0.35 },
       { sel: '.ba-card__react', anim: 'anim-down', stagger: 0.15 },
       { sel: '.turn__quote', anim: 'anim-up', delay: 0.3 },
 
