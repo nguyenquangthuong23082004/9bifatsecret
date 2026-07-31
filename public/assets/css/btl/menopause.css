@@ -45,7 +45,7 @@
 }
 
 .acc__item {
-   border-bottom: 1px solid #eee;
+   /* border-bottom: 1px solid #eee; */
 }
 
 .acc__item:last-child {
