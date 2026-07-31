@@ -2051,7 +2051,7 @@
         top: 0% !important;
     }
 
-    .ba-card__photo img.is-contain {
+    .ba-card--after .ba-card__photo img.is-contain {
         top: -13px;
     }
 
@@ -2215,7 +2215,7 @@
         content: "\201C";
         position: absolute;
         left: 40px;
-        top: 20px;
+        top: 69px;
         opacity: 0.051;
         font-size: 100px;
         letter-spacing: -2px;

@@ -15,6 +15,8 @@
 @font-face { font-family:"NanumSquare"; font-weight:800; font-style:normal; font-display:swap; src:url("../../../fonts/NanumSquareEB.ttf") format("truetype"); }
 /* TAEBAEK(태백체) – Figma hero font (TAEBAEK font, Regular) */
 @font-face { font-family:"TAEBAEK"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/TAEBAEKfont.woff2") format("woff2"); }
+/* 여기어때 잘난체 (Jalnan OTF) – dấu nháy “ của .turn__quote::before, Figma 529:818 */
+@font-face { font-family:"Jalnan OT F"; font-weight:400; font-style:normal; font-display:swap; src:url("../../../fonts/JalnanOTF.woff") format("woff"); }
 
 /* ---------- Design tokens ---------- */
 :root{

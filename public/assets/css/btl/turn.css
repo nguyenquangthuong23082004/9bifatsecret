@@ -184,12 +184,14 @@
 .turn__quote::before {
     content: "\201C";
     position: absolute;
+    /* Figma 529:818 – x 57 (=24 trong box), y 16461 (=14 từ đỉnh box 16447), 34x84 */
     left: 24px;
-    top: 0;
-    font-family: var(--f-title);
+    top: 14px;
+    font-family: "Jalnan OT F", "NanumSquare", sans-serif;
     font-size: 60px;
     line-height: 1.4;
     letter-spacing: -1.2px;
+    white-space: nowrap;
     color: #fff;
     opacity: .05;
 }
