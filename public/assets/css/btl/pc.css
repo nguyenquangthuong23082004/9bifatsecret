@@ -756,7 +756,7 @@
     .btl .program__media {
         position: relative;
         width: 720px;
-        height: 455px;
+        height: 613px;
         margin: 0 auto;
     }
 
@@ -1801,7 +1801,7 @@
     }
 
     .btl .results .subhead span {
-        /* font-size: 17px; */
+        font-size: 20px;
         font-weight: 400;
         color: #999999;
     }
@@ -1866,6 +1866,62 @@
         position: relative;
         overflow: hidden;
         border-radius: 16px;
+    }
+
+    /* 부분관리 (rp2): hai hàng này KHÔNG dùng khung dọc 410x514 như các hàng
+       khác — chúng là ảnh cắt ngang, mỗi hàng một tỷ lệ riêng đúng như bản
+       design. Phải ghi đè bằng !important vì rule gộp ở trên đã dùng
+       !important cho cả selector --h90/--h161. Kích thước lấy từ PSD, mỗi
+       hàng một con số riêng. */
+    .btl .results .ba-row--h90 .ba-shot {
+        width: 420px !important;
+        height: 200px !important;
+        flex: 0 0 420px;
+    }
+
+    .btl .results .ba-row--h161 .ba-shot {
+        width: 410px !important;
+        height: 300px !important;
+        flex: 0 0 410px;
+    }
+
+    /* Khung PC có tỷ lệ khác mobile (2.1 và 1.37 so với 1.87 và 1.04), mà ảnh
+       nền định vị bằng % của khung — giữ nguyên thì ảnh bị kéo méo theo đúng
+       phần chênh đó. Chuyển sang cover để nó cắt bớt thay vì méo. */
+    .btl .results .ba-row--dark .ba-shot>img {
+        width: 100% !important;
+        height: 100% !important;
+        left: 0 !important;
+        top: 0 !important;
+        object-fit: cover;
+    }
+
+    /* Vòng phóng + chip số đo. Ảnh bên trong .ba-zoom__pic định vị bằng %, nên
+       chỉ cần phóng cái khung tròn là toàn bộ vùng cắt tự phóng theo. */
+    .btl .results .ba-zoom {
+        width: 160px;
+        right: 0px;
+        top: 12px;
+    }
+
+    /* Khung 허벅지 cao 300px: vòng 148 + chip nhô ra 16 = 164, nên mốc 130 là
+       sát đáy nhất còn nằm gọn bên trong, đúng vị trí trong design. */
+    .btl .results .ba-zoom--low {
+        top: 130px;
+    }
+
+    .btl .results .ba-zoom__pic {
+        width: 130px;
+        height: 130px;
+        border-width: 4px;
+        margin-bottom: -16px;
+    }
+
+    .btl .results .ba-zoom em {
+        width: 84px;
+        height: 32px;
+        font-size: 18px;
+        z-index: 20;
     }
 
     .btl .results .ba-badge {
@@ -1953,6 +2009,27 @@
         overflow: hidden;
         margin: 46px auto 0;
         border-radius: 16px;
+    }
+
+    .btl .results .case__shot--c2>img.is-ghost-20 {
+        width: 75% !important;
+    }
+
+    .btl .results .case__shot--c2>img:not(.is-ghost-20) {
+    }
+
+    .btl .results .case__shot--c3>img.is-ghost-60 {
+        width: 27.5% !important;
+        height: 153.4% !important;
+        left: 24.5% !important;
+        top: -1.7% !important;
+    }
+
+    .btl .results .case__shot--c3>img:not(.is-ghost-60) {
+        width: 28% !important;
+        height: 162.8% !important;
+        left: 50.4% !important;
+        top: -2.1% !important;
     }
 
     .btl .turn {
@@ -2400,7 +2477,7 @@
     }
 
     .sec-head .sec-head__title .line2 {
-        color: #252525;
+        /* color: #252525; */
     }
 
     .contact__btn {
