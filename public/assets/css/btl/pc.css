@@ -768,6 +768,35 @@
         display: block;
     }
 
+    /* 01_집중관리: ảnh gốc 646x700 (dọc), chỉ lấy phần trên có 3 nhân vật.
+       contain sẽ hụt bề ngang → dùng cover neo mép trên. */
+    .btl .program__panel--focus .program__media {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        aspect-ratio: auto;
+    }
+
+    .btl .program__panel--focus .program__media img {
+        object-fit: cover;
+        object-position: center top;
+    }
+
+    /* Nhãn Before/After: kích thước mobile cố định bằng px → phóng theo card PC.
+       Trừ tab 페이스, cụm .face đã được scale sẵn ở dưới. */
+    .btl .program__panel:not(.program__panel--face) .program__tag {
+        width: 90px;
+        height: 39px;
+        font-size: 20px;
+    }
+
+    /* 04_페이스다이어트: phóng to cả cụm before/after cho khớp design PC.
+       Dùng transform:scale để badge/avatar (toạ độ px) giữ nguyên tỉ lệ. */
+    .btl .program__panel--face .face {
+        transform: scale(1.95);
+        transform-origin: center center;
+    }
+
     .btl .program__desc {
         font-size: 20px;
         letter-spacing: 0px;
@@ -2105,8 +2134,8 @@
         position: absolute;
         top: 320px;
         transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         background: transparent;
         border: none;
@@ -2121,10 +2150,10 @@
 
     .btl .turn__nav::after {
         content: "";
-        width: 20px;
-        height: 20px;
-        border-top: 1.5px solid #252525;
-        border-right: 1.5px solid #252525;
+        width: 34px;
+        height: 34px;
+        border-top: 3px solid #252525;
+        border-right: 3px solid #252525;
         display: block;
     }
 
@@ -2134,7 +2163,7 @@
 
     .btl .turn__nav--prev::after {
         transform: rotate(-135deg);
-        margin-left: 6px;
+        margin-left: 10px;
     }
 
     .btl .turn__nav--next {
@@ -2143,7 +2172,7 @@
 
     .btl .turn__nav--next::after {
         transform: rotate(45deg);
-        margin-right: 6px;
+        margin-right: 10px;
     }
 
     .btl .turn__nav:hover::after {

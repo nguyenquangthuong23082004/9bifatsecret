@@ -31,7 +31,8 @@ $slides = [
         'badge' => ['-15kg', '13주차'],
         'react' => 'turn-s4-react.png',
         // thanh đen che mắt (Figma 608:5 / 608:6) đã vẽ sẵn vào ảnh -censored
-        'before' => ['turn-s4-before-censored.jpg', 'cover'],
+        // before: crop zoom riêng cho PC (xem .turn-slide--4 trong pc.css)
+        'before' => ['turn-s4-before-censored.jpg', 'contain'],
         'after'  => ['turn-s4-after-censored.png', 'cover'],
         'quote'  => "출산 후 초기,중기,후기에 나뉘 체계적으로\n관리받으니 정체기도 가뿐이 넘기고 15kg 감량\n성공했습니다!! 비티엘 다이어트는 감량효과도\n확실한데 산모에게 맞는 림프순환, 망가진 체형\n교정까지 건강을 같이 지킬 수 있어서 훨씬\n만족스러워요!",
     ],
@@ -73,7 +74,7 @@ $photo = function (?array $fill) use ($img) {
         <button type="button" class="turn__nav turn__nav--next only-pc" aria-label="다음"></button>
         <div class="swiper-wrapper">
             <?php foreach ($slides as $n => $s): ?>
-            <div class="swiper-slide">
+            <div class="swiper-slide turn-slide--<?= $n + 1 ?>">
                 <div class="turn__cards">
                     <figure class="ba-card ba-card--before">
                         <figcaption class="ba-card__label">BEFORE</figcaption>
