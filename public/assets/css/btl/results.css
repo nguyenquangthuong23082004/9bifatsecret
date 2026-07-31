@@ -118,7 +118,7 @@
 }
 
 .subhead span {
-    font-size: 13px;
+    /* font-size: 13px; */
     font-weight: 400;
     color: #999999;
     cursor: pointer;

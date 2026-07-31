@@ -1801,7 +1801,7 @@
     }
 
     .btl .results .subhead span {
-        font-size: 17px;
+        /* font-size: 17px; */
         font-weight: 400;
         color: #999999;
     }

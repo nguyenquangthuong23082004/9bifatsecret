@@ -1,18 +1,28 @@
 /* =========================================================
    BITIEL Landing – GSAP Scroll Animation System
    -----------------------------------------------------------------
-   TƯ DUY: animation KHÔNG "được kích hoạt rồi tự chạy".
-   Nó bị BUỘC vào vị trí thanh cuộn (scrub).
+   TƯ DUY: câu hỏi gốc của mọi animation ở đây là "AI CẦM ĐỒNG HỒ".
+   Trang này trả lời bằng hai mode, chọn theo từng khối chứ không chọn một
+   lần cho cả trang.
 
-     tiến độ animation = f(scrollY)
+   1) scrub — đồng hồ LÀ thanh cuộn:  tiến độ animation = f(scrollY)
+      • Cuộn lên là chạy lùi chính xác từng frame → lặp lại vô hạn, không cần
+        restart()/pause() hay cờ trạng thái nào.
+      • Không thể có bug "kẹt ở opacity:0", vì trạng thái luôn được suy ra từ
+        vị trí cuộn hiện tại chứ không phải từ một sự kiện đã lỡ mất.
+      • Đổi lại: chất lượng chuyển động = chất lượng thao tác của người dùng.
+        Cuộn giật từng nấc thì animation nhảy từng nấc, vì đầu vào nhảy từng
+        nấc. `scrub: <số giây>` chỉ làm mềm chứ không xoá được điều đó, và
+        easing thì vô nghĩa — nó chồng gia tốc lên gia tốc.
+      → Dùng cho parallax, khối bị ghim, khối có loop: nơi người dùng CẦN cảm
+        thấy mình đang điều khiển.
 
-   Hệ quả:
-   • Cuộn lên là animation chạy lùi chính xác từng frame → lặp lại vô hạn,
-     không cần restart()/pause() hay cờ trạng thái nào.
-   • Không thể có bug "kẹt ở opacity:0", vì trạng thái luôn được suy ra từ
-     vị trí cuộn hiện tại chứ không phải từ một sự kiện đã lỡ mất.
-   • Cảm giác mượt đến từ `scrub: <số giây>` — animation đuổi theo con lăn
-     với một quán tính, chứ không phải từ easing.
+   2) trigger — đồng hồ là thời gian thật (rAF), cuộn chỉ bấm nút chạy:
+      • Cuộn thô hay mượt không còn ảnh hưởng, vì scrollY không còn là đầu vào.
+      • Đây là nơi `ease` mới có ý nghĩa, và là thứ tạo cảm giác dứt khoát.
+      • Đổi lại: có trạng thái. Xử lý bằng toggleActions 'play … reverse' —
+        cuộn ngược lên thì chạy lùi, nên lần cuộn xuống sau vẫn xem từ đầu.
+      → Dùng cho mọi reveal thông thường: tiêu đề, thẻ, dòng nội dung.
 
    CẤU TRÚC
      Phần A – Hạ tầng: log chẩn đoán + token chuyển động + hàm reveal()
@@ -128,10 +138,27 @@
    *  scrub       : độ trễ (giây) khi animation đuổi theo con lăn.
    *                0 = dính chặt, 1 = mượt, 2+ = lười biếng/điện ảnh.
    *  scale       : hệ số nhân cho mọi khoảng cách px (mobile đi ít hơn).
+   *
+   *  Hai thế giới, hai đồng hồ:
+   *
+   *  scrub   – đồng hồ LÀ thanh cuộn. start/end/scrub có nghĩa; ease vô nghĩa
+   *            (xem MODE bên dưới). Dành cho parallax, khối ghim, khối có loop.
+   *  trigger – đồng hồ là thời gian thật. Chỉ cần một mốc `triggerStart` để
+   *            biết lúc nào bấm nút chạy; từ đó `dur` (giây) và `ease` mới là
+   *            thứ quyết định cảm giác. Dành cho mọi reveal thông thường.
    */
   var MOTION = {
-    desktop: { start: 'top 90%', end: 'top 40%', scrub: 1, scale: 1 },
-    mobile: { start: 'top 95%', end: 'top 45%', scrub: 0.8, scale: 0.55 }
+    desktop: {
+      start: 'top 90%', end: 'top 40%', scrub: 0.5, scale: 1,
+      triggerStart: 'top 85%', dur: 0.8, ease: 'power3.out'
+    },
+    mobile: {
+      start: 'top 95%', end: 'top 45%', scrub: 0.5, scale: 0.55,
+      // Mobile cuộn theo quán tính (ngón tay thả ra, trang còn trôi) nên scroll
+      // đến thành từng đợt — scrub ở đây giật rõ hơn desktop. Mốc kích hoạt vì
+      // vậy đặt sớm hơn và nhịp ngắn hơn.
+      triggerStart: 'top 90%', dur: 0.7, ease: 'power3.out'
+    }
   };
 
   var M = MOTION.desktop;   // token đang áp dụng, do matchMedia gán
@@ -191,9 +218,15 @@
    * @param {string}   [config.start]  Mặc định M.start.
    * @param {string}   [config.end]    Mặc định M.end.
    * @param {number}   [config.scrub]  Mặc định M.scrub.
+   * @param {string}   [config.mode]   'scrub' (mặc định) | 'trigger' | 'once'.
+   *        Xem MOTION. Khối bị ghim BUỘC phải là 'scrub'.
    * @param {Array}    config.steps    [{ el, from, to, at }]
-   *        `duration` trong `to` KHÔNG còn là giây — nó là TRỌNG SỐ tương
-   *        đối, vì cả timeline bị kéo giãn cho vừa quãng cuộn start→end.
+   *        `duration` trong `to` LUÔN là TRỌNG SỐ tương đối, không phải giây —
+   *        ở mode scrub vì timeline bị kéo giãn cho vừa quãng cuộn start→end,
+   *        ở mode trigger vì nó được nhân với M.dur để ra giây thật. Nhờ vậy
+   *        một khai báo step dùng được cho cả hai mode.
+   *        `ease: 'none'` nghĩa là "không có ý kiến" — mode trigger sẽ thay
+   *        bằng M.ease. Ease khác 'none' (vd back.out) là chủ ý, luôn giữ.
    * @param {Function} [config.loop]   Trả về mảng tween lặp vô hạn. Tween lặp
    *        phải dùng thuộc tính KHÁC tween reveal (yPercent vs y).
    */
@@ -237,12 +270,24 @@
 
     var st = null;
 
+    // Ghim chỉ có nghĩa khi quãng cuộn được tiêu vào việc chạy timeline — tức
+    // là mode scrub. Ép về scrub thay vì để lệch cấu hình rồi lỗi khó hiểu.
+    var mode = config.pin ? 'scrub' : (config.mode || 'scrub');
+    var isScrub = mode === 'scrub';
+
     var tl = gsap.timeline({
       scrollTrigger: {
         trigger: config.trigger,
-        start: config.start || M.start,
-        end: config.end || M.end,
-        scrub: config.scrub !== undefined ? config.scrub : M.scrub,
+        start: config.start || (isScrub ? M.start : M.triggerStart),
+        // Mode trigger không có quãng cuộn nào để trải timeline lên, nên `end`
+        // vô nghĩa; ScrollTrigger chỉ cần biết mốc bấm nút chạy.
+        end: isScrub ? (config.end || M.end) : undefined,
+        scrub: isScrub ? (config.scrub !== undefined ? config.scrub : M.scrub) : false,
+        // play khi vào tầm nhìn; cuộn ngược lên thì chạy lùi để lần cuộn xuống
+        // sau lại được xem từ đầu. mode 'once' thì diễn đúng một lần.
+        toggleActions: isScrub ? undefined
+          : (mode === 'once' ? 'play none none none' : 'play none none reverse'),
+        once: mode === 'once',
         // Ghim: quãng cuộn start→end không đẩy trang đi nữa mà được tiêu vào
         // việc chạy timeline. Truyền vào phần tử cụ thể chứ không phải `true`,
         // để chọn đúng thứ được bọc bởi pin-spacer.
@@ -255,9 +300,12 @@
         // cuộn nhanh làm animation tụt lại phía sau, snap kéo nó về đúng một
         // trong các mốc đã định thay vì để nằm dở dang giữa hai nhịp.
         snap: config.snap || false,
-        // Tính lại giá trị start của mọi tween mỗi lần refresh — cần thiết vì
-        // khoảng cách px phụ thuộc breakpoint và layout còn dịch khi ảnh load.
-        invalidateOnRefresh: true,
+        // Chỉ ở mode scrub: tính lại giá trị start của mọi tween mỗi lần
+        // refresh, vì khoảng cách px phụ thuộc breakpoint và layout còn dịch
+        // khi ảnh load. Ở mode trigger thì KHÔNG — invalidate một timeline đã
+        // chạy xong sẽ dựng lại nó ở trạng thái `from`, tức là mỗi lần ảnh
+        // lazy tải xong là một khối đã hiện lại chớp về vô hình.
+        invalidateOnRefresh: isScrub,
         onEnter: DEBUG ? function () { logInfo('▶ %s vào tầm nhìn', name); } : null,
         onLeaveBack: DEBUG ? function () { logInfo('◀ %s ra khỏi tầm nhìn', name); } : null
       },
@@ -266,25 +314,49 @@
     });
 
     steps.forEach(function (step) {
-      if (step.at === undefined) {
-        tl.fromTo(step.el, step.from, step.to);
+      var to = step.to;
+      var at = step.at;
+
+      if (!isScrub) {
+        // Vị trí gối đầu ('-=0.4') cũng là trọng số, quy đổi cùng hệ số để độ
+        // gối đầu giữ nguyên TỈ LỆ với duration, không bị nới ra hay bóp lại.
+        if (typeof at === 'string' && /^[-+]=[\d.]+$/.test(at)) {
+          at = at.slice(0, 2) + (parseFloat(at.slice(2)) * M.dur);
+        }
+
+        // Cùng một khai báo step, dịch sang ngôn ngữ thời gian thật: trọng số
+        // → giây, và 'none' → đường cong của breakpoint hiện tại.
+        to = Object.assign({}, to);
+        to.duration = (to.duration === undefined ? 1 : to.duration) * M.dur;
+        if (!to.ease || to.ease === 'none') to.ease = M.ease;
+      }
+
+      if (at === undefined) {
+        tl.fromTo(step.el, step.from, to);
       } else {
-        tl.fromTo(step.el, step.from, step.to, step.at);
+        tl.fromTo(step.el, step.from, to, at);
       }
     });
 
     st = tl.scrollTrigger;
-    logOk(name, 'trigger=' + describe(config.trigger) + '  phần tử=' + total);
+    logOk(name, '[' + mode + '] trigger=' + describe(config.trigger) + '  phần tử=' + total);
     report.push({ block: name, status: 'ok', els: total, st: st, trigger: config.trigger });
 
     return tl;
   }
 
-  /** Rút gọn cho khối chỉ có 1 nhóm phần tử. */
+  /**
+   * Rút gọn cho khối chỉ có 1 nhóm phần tử.
+   *
+   * Mặc định 'trigger', ngược với reveal() thô. Chủ ý: mọi thứ đi qua đây đều
+   * là reveal văn bản/thẻ — thứ không ai muốn tua ngược bằng con lăn, và là
+   * thứ được lợi nhất từ ease. Khối nào cố ý dùng scrub phải nói ra.
+   */
   function revealGroup(name, trigger, el, from, to, opts) {
     return reveal({
       name: name,
       trigger: trigger,
+      mode: (opts && opts.mode) || 'trigger',
       start: opts && opts.start,
       end: opts && opts.end,
       scrub: opts && opts.scrub,
@@ -461,13 +533,17 @@
     // DOM — khối đứng trước quyết định thời điểm cho cả cụm.
     var logo = q(sec, '.philo__logo');
     var items = qq(sec, '.philo__item');
+    // Thẻ philo có bo góc + nền riêng: không tách layer thì mỗi khung hình cuộn
+    // là một lần trình duyệt cắt lại góc tròn cho từng thẻ.
+    gpu(items);
     reveal({
       name: '03 philo / logo + items (đồng thời)',
+      mode: 'trigger',
       trigger: firstOf(logo, q(sec, '.philo__list'), items),
       steps: [
         {
           el: q(logo, '.philo__logo-mark'),
-          from: { autoAlpha: 0, y: -d(100) },
+          from: { autoAlpha: 0, y: -d(50) },
           to: { autoAlpha: 1, y: 0, duration: 0.9, ease: 'none' },
           at: 0
         },
@@ -479,7 +555,7 @@
         },
         {
           el: items,
-          from: { autoAlpha: 0, y: d(90) },
+          from: { autoAlpha: 0, y: d(150) },
           to: { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'none' },
           at: 0
         }
@@ -502,6 +578,7 @@
     var trophyWrap = q(sec, '.career__trophy-wrap');
     reveal({
       name: '04 career / trophy',
+      mode: 'trigger',
       trigger: trophyWrap,
       steps: [
         {
@@ -528,6 +605,7 @@
     var apps = qq(sec, '.career__apps img');
     reveal({
       name: '04 career / player',
+      mode: 'scrub',
       trigger: player,
       steps: [
         {
@@ -586,6 +664,7 @@
     qq(sec, '.dual__block').forEach(function (block, i) {
       reveal({
         name: '06 dual / block#' + i,
+        mode: 'trigger',
         trigger: block,
         steps: [
           {
@@ -606,6 +685,7 @@
     var devices = q(sec, '.dual__devices');
     reveal({
       name: '06 dual / devices',
+      mode: 'scrub',
       trigger: devices,
       steps: [
         {
@@ -639,6 +719,7 @@
     var circle = q(visual, '.ticket-circle');
     reveal({
       name: '07 ticket / visual',
+      mode: 'scrub',
       trigger: visual,
       steps: [
         {
@@ -688,6 +769,7 @@
 
     reveal({
       name: '09 yoyo / compare',
+      mode: 'trigger',
       trigger: sec,
       steps: [
         {
@@ -831,6 +913,7 @@
     // trigger với khung ảnh nên cũng chạy xong trước khi người dùng đọc tới.
     reveal({
       name: '10 features / 01 head',
+      mode: 'scrub',
       trigger: q(f1, '.sec-head'),
       steps: [headStep(f1)]
     });
@@ -838,6 +921,7 @@
     var f2 = q(sec, '.feature--02');
     reveal({
       name: '10 features / 02',
+      mode: 'trigger',
       trigger: f2,
       steps: [
         { el: qq(f2, '.thermal__col'), from: { autoAlpha: 0, y: d(30) }, to: { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'none' }, at: 0 },
@@ -850,6 +934,7 @@
     var f3 = q(sec, '.feature--03');
     reveal({
       name: '10 features / 03',
+      mode: 'trigger',
       trigger: f3,
       steps: [
         { el: q(f3, '.feature__media'), from: { autoAlpha: 0, y: d(30), scale: 0.96 }, to: { autoAlpha: 1, y: 0, scale: 1, duration: 0.8, ease: 'none' }, at: 0 },
@@ -867,6 +952,7 @@
     var chips = qq(sec, '.thermo__chips .chip');
     reveal({
       name: '11 thermo / head+chips',
+      mode: 'trigger',
       trigger: firstOf(head, chips),
       steps: [
         { el: pick(head, HEAD_PLAIN), from: { autoAlpha: 0, y: -d(35) }, to: { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, ease: 'none' }, at: 0 },
@@ -879,6 +965,7 @@
     var bubbles = qq(stage, '.bubble');
     reveal({
       name: '11 thermo / stage',
+      mode: 'scrub',
       trigger: firstOf(player, stage),
       steps: [
         { el: player, from: { autoAlpha: 0, y: d(35), scale: 0.96 }, to: { autoAlpha: 1, y: 0, scale: 1, duration: 0.85, ease: 'none' }, at: 0 },
