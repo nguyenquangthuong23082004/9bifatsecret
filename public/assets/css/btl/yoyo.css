@@ -38,6 +38,13 @@
    vertical-align: middle;
 }
 
+/* nền đặt luôn ở hàng: các ô th cạnh nhau hay hở 1 khe trắng do làm tròn
+   subpixel khi chia cột, nền của tr bịt khe đó lại */
+.compare thead,
+.compare thead tr {
+   background: #c8365a;
+}
+
 .compare thead th {
    background: #c8365a;
    color: #fff;

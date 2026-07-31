@@ -315,18 +315,6 @@
       threshold: 0.05
     };
 
-    /* Vùng đệm để reset trạng thái, tính bằng px kể từ mép khung hình.
-       PHẢI lớn hơn quãng đường xa nhất mà một anim dịch chuyển (65px của
-       .anim-bounce-icon), nếu không sẽ có vòng lặp vô tận:
-
-         IntersectionObserver đo hộp ĐÃ BỊ TRANSFORM. Phần tử .anim-down nằm
-         ngay mép dưới khung hình đang bị đẩy lên 50px nên lọt vào tầm nhìn →
-         gán in-view → transform về 0 → nó tụt xuống 50px và ra khỏi tầm nhìn
-         → gỡ in-view → lại bị đẩy lên → lặp lại. Phần tử rung liên tục dù
-         người dùng không hề cuộn.
-
-       Chỉ reset khi phần tử đã ra hẳn khỏi khung một khoảng đủ lớn thì việc
-       đổi trạng thái không thể tự kéo nó trở vào, vòng lặp bị cắt tại gốc. */
     var RESET_GAP = 120;
 
     var observer = new IntersectionObserver(function (entries) {

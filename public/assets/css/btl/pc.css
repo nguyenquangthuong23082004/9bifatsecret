@@ -2531,6 +2531,29 @@
         font-size: 18px;
         height: 60px;
     }
+
+    /* Checkbox đồng ý ở mobile quá nhỏ so với form PC: nới ô +10px và chữ
+       +10px, dấu tick scale theo để vẫn nằm cân giữa ô. */
+    .btl .contact__agree {
+        gap: 10px;
+    }
+
+    .btl .contact__agree-box {
+        width: 30px;
+        height: 30px;
+    }
+
+    .btl .contact__agree-box::after {
+        /* left: 10px; */ 
+        top: -1px;
+        width: 18px;
+        height: 19px;
+    }
+
+    .btl .contact__agree-text {
+        font-size: 18px;
+        letter-spacing: -.48px;
+    }
 }
 
 
