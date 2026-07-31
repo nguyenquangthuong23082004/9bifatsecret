@@ -768,6 +768,8 @@
         display: block;
     }
 
+
+
     /* 01_집중관리: ảnh gốc 646x700 (dọc), chỉ lấy phần trên có 3 nhân vật.
        contain sẽ hụt bề ngang → dùng cover neo mép trên. */
     .btl .program__panel--focus .program__media {
@@ -780,6 +782,16 @@
     .btl .program__panel--focus .program__media img {
         object-fit: cover;
         object-position: center top;
+    }
+
+    /* 02_체형관리: ảnh có tỷ lệ riêng, thu nhỏ và đẩy sang phải cho cân khung. */
+    .btl .program__panel--shape .program__media img {
+        position: static;
+        width: 90%;
+        height: 87%;
+        object-fit: contain;
+        display: block;
+        margin-left: 44px;
     }
 
     /* Nhãn Before/After: kích thước mobile cố định bằng px → phóng theo card PC.
