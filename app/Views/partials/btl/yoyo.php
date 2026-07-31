@@ -18,9 +18,9 @@ $stars = fn(int $n) => '<span class="stars">' . str_repeat($star, $n) . '</span>
             <thead>
                 <tr>
                     <th scope="col"></th>
-                    <th scope="col" class="dim">위**, 마***</th>
-                    <th scope="col" class="dim">다이어트약</th>
-                    <th scope="col" class="dim">지방흡입수술</th>
+                    <th scope="col" class="dim-hover">위**, 마***</th>
+                    <th scope="col" class="dim-hover">다이어트약</th>
+                    <th scope="col" class="dim-hover">지방흡입수술</th>
                     <th scope="col">비티엘 다이어트</th>
                 </tr>
             </thead>

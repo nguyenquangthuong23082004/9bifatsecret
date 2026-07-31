@@ -54,6 +54,17 @@
    opacity: .4;
 }
 
+/* cột đối thủ: chữ chìm vào nền hồng, sáng lên khi hover */
+.compare thead th.dim-hover {
+   color: #d56883;
+   transition: color .2s ease;
+   cursor: default;
+}
+
+.compare thead th.dim-hover:hover {
+   color: #fff;
+}
+
 .compare tbody tr {
    border-bottom: 1px solid #eee;
 }
