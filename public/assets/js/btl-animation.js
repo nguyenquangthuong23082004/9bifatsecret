@@ -381,7 +381,11 @@
       { sel: '.ba-card--before', anim: 'anim-left', delay: 0.18 },
       { sel: '.ba-card--after', anim: 'anim-right', delay: 0.3 },
       { sel: '.ba-card__label', anim: 'anim-down', delay: 0.25 },
-      { sel: '.turn__badge', anim: 'anim-scale', delay: 0.35 },
+      // anim-fade chứ không phải anim-scale: badge tự canh giữa bằng
+      // transform: translate(-50%…), mà mọi anim có dịch chuyển đều ghi đè
+      // TOÀN BỘ transform khi vào tầm nhìn → badge bị đẩy lệch đúng nửa kích
+      // thước của nó. Fade chỉ đụng opacity nên vị trí CSS được giữ nguyên.
+      { sel: '.turn__badge', anim: 'anim-fade', delay: 0.35 },
       { sel: '.ba-card__react', anim: 'anim-down', stagger: 0.15 },
       { sel: '.turn__quote', anim: 'anim-up', delay: 0.3 },
 
