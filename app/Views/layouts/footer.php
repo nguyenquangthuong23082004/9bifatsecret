@@ -14,4 +14,6 @@
 <script src="<?= base_url('assets/js/btl-video.js') ?>" defer></script>
 <!-- GSAP Animations -->
 <script src="<?= base_url('assets/js/btl-animation.js') ?>" defer></script>
+<!-- Nút nổi 빠른 상담 / TOP -->
+<script src="<?= base_url('assets/js/btl-quickbar.js') ?>" defer></script>
 

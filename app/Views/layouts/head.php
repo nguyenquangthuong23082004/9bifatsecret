@@ -71,7 +71,7 @@
         'common', 'header', 'footer',
         'main-visual', 'philosophy', 'career', 'program', 'dual',
         'ticket', 'consult', 'yoyo', 'features', 'menopause',
-        'thermo', 'results', 'turn', 'faq', 'contact',
+        'thermo', 'results', 'turn', 'faq', 'contact', 'quickbar',
         'pc', // luôn để cuối: ghi đè toàn bộ section cho màn >= 992px
     ];
     foreach ($btlCss as $css):

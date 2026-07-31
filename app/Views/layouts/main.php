@@ -10,6 +10,8 @@
     </main><!-- /.btl-page -->
 
     <?= $this->include('partials/btl/footer') ?>
+
+    <?= $this->include('partials/btl/quickbar') ?>
 </div><!-- /.btl -->
 
 <?= $this->include('layouts/footer') ?>
