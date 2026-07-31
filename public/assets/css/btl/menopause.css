@@ -12,11 +12,30 @@
 }
 
 .meno__box {
+   position: relative;
    margin: 24px auto 0;
    max-width: 343px;
    background: #fff;
    border-radius: 20px;
    padding: 20px;
+}
+
+/* Figma 499:88 — ảnh nhân vật: 184x201, x=50 y=9688 (khối .meno__care: x=37,
+   y=9529, 301x320) → lệch trái 13px so với khối care, tràn 40px xuống dưới nó.
+   Quy về .meno__box (padding 20): left = 20 + 13 = 33px;
+   đáy ảnh vượt đáy box (care-bottom + padding 20) đúng 20px → bottom: -20px. */
+.meno__woman-pc {
+   position: absolute;
+   left: 33px;
+   bottom: -20px;
+   /* width: 184px; */
+   height: 201px;
+   object-fit: cover;
+   pointer-events: none;
+   z-index: 2;
+   /* Phần ảnh tràn 20px xuống dưới .meno__box bị cắt ngay trên chính ảnh
+      (không dùng overflow:hidden ở .meno__box để khỏi ảnh hưởng con khác). */
+   clip-path: inset(0 0 20px 0);
 }
 
 .accordion-btl {

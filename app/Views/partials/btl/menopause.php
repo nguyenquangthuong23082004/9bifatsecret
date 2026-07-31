@@ -1,5 +1,9 @@
 <?php
 $img = fn($f) => base_url('assets/images/btl/' . $f);
+// Ảnh rỗng → không in src, thêm hidden để không render ra
+$imgAttrs = fn($f) => $f !== '' && $f !== null
+    ? ' src="' . $img($f) . '"'
+    : ' hidden style="display:none !important"';
 /* 10. Menopause diet accordion (갱년기).
    Mỗi item accordion khi click sẽ cập nhật:
    - .meno__care h4  → careTitle
@@ -26,12 +30,12 @@ $items = [
         'menopause-woman.png',    // ← 인물 이미지
     ],
     [
-        '림프 순환 저하',
+        '여성호르몬 감소',
         '복부, 허리 지방집중, 거북등 심화',
         '림프순환 집중케어',
         "림프순환을 높여 갱년기 하체지방 커팅 및\n올곧은 등 유지",
         'menopause-care.webp',      // ← 케어 이미지
-        'meno-symptom-back-pain.png',      // ← 인물 이미지
+        '',      // ← 인물 이미지
     ],
     [
         '혈관 노폐물 증가',
@@ -48,8 +52,8 @@ $open = 2; // 림프 순환 저하 open by default (matches Figma)
 $jsData = array_map(fn($item) => [
     'careTitle' => $item[2],
     'careDesc'  => nl2br(esc($item[3])),
-    'careImg'   => $img($item[4]),
-    'womanImg'  => $img($item[5]),
+    'careImg'   => $item[4] !== '' ? $img($item[4]) : '',
+    'womanImg'  => $item[5] !== '' ? $img($item[5]) : '',
 ], $items);
 ?>
 <!-- 10. Menopause diet (갱년기) -->
@@ -71,16 +75,14 @@ $jsData = array_map(fn($item) => [
             </li>
             <?php endforeach; ?>
         </ul>
-        <img id="menoWomanImg" class="meno__woman-pc only-pc"
-             src="<?= $img($items[$open][5]) ?>"
+        <img id="menoWomanImg" class="meno__woman-pc"<?= $imgAttrs($items[$open][5]) ?>
              alt="" aria-hidden="true" loading="lazy">
 
         <!-- Khối chi tiết – cập nhật động khi chọn item -->
         <div class="meno__care" data-meno-care="<?= $open ?>">
             <h4 id="menoCareTitle"><?= esc($items[$open][2]) ?></h4>
             <p id="menoCareDesc"><?= nl2br(esc($items[$open][3])) ?></p>
-            <img id="menoCareImg" class="meno__care-img"
-                 src="<?= $img($items[$open][4]) ?>"
+            <img id="menoCareImg" class="meno__care-img"<?= $imgAttrs($items[$open][4]) ?>
                  alt="<?= esc($items[$open][2]) ?>" loading="lazy">
         </div>
     </div>

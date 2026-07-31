@@ -7,7 +7,7 @@
 @media (min-width:992px) {
 
     :root {
-        --pc-header-h: 80px;
+        --pc-header-h: 170px;
         --pc-band-h: 58px;
         --pc-w: 1440px;
         --pc-pad: 40px;
@@ -826,7 +826,7 @@
         font-size: 20px;
         letter-spacing: 0px;
         line-height: 32px;
-        color: #454545;
+        /* color: #454545; */
         font-family: "Pretendard", sans-serif;
         text-align: center;
         transition: color 0.3s ease;
@@ -834,8 +834,8 @@
     }
 
     .btl .dual .check-list li:hover {
-        color: var(--c-primary);
-        font-weight: 600;
+        /* color: var(--c-primary);
+        font-weight: 600; */
     }
 
     .btl .dual__devices {
@@ -1094,7 +1094,7 @@
     }
 
     .btl .compare tbody tr:hover {
-        background-color: rgba(200, 54, 90, 0.4);
+        background-color: #fcf3f5;
     }
 
     .btl .swipe-hint {
@@ -1330,6 +1330,7 @@
         justify-content: space-between;
         align-items: stretch;
         gap: 0;
+        border-radius: 35px;
         /* overflow: hidden; */
     }
 
@@ -1355,7 +1356,9 @@
         /* border: 1px solid #eeeeee; */
         text-align: left;
         cursor: pointer;
-        transition: all 0.3s ease;
+        /* base = trạng thái đóng: KHÔNG transition → đóng lại tức thì,
+           không còn nền hồng fade ra tạo vệt loang */
+        transition: none;
         position: relative;
     }
 
@@ -1380,11 +1383,18 @@
     }
 
     .btl .acc__item.is-open .acc__head {
+        /* chỉ item đang mở mới có chuyển cảnh (khi xuất hiện) */
+        transition: background-color .3s ease, color .3s ease,
+                    margin-left .3s ease, padding .3s ease;
         background: #c8365a;
-        box-shadow: 0 10px 25px rgba(200, 54, 90, 0.3);
+        /* drop-shadow bám theo hình (gồm cả mũi tên ::after) thay vì hộp chữ nhật */
+        filter: drop-shadow(0 6px 12px rgba(120, 20, 45, .14))
+                drop-shadow(0 2px 4px rgba(120, 20, 45, .10));
         border-color: #c8365a;
-        margin-left: -50px;
-        max-width: 370px;
+        margin-left: -60px;
+        max-width: 420px;
+        padding: 40px 0 40px 50px;
+        border-radius: 20px;
     }
 
     .btl .acc__item.is-open .acc__head h3,
@@ -1769,7 +1779,7 @@
 
     .btl .results .subhead span.is-on {
         font-size: 20px;
-        font-weight: 700;
+        /* font-weight: 700; */
         color: #252525;
     }
 

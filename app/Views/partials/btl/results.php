@@ -67,8 +67,8 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
 
         <!-- 체형관리 (516:398) — only the 전면 block exists in the design -->
         <div class="rpanel" id="rp1">
-            <div class="rblock">
-                <p class="subhead"><span class="is-on">전면 비포 애프터</span><i>·</i><span>측면 비포 애프터</span></p>
+            <div class="rblock rblock--nohead">
+                <!-- <p class="subhead"><span class="is-on">전면 비포 애프터</span><i>·</i><span>측면 비포 애프터</span></p> -->
                 <div class="ba-row">
                     <div class="ba-shot"><?php $shot('res-c1-shape-before.png', 126.79, 102.4, -13.1, -2.16, '체형관리 비포') ?></div>
                     <div class="ba-shot"><?php $shot('res-c1-shape-after.png', 119.64, 105.92, -9.82, -5.68, '체형관리 애프터') ?></div>

@@ -50,18 +50,31 @@
     var menoWomanImg = document.getElementById('menoWomanImg');
     var menoData = window.MENO_CARE_DATA || [];
 
+    // Ảnh rỗng → ẩn hẳn, không render src trống
+    function setImg(el, src, alt) {
+      if (!el) return;
+      if (!src) {
+        el.removeAttribute('src');
+        el.hidden = true;
+        // dùng important để thắng .only-pc{display:block!important}
+        el.style.setProperty('display', 'none', 'important');
+        return;
+      }
+      el.src = src;
+      el.alt = alt || '';
+      el.hidden = false;
+      el.style.removeProperty('display');
+    }
+
     function updateMenoCare(idx) {
       var d = menoData[idx];
       if (!d) return;
       if (menoCareTitle) menoCareTitle.textContent = d.careTitle;
       if (menoCareDesc) menoCareDesc.innerHTML = d.careDesc;
-      if (menoCareImg) {
-        menoCareImg.src = d.careImg;
-        menoCareImg.alt = d.careTitle;
-      }
+      setImg(menoCareImg, d.careImg, d.careTitle);
       // hook để CSS style riêng ảnh của từng item (vd item 0 lệch trái)
       if (menoCare) menoCare.setAttribute('data-meno-care', idx);
-      if (menoWomanImg) menoWomanImg.src = d.womanImg;
+      setImg(menoWomanImg, d.womanImg, '');
     }
 
     accItems.forEach(function (item) {
