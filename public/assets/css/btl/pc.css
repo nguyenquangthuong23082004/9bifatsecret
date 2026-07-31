@@ -2027,6 +2027,19 @@
         height: 480px;
     }
 
+    /* Slide 4 BEFORE (turn-s4-before-censored.jpg): ảnh gốc 2160x2880 là toàn
+       cảnh quán, contain sẽ làm nhân vật quá nhỏ. Zoom ~1.63x và neo vào nhân
+       vật cho khớp design — tỉ lệ 118/162.6 = 0.75 đúng bằng tỉ lệ ảnh gốc
+       nên không bị méo. Chỉ tác động đúng ảnh này. */
+    .btl .turn-slide--4 .ba-card--before .ba-card__photo img.is-contain {
+        width: 118%;
+        height: 162.6%;
+        left: -9.8%;
+        top: -59.9%;
+        object-fit: cover;
+        background: none;
+    }
+
     .btl .ba-card__label {
         left: 24px;
         top: 16px;
