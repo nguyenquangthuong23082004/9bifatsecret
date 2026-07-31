@@ -194,40 +194,6 @@
       });
     }
 
-    /* ---- Video player: Logic phát video & ẩn/hiện nút play chuẩn xác ---- */
-    var players = document.querySelectorAll('.career__player, .thermo__player');
-    players.forEach(function (player) {
-      var videoEl = player.querySelector('video');
-      var playBtn = player.querySelector('.play, .thermo__play');
-
-      if (videoEl) {
-        // Toggle play / pause khi click vào khung player
-        player.addEventListener('click', function () {
-          if (videoEl.paused) {
-            var promise = videoEl.play();
-            if (promise !== undefined) {
-              promise.catch(function (error) {
-                console.log('Video play error:', error);
-              });
-            }
-          } else {
-            videoEl.pause();
-          }
-        });
-
-        // Bắt sự kiện chuẩn HTML5 của video để ẩn/hiện nút play
-        videoEl.addEventListener('play', function () {
-          if (playBtn) playBtn.style.display = 'none';
-        });
-
-        videoEl.addEventListener('pause', function () {
-          if (playBtn) playBtn.style.display = 'block';
-        });
-
-        videoEl.addEventListener('ended', function () {
-          if (playBtn) playBtn.style.display = 'block';
-        });
-      }
-    });
+    /* ---- Video player: xem assets/js/btl-video.js (autoplay theo scroll) ---- */
   });
 })();
