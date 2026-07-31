@@ -39,12 +39,17 @@ body{ margin:0; background:#fff; color:var(--c-ink); font-family:var(--f-body); 
     container-type:inline-size; /* enables cqw for proportional scaling */ }
 /* The whole mobile design (authored at 375px) scales up/down to fill the
    viewport width – elements grow proportionally, positions stay identical. */
-.btl{ width:var(--design-w); margin-inline:auto; background:#fff; position:relative; overflow-x:hidden;
-    zoom:calc(100vw / 375px);   /* fallback (includes scrollbar) */
-    zoom:calc(100cqw / 375px);  /* precise: excludes scrollbar */ }
+/* overflow-x phải ở đây để KHÔNG tạo scroll-container mới.
+   overflow-x:hidden trên .btl phá ScrollTrigger (nó nhầm .btl là scroller
+   thay vì window) khiến mọi trigger từ section 2 trở đi bị tính sai → giật. */
+.btl{ width: 100%; max-width: 480px; margin-inline:auto; background:#fff; position:relative; }
 .btl img{ max-width:100%; }
 .btl p{ margin:0; }
 .btl a{ color:inherit; text-decoration:none; }
+
+/* overflow-x:clip ngăn nội dung tràn ngang mà KHÔNG tạo scroll-container
+   (khác overflow-x:hidden), nên sticky header và ScrollTrigger vẫn hoạt động. */
+.btl-page{ overflow-x: clip; }
 
 /* ---------- Shared: section head (label + big title) ---------- */
 .sec{ position:relative; }
