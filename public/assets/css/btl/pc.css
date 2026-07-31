@@ -2389,6 +2389,10 @@
     .sec-head .sec-head__title .line2 {
         color: #252525;
     }
+
+    .contact__btn {
+        font-size: 18px;
+    }
 }
 
 
