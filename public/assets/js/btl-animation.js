@@ -802,97 +802,39 @@
       };
     }
 
-    /* --- Feature 01 --------------------------------------------------------
-       .feature__media ở đây KHÔNG trong suốt: nó có nền xám #f5f5f5, bo góc
-       20px và overflow:hidden. Cái khung đó luôn hiện sẵn trên trang.
+    /* --- Feature 01: ba nhịp nối đuôi nhau ----------------------------------
+         1. ảnh nền rơi vào khung
+         2. tấm vé rơi xuống đè lên
+         3. nền xám #f5f5f5 mới hiện ra bao quanh cả hai
 
-       Hai hệ quả quyết định cách làm khối này:
+       Hai nhịp đầu dùng yPercent chứ không phải px: khung .feature__media có
+       overflow:hidden, nên -100% là ảnh nằm trọn ngoài mép trên và bị cắt sạch
+       — đúng bất kể ảnh cao bao nhiêu, không cần biết px.
 
-       1. KHÔNG dùng fade. Ảnh mờ dần trên nền xám nhạt thì mắt thường gần như
-          không thấy gì. Thay vào đó cho ảnh trượt hẳn từ ngoài khung vào —
-          overflow:hidden biến chuyển động đó thành một cú "đổ xuống" rõ ràng,
-          nhìn thấy được bất kể màu nền.
-          Vì vậy dùng yPercent (tính theo chiều cao của chính ảnh) chứ không
-          phải px: -100% là ảnh nằm trọn phía trên mép khung, bị cắt sạch.
-
-       2. Được phép bắt đầu MUỘN. Khung xám đã hiện sẵn nên không sợ khoảng
-          trống; ta chờ tới khi người dùng thật sự nhìn vào khung rồi mới cho
-          ảnh đổ xuống. Bản trước bắt đầu ở 'top 90%' nên chạy xong từ lúc
-          khối còn chưa vào tầm mắt.                                          */
+       Nhịp 3 đảo ngược thứ tự tự nhiên của CSS: nền xám vốn nằm sẵn ở
+       .feature__media, giờ phải bắt đầu trong suốt rồi mới hiện. Vì vậy tween
+       chạy trên chính backgroundColor của khung, KHÔNG phải opacity — opacity
+       sẽ làm mờ luôn cả hai ảnh nằm trong nó.
+       Giá trị `from` là rgba(245,245,245,0): cùng màu, chỉ khác alpha, để
+       trình duyệt nội suy trong một hệ màu duy nhất. Đi từ 'transparent'
+       (vốn là rgba(0,0,0,0)) sẽ thoáng ám đen ở quãng giữa.                  */
     var f1 = q(sec, '.feature--01');
     var media1 = q(f1, '.feature__media');
     var bg1 = q(f1, '.feature__bg');
     var ticket1 = q(f1, '.feature__ticket');
 
-    // Cả khung lẫn hai ảnh đều lên layer GPU. Khung phải lên cùng, vì chính
-    // nó mới là thứ giữ border-radius + overflow:hidden.
+    // Khung phải lên layer GPU cùng hai ảnh: chính nó giữ border-radius +
+    // overflow:hidden, thứ mà trình duyệt phải cắt lại ở mỗi khung hình.
     gpu([media1, bg1, ticket1].filter(Boolean));
 
-    /* --- Ghim: cuộn khựng lại chờ vé rơi xong ------------------------------
-       Ảnh nền đổ xuống vào chỗ, rồi trang ngừng trôi cho tới khi tấm vé rơi
-       xong mới đi tiếp. Cả hai vẫn bám tay người dùng (scrub) — chỉ khác là
-       không thể cuộn vượt qua giữa chừng.
-
-       BỐN CHỐT AN TOÀN, mỗi cái chặn đúng một lỗi đã gặp:
-
-       1. Ghim `.feature--01`, KHÔNG ghim `.feature__media`.
-          ScrollTrigger bọc phần tử bị ghim vào <div class="pin-spacer"> và
-          chuyển margin sang thẻ bọc. `.feature--01 .feature__media` đang dựa
-          vào margin-top:16px, margin âm -7px/-8px và aspect-ratio — bọc nó là
-          cả bốn thứ đó lệch. `.feature--01` thì không có margin nào, và đã
-          kiểm tra: không CSS nào dùng combinator con/anh-em (`>`, `+`, `~`)
-          tới nó, `.sec.features` cũng chỉ là block thường (position:relative),
-          nên chèn thêm một thẻ bọc không đổi gì.
-
-       2. start 'top top' — khối áp sát mép trên trong suốt lúc ghim. Mốc khác
-          sẽ để lại một dải trống đứng im trước mắt suốt vài giây.
-
-       3. Tự tắt khi khối cao hơn màn hình. Ghim đỉnh khối vào mép trên trong
-          khi khối cao hơn viewport = phần dưới bị cắt cụt mà không cuộn xuống
-          xem được, vì trang đang bị giữ.
-
-       4. Tự tắt trên mobile và màn hình thấp (CAN_PIN).                       */
-    var pinFits = !!(f1 && f1.offsetHeight <= window.innerHeight * 0.95);
-    var doPin = CAN_PIN && pinFits;
-
-    if (CAN_PIN && !pinFits) {
-      logInfo('10 features / 01: BỎ ghim — khối cao %dpx > màn hình %dpx',
-        f1 ? f1.offsetHeight : 0, window.innerHeight);
-    }
-
     reveal({
-      name: '10 features / 01 media' + (doPin ? ' (ghim)' : ''),
-      trigger: doPin ? f1 : media1,
-      start: doPin ? 'top top' : 'top 78%',
-      // Hàm chứ không phải chuỗi: quãng ghim được tính lại mỗi lần refresh,
-      // nên đổi cỡ cửa sổ hay xoay màn hình vẫn đúng.
-      end: doPin
-        ? function () { return '+=' + Math.round(window.innerHeight * 0.9); }
-        : 'bottom 45%',
-      pin: doPin ? f1 : false,
-      // Khi ghim thì bám SÁT tay (0.4), không lười (1.2).
-      // `scrub` là số GIÂY TRỄ. Cuộn chậm thì độ trễ lớn đọc ra là "mượt";
-      // cuộn nhanh thì vị trí cuộn nhảy vọt còn animation lê phía sau, phải
-      // đuổi bù cả một quãng dài sau khi người dùng đã buông tay — và vì trang
-      // đang bị ghim đứng yên nên không có gì che lấp độ lệch đó.
-      scrub: doPin ? 0.4 : 1.2,
-      // Người dùng buông tay ở đâu thì kéo về mốc gần nhất trong ba mốc sạch:
-      //   0   = chưa gì cả
-      //   0.5 = ảnh nền vừa vào chỗ (timeline dài 2, nền chiếm nửa đầu)
-      //   1   = vé đã rơi xong
-      // Nhờ vậy cuộn nhanh mấy cũng không để lại trạng thái dở dang giữa nhịp.
-      snap: doPin ? {
-        snapTo: [0, 0.5, 1],
-        duration: { min: 0.15, max: 0.45 },
-        delay: 0.05,
-        ease: 'power2.inOut'
-      } : false,
+      name: '10 features / 01 media',
+      mode: 'trigger',
+      trigger: media1,
+      start: 'top 80%',
       steps: [
         {
-          // Ảnh nền đổ xuống TRƯỚC — nó là bối cảnh, lớp dưới cùng.
-          // ease 'none': với tween bị scrub, đường cong easing chồng lên độ
-          // trễ của scrub tạo ra hai lớp gia/giảm tốc đánh nhau — mắt đọc ra
-          // thành giật. Tốc độ ở đây đã do chính tay người dùng quyết định.
+          // Ảnh nền đi trước — nó là bối cảnh, lớp dưới cùng.
           el: bg1,
           from: { yPercent: -100 },
           to: { yPercent: 0, duration: 1, ease: 'none' },
@@ -900,20 +842,24 @@
         },
         {
           // '>' = bắt đầu đúng lúc bước trước kết thúc, không chồng lấn.
-          // Vé đi xa hơn nền (-140% so với -100%) để tách lớp.
+          // Vé đi xa hơn nền (-140% so với -100%) để hai lớp tách nhau ra.
           el: ticket1,
           from: { yPercent: -140 },
           to: { yPercent: 0, duration: 1, ease: 'none' },
+          at: '>'
+        },
+        {
+          el: media1,
+          from: { backgroundColor: 'rgba(245,245,245,0)' },
+          to: { backgroundColor: '#f5f5f5', duration: 0.6, ease: 'none' },
           at: '>'
         }
       ]
     });
 
-    // Cụm chữ có trigger RIÊNG, đo trên chính nó. Trước đây nó dùng chung
-    // trigger với khung ảnh nên cũng chạy xong trước khi người dùng đọc tới.
     reveal({
       name: '10 features / 01 head',
-      mode: 'scrub',
+      mode: 'trigger',
       trigger: q(f1, '.sec-head'),
       steps: [headStep(f1)]
     });
