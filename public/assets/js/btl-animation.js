@@ -383,7 +383,6 @@
       // 08. Yoyo (Section 8)
       { sel: '.yoyo .sec-head__label', anim: 'anim-down', delay: 0 },
       { sel: '.yoyo .sec-head__title', anim: 'anim-down', delay: 0.18 },
-      { sel: '.compare thead th', anim: 'anim-down', stagger: 0.12 },
       { sel: '.compare tbody tr', anim: 'anim-up', stagger: 0.15 },
 
       // 09. Features (Section 9)
@@ -420,7 +419,12 @@
       { sel: '.ba-card--before', anim: 'anim-left', delay: 0.18 },
       { sel: '.ba-card--after', anim: 'anim-right', delay: 0.3 },
       { sel: '.ba-card__label', anim: 'anim-down', delay: 0.25 },
-      { sel: '.turn__badge', anim: 'anim-scale', delay: 0.35 },
+      // anim-fade chứ KHÔNG phải anim-scale: badge tự canh giữa bằng
+      // transform: translateX(-50%), mà mọi anim có dịch chuyển đều bị rule
+      // .btl-anim.in-view ghi đè TOÀN BỘ transform (translate(0,0) scale(1))
+      // → badge bị đẩy lệch đúng nửa chiều rộng của nó. Fade chỉ đụng opacity
+      // nên vị trí CSS gốc được giữ nguyên.
+      { sel: '.turn__badge', anim: 'anim-fade', delay: 0.35 },
       { sel: '.ba-card__react', anim: 'anim-down', stagger: 0.15 },
       { sel: '.turn__quote', anim: 'anim-up', delay: 0.3 },
 
