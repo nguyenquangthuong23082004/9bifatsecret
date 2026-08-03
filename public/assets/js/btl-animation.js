@@ -59,6 +59,8 @@
       .btl-anim {
         opacity: 0;
         will-change: transform, opacity;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
         transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
                     transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
@@ -309,8 +311,8 @@
   function initObserver() {
     var observerOptions = {
       root: null,
-      rootMargin: '0px 0px -40px 0px',
-      threshold: 0.05
+      rootMargin: '0px 0px 30px 0px',
+      threshold: 0
     };
 
     var observer = new IntersectionObserver(function (entries) {
@@ -318,7 +320,11 @@
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
         } else {
-          if (window.scrollY > 150) {
+          var rect = entry.boundingClientRect;
+          var vh = window.innerHeight || document.documentElement.clientHeight;
+          // Chỉ gỡ class 'in-view' khi phần tử thực sự lọt hẳn ra dưới mép màn hình (> 60px) hoặc vượt hẳn lên trên xa
+          // Giúp nhích nhẹ chuột là hiệu ứng kích hoạt NGAY LẬP TỨC, đồng thời triệt tiêu 100% giật giật
+          if (rect.top >= vh + 60 || rect.bottom <= -100) {
             entry.target.classList.remove('in-view');
           }
         }
