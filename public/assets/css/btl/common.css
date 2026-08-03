@@ -96,3 +96,9 @@ body{ margin:0; background:#fff; color:var(--c-ink); font-family:var(--f-body); 
     .btl{ zoom:1; width:100%; max-width:none; }
     /* TODO(PC ≥992px): build the desktop layout (see pc.css). */
 }
+
+/* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */
+@media (max-width: 991.98px) {
+    .sec-head__label { font-size: 16px; }
+    .check-list li { font-size: 16px; }
+}

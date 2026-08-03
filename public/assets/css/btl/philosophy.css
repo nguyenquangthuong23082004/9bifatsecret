@@ -189,3 +189,7 @@
     letter-spacing: -.28px;
     color: var(--c-ink-2);
 }
+/* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */
+@media (max-width: 991.98px) {
+    .philo__item p { font-size: 16px; }
+}

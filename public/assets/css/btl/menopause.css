@@ -17,37 +17,37 @@
    max-width: 343px;
    background: #fff;
    border-radius: 20px;
-   padding: 20px;
+   /* Figma: đáy khối care cách đáy .meno__box 38px (9851 → 9889) */
+   padding: 20px 20px 38px;
 }
 
-/* Figma 499:88 — ảnh nhân vật: 184x201, x=50 y=9688 (khối .meno__care: x=37,
-   y=9529, 301x320) → lệch trái 13px so với khối care, tràn 40px xuống dưới nó.
-   Quy về .meno__box (padding 20): left = 20 + 13 = 33px;
-   đáy ảnh vượt đáy box (care-bottom + padding 20) đúng 20px → bottom: -20px. */
+/* Figma (mobile 375): mọi ảnh nhân vật đều canh đáy trùng đáy .meno__box
+   (Rectangle 27: y 9169→9889) nên bottom: 0 — KHÔNG tràn ra ngoài, không cắt.
+   left tính từ mép trái .meno__box (x=16).
+   Mặc định = 04_혈관노폐물증가 (499:88 — x=50 → 34px, 184x201). */
 .meno__woman-pc {
    position: absolute;
-   left: 33px;
-   bottom: -20px;
-   /* width: 184px; */
+   left: 34px;
+   bottom: 0;
+   width: 184px;
    height: 201px;
-   object-fit: cover;
+   object-fit: contain;
    pointer-events: none;
    z-index: 2;
-   /* Phần ảnh tràn 20px xuống dưới .meno__box bị cắt ngay trên chính ảnh
-      (không dùng overflow:hidden ở .meno__box để khỏi ảnh hưởng con khác). */
-   clip-path: inset(0 0 20px 0);
 }
 
-/* Ảnh nhân vật toàn thân: giữ đúng tỉ lệ thu nhỏ như menopause-woman
-   (PC 371x394 → MO 184x201, hệ số ~0.51) để nhân vật to tương đương. */
+/* 01_격한운동불가 (Figma 485:9 — x=46 → 30px, y=9640, 151x249) */
 .meno__woman-pc[src$="meno-symptom-joint-pain.png"] {
-   width: 147px;
-   height: 271px;
+   left: 30px;
+   width: 151px;
+   height: 249px;
 }
 
+/* 02_기초대사량저하 (Figma 485:59 — x=37 → 21px, y=9640, 198x249) */
 .meno__woman-pc[src$="meno-symptom-stomach-pain.png"] {
-   width: 184px;
-   height: 256px;
+   left: 21px;
+   width: 198px;
+   height: 249px;
 }
 
 .accordion-btl {
@@ -231,4 +231,10 @@
    height: 201px;
    object-fit: cover;
    pointer-events: none;
+}
+/* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */
+@media (max-width: 991.98px) {
+    .acc__head p { font-size: 16px; }
+    .meno__care p { font-size: 16px; }
+    .acc__detail p { font-size: 16px; }
 }

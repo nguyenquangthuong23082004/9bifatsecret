@@ -98,7 +98,8 @@
 }
 
 .compare thead th.dim-hover {
-   color: rgba(255, 255, 255, 0.4) !important;
+   /* color: rgba(255, 255, 255, 0.4) !important; */
+   color: #fdfdfd !important;
    font-weight: 400;
    cursor: default;
 }

@@ -1,27 +1,122 @@
 /* =========================================================
    14. FAQ (자주 묻는 질문) — Figma 529:143
    ========================================================= */
-.faq{ background:var(--c-primary); padding:100px 16px; color:#fff; }
-.faq__head{ width:328px; margin-inline:auto; }
-.faq__head .sec-head__label{ color:#fff; }
-.faq__head .sec-head__title{ color:#fff; }
+.faq {
+    background: var(--c-primary);
+    padding: 100px 16px;
+    color: #fff;
+}
 
-.faq__list{ list-style:none; margin:40px 0 0; padding:0; display:flex; flex-direction:column; gap:20px; }
-.faq__item{ background:#fff; border-radius:12px; overflow:hidden; }
+.faq__head {
+    width: 328px;
+    margin-inline: auto;
+}
 
-.faq__q{ position:relative; display:flex; align-items:center; gap:6px; width:100%; min-height:54px;
-    padding:16px 44px 16px 20px; background:none; border:0; text-align:left; cursor:pointer; }
-.faq__mark{ font-weight:700; font-size:16px; letter-spacing:-.32px; color:var(--c-primary); }
-.faq__label{ font-size:14px; letter-spacing:-.28px; color:var(--c-ink); }
+.faq__head .sec-head__label {
+    color: #fff;
+}
+
+.faq__head .sec-head__title {
+    color: #fff;
+}
+
+.faq__list {
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.faq__item {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.faq__q {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 54px;
+    padding: 16px 44px 16px 20px;
+    background: none;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+}
+
+.faq__mark {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -.32px;
+    color: var(--c-primary);
+}
+
+.faq__label {
+    font-size: 14px;
+    letter-spacing: -.28px;
+    color: var(--c-ink);
+}
 
 /* +/− toggle */
-.faq__toggle{ position:absolute; right:20px; top:20px; width:14px; height:14px; }
-.faq__toggle::before,.faq__toggle::after{ content:""; position:absolute; left:0; top:6px; width:14px; height:2px;
-    background:var(--c-ink); }
-.faq__toggle::after{ transform:rotate(90deg); transition:opacity .2s ease; }
-.faq__item.is-open .faq__toggle::after{ opacity:0; }
+.faq__toggle {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 14px;
+    height: 14px;
+}
 
-.faq__panel{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
-.faq__item.is-open .faq__panel{ max-height:400px; }
-.faq__panel p{ width:100%; max-width:100%; padding:0 20px 20px 35px; font-size:12px; line-height:1.4; letter-spacing:-.24px;
-    color:var(--c-ink); box-sizing:border-box; word-break:break-all; overflow-wrap:break-word; }
+.faq__toggle::before,
+.faq__toggle::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 14px;
+    height: 2px;
+    background: var(--c-ink);
+}
+
+.faq__toggle::after {
+    transform: rotate(90deg);
+    transition: opacity .2s ease;
+}
+
+.faq__item.is-open .faq__toggle::after {
+    opacity: 0;
+}
+
+.faq__panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease;
+}
+
+.faq__item.is-open .faq__panel {
+    max-height: 400px;
+}
+
+.faq__panel p {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 20px 20px 35px;
+    font-size: 14px;
+    line-height: 1.4;
+    letter-spacing: -.24px;
+    color: var(--c-ink);
+    box-sizing: border-box;
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
+/* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */
+@media (max-width: 991.98px) {
+    .faq__label {
+        font-size: 16px;
+    }
+}

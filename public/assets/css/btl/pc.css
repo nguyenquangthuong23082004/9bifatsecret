@@ -1141,7 +1141,7 @@
 
     /* Competitor headers dimmed with 0.4 opacity */
     .btl .compare thead th.dim-hover {
-        color: rgba(255, 255, 255, 0.4) !important;
+        /* color: rgba(255, 255, 255, 0.4) !important; */
         font-weight: 400;
     }
 

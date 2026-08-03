@@ -7,6 +7,15 @@
 /* 529:186 — the bar gains a hairline border while the drawer is open */
 .gnb.is-open .gnb__inner{ border-bottom:1px solid #eee; }
 
+/* Khi mở drawer, JS set body{overflow:hidden} -> body không còn là scroll
+   container nên position:sticky của .gnb mất tác dụng: đang cuộn giữa trang mà
+   mở menu thì thanh header tụt về đầu document (biến mất khỏi màn hình), để lộ
+   khe hở phía trên drawer. Chuyển sang fixed khi mở để header luôn dính đỉnh
+   và khớp liền mạch với .gnb__menu (top:50px). */
+@media (max-width: 991.98px) {
+    .gnb.is-open{ position:fixed; left:0; right:0; top:0; }
+}
+
 /* Figma 457:3 — the 50x21 box CROPS into the PNG (which has whitespace around
    the wordmark): w 151.28% / h 117.39% at left -29.37% / top -8.7%.
    Using object-fit:contain on the raw PNG instead makes the logo look tiny. */

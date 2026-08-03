@@ -170,6 +170,6 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <?php $shot('res-c3-after.png', 42.71, 195.91, 45.63, 3.18, '갱년기 복부집중관리 비포 애프터') ?>
         </div>
         <p class="ba-caption">전신감량 + 갱년기 복부집중관리 3개월차</p>
-        <p class="ba-desc">관절염으로 운동을 전혀 못하는데 누워서 관리 받으니 참좋네요.<br>50대 이후로 뱃살이 빠진건 처음입니다.</p>
+        <p class="ba-desc">관절염으로 운동을 전혀 못하는데 누워서 관리 받으니 참좋네요. 50대 이후로 뱃살이 빠진건 처음입니다.</p>
     </div>
 </section>

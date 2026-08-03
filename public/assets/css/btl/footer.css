@@ -29,3 +29,8 @@
 .site-footer__info a {
     color: inherit;
 }
+
+/* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */
+@media (max-width: 991.98px) {
+    .site-footer__info { font-size: 16px; }
+}
