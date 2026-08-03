@@ -153,29 +153,6 @@
    transition: none !important;
 }
 
-/* HOVER STATE: Red border box + Soft Pink Background on hovered row */
-.compare tbody tr:hover th,
-.compare tbody tr:hover td {
-   border-top: 2px solid #c8365a !important;
-   border-bottom: 2px solid #c8365a !important;
-   background: #fdf2f4 !important;
-}
-
-.compare tbody tr:hover th:first-child {
-   border-left: 2px solid #c8365a !important;
-   border-radius: 0 !important;
-}
-
-.compare tbody tr:hover td:last-child {
-   border-right: 2px solid #c8365a !important;
-   border-radius: 0 !important;
-}
-
-.compare tbody tr:hover th:not(:last-child)::after,
-.compare tbody tr:hover td:not(:last-child)::after {
-   background: rgba(200, 54, 90, 0.15);
-}
-
 /* Stars sizing */
 .compare .stars {
    display: inline-flex;

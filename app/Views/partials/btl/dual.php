@@ -10,7 +10,7 @@ $devices = [
 <!-- 05. Dual solution (듀얼솔루션) -->
 <section class="sec dual" id="dual">
     <div class="sec-head">
-        <p class="sec-head__label">체중+체형+페이스+이너순환 동시케어</p>
+        <p class="sec-head__label">최신기기와 국가공인 수기의 완벽한 시너지</p>
         <h2 class="sec-head__title"><span class="line1">기기로 빼고, 수기로 다듬는</span><br><span class="accent">DUAL 솔루션</span></h2>
     </div>
 
