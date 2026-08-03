@@ -28,7 +28,7 @@ $tabs = ['집중관리', '체형관리', '부분관리', '페이스 다이어트
                 <img src="<?= $img('program-focus.png') ?>" alt="집중관리 프로그램 – 비만 유형별 단계 관리" loading="lazy">
             </div>
         </div>
-        <p class="program__desc">개인별 비만유형과, 제형 그리고 건강상태를 고려하여<br class="only-mo">디톡스부터 체지방 감소 셀룰라이트,탄력+근력관리까지<br class="only-mo">단계별로 진행합니다.</p>
+        <p class="program__desc">개인별 비만유형과 제형 그리고 건강상태를 고려하여 <br class="only-mo">디톡스부터 <br class="only-pc">체지방 감소 셀룰라이트,탄력+근력관리까지 <br class="only-mo">단계별로 진행합니다.</p>
     </div>
 
     <!-- 02_체형관리 (463:224) -->

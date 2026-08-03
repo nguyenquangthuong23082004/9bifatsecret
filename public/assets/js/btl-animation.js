@@ -201,10 +201,6 @@
                     background-color 0.3s ease,
                     color 0.3s ease !important;
       }
-      .tab:hover, .rtab:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 16px rgba(200, 54, 90, 0.15);
-      }
       .tab.is-active, .rtab.is-active {
         transform: translateY(-1px);
         box-shadow: 0 4px 14px rgba(200, 54, 90, 0.25);

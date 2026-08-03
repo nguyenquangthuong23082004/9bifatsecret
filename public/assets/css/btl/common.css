@@ -45,12 +45,13 @@ body{ margin:0; background:#fff; color:var(--c-ink); font-family:var(--f-body); 
    overflow-x:hidden trên .btl phá ScrollTrigger (nó nhầm .btl là scroller
    thay vì window) khiến mọi trigger từ section 2 trở đi bị tính sai → giật. */
 
-/* .btl{ width:var(--design-w); margin-inline:auto; background:#fff; position:relative; overflow-x:hidden;
-    zoom:calc(100vw / 375px);   
-    zoom:calc(100cqw / 375px);  
-} */
-
-.btl{ width: 100%; max-width: 480px; margin-inline:auto; background:#fff; position:relative; }
+/* Layout mobile vẽ bằng px cứng theo khung 375px, nên phải zoom cả khối mới
+   vừa mọi bề rộng máy. Bỏ zoom (chỉ để width:100%) thì khung ngoài giãn còn
+   nội dung bên trong vẫn đứng nguyên ở cỡ 375 → máy lớn thừa lề, máy nhỏ chật.
+   KHÔNG đặt overflow-x:hidden ở đây (lý do ở comment trên) — .btl-page lo việc đó. */
+.btl{ width:var(--design-w); margin-inline:auto; background:#fff; position:relative;
+    zoom:calc(100vw / 375px);   /* fallback (tính cả scrollbar) */
+    zoom:calc(100cqw / 375px);  /* chính xác: trừ scrollbar */ }
 .btl img{ max-width:100%; }
 .btl p{ margin:0; }
 .btl a{ color:inherit; text-decoration:none; }
