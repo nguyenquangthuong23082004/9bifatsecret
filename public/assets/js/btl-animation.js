@@ -201,10 +201,6 @@
                     background-color 0.3s ease,
                     color 0.3s ease !important;
       }
-      .tab.is-active, .rtab.is-active {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 14px rgba(200, 54, 90, 0.25);
-      }
 
       /* Cards & Boxes (.program__card, .award, .faq__item) - Nổi nhẹ khi hover (BỎ SECTION RESULTS .case) */
       .program__card,
