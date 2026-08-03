@@ -83,7 +83,9 @@
    border-bottom-right-radius: 12px;
 }
 
-/* Short vertical tick divider in header */
+/* Vạch ngăn cột ở header — đồng bộ hoàn toàn với vạch ở tbody
+   (.compare tbody td:not(:last-child)::after): cùng vị trí, cùng width 1px,
+   cùng height 14px; chỉ khác màu vì nền header là hồng đậm. */
 .compare thead th:not(:last-child)::after {
    content: "";
    position: absolute;
@@ -91,7 +93,7 @@
    top: 50%;
    transform: translateY(-50%);
    width: 1px;
-   height: 12px;
+   height: 14px;
    background: rgba(255, 255, 255, 0.25);
 }
 

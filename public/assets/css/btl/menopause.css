@@ -141,12 +141,33 @@
     pointer-events: none;
 }
 
-/* Ảnh full-bleed: phủ kín cả khối như css ban đầu */
+/* Ảnh full-bleed (Figma 499:78): đẩy sang phải để nhân vật lệch phải như design.
+   left 14.67% (~44px) làm hở một dải bên trái — dải đó được lấp bằng chính ảnh
+   này đặt ở lớp nền của .meno__care (xem rule dưới), nên màu nền be nối liền
+   thay vì lòi ra khoảng trắng #f3f3f3. */
 .meno__care-img[src$="menopause-bg.webp"] {
-   left: -0.83%;
-   top: -4.53%;
-   width: 131.89%;
-   height: 124.06%;
+   left: 14.67%;
+   top: -4.375%;
+   width: 131.23%;
+   height: 123.44%;
+   object-fit: cover;
+   object-position: center;
+}
+
+/* Lấp dải hở bên trái bằng gradient lấy đúng màu cột pixel ngoài cùng bên trái
+   của chính tấm ảnh (đo tại các mốc y tương ứng), nên chỗ nối liền màu tuyệt
+   đối — không thấy mép ghép như khi lấy lại ảnh làm nền. */
+.meno__care:has(> .meno__care-img[src$="menopause-bg.webp"]) {
+   background: linear-gradient(180deg,
+      #b3a190 0%,
+      #b8a698 12.5%,
+      #b7a597 25%,
+      #b8a396 37.5%,
+      #b29c8d 50%,
+      #ab9583 62.5%,
+      #a58a7a 75%,
+      #a38878 87.5%,
+      #a28478 100%);
 }
 
 .meno__care h4,
@@ -178,7 +199,7 @@
    position: relative;
    margin: 16px 0 48px;
    border-radius: 16px;
-   background: #f3f3f3 url("../../images/btl/menopause-bg.webp") no-repeat left -2.5px top -14.5px/131.89% 124.06%;
+   background: #f3f3f3 url("../../images/btl/menopause-bg.webp") no-repeat left -1px top -14px/131.23% 123.44%;
    padding: 30px 30px 0;
    height: 320px;
    overflow: visible;

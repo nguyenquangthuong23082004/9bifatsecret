@@ -1160,7 +1160,8 @@
         border-bottom-right-radius: 12px;
     }
 
-    /* Short vertical tick divider in header (between columns) */
+    /* Vạch ngăn cột ở header — lấy đúng thông số của vạch tbody bản PC
+       (.btl .compare tbody td:not(:last-child)::after): height 20px. */
     .btl .compare thead th:not(:last-child)::after {
         content: "";
         position: absolute;
@@ -1168,7 +1169,7 @@
         top: 50%;
         transform: translateY(-50%);
         width: 1px;
-        height: 14px;
+        height: 20px;
         background: rgba(255, 255, 255, 0.25);
     }
 
