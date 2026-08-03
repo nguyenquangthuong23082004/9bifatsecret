@@ -114,7 +114,7 @@
 }
 
 /* ---- Khối chi tiết (Figma 499:78) — 301x320, r16, nền #f3f3f3
-   + ảnh fill: w 131.89% / h 124.06%, left -0.83%, top -4.53%
+   + ảnh: xem .meno__care-img (Figma 529:580)
    Khoảng cách với head đang mở (Figma): 9529 - 9501 = 28px ---- */
 .meno__care {
    position: relative;
@@ -127,16 +127,26 @@
 }
 
 /* Ảnh thay đổi động theo item đang chọn (careImg trong config) */
+/* Figma 529:580 — ảnh nằm trong khung bo góc overflow:hidden nên bị cắt:
+   left -9.06%, top 37.19%, w 117.13%, h 61.97% (so với khối 301x320). */
 .meno__care-img {
-   position: absolute;
+    position: absolute;
+    left: -0.06%;
+    top: 39.19%;
+    width: 117.13%;
+    height: 61.97%;
+    max-width: none;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ảnh full-bleed: phủ kín cả khối như css ban đầu */
+.meno__care-img[src$="menopause-bg.webp"] {
    left: -0.83%;
    top: -4.53%;
    width: 131.89%;
    height: 124.06%;
-   max-width: none;
-   object-fit: cover;
-   z-index: 0;
-   pointer-events: none;
 }
 
 .meno__care h4,
