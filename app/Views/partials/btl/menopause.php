@@ -46,7 +46,7 @@ $items = [
         'menopause-woman.png',      // ← 인물 이미지
     ],
 ];
-$open = 2; // 림프 순환 저하 open by default (matches Figma)
+$open = 0; // open by default
 
 // Build JS-accessible data array (base_url resolved server-side)
 $jsData = array_map(fn($item) => [
