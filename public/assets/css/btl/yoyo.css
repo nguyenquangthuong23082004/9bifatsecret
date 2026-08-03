@@ -176,13 +176,27 @@
 .swipe-hint__icons {
    display: flex;
    align-items: center;
-   gap: 12px;
-   color: var(--c-line);
+   justify-content: center;
 }
 
-.swipe-hint__icons svg {
-   width: 24px;
-   height: 24px;
+.swipe-hint__icons img {
+   display: block;
+}
+
+.swipe-hint__hand {
+   width: 30px;
+   height: 35.59px;
+   margin: 0 21px 0 15px;
+}
+
+.swipe-hint__arrow {
+   width: 7.83px;
+   height: 12.5px;
+   margin-top: 2.72px;
+}
+
+.swipe-hint__arrow--next {
+   transform: scaleX(-1);
 }
 
 .swipe-hint p {

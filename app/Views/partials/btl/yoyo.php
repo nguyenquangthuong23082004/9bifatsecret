@@ -62,9 +62,9 @@ $stars = fn(int $n) => '<span class="stars">' . str_repeat($star, $n) . '</span>
 
     <div class="swipe-hint">
         <span class="swipe-hint__icons" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 11V6.5a1.5 1.5 0 013 0V11m0-1V5.5a1.5 1.5 0 013 0V11m0-.5V6.5a1.5 1.5 0 013 0V13c0 3.3-2.2 6-5.5 6S11 16.5 11 14l-2.2-2.2a1.4 1.4 0 012-2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <img class="swipe-hint__arrow" src="<?= base_url('assets/images/btl/icon-swipe-prev.svg') ?>" alt="" width="8" height="13">
+            <img class="swipe-hint__hand" src="<?= base_url('assets/images/btl/icon-swipe-hand.svg') ?>" alt="" width="30" height="36">
+            <img class="swipe-hint__arrow swipe-hint__arrow--next" src="<?= base_url('assets/images/btl/icon-swipe-next.svg') ?>" alt="" width="8" height="13">
         </span>
         <p>좌우로 스와이프해 비교해보세요</p>
     </div>

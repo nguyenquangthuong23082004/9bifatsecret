@@ -1735,6 +1735,17 @@
         clip-path: inset(0 0 34px 0);
     }
 
+    /* 인물 이미지별 개별 사이즈 */
+    .btl .meno__woman-pc[src$="meno-symptom-joint-pain.png"] {
+        width: 289px;
+        height: 532px;
+    }
+
+    .btl .meno__woman-pc[src$="meno-symptom-stomach-pain.png"] {
+        width: 360px;
+        height: 501px;
+    }
+
     .btl .thermo__head {
         width: auto;
         max-width: none;

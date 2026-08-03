@@ -19,7 +19,7 @@ $items = [
         '편하게 누워서 관리',
         "운동부족 걱정 X\n무리없이 편안하게",
         'meno-care-treatment.jpg',      // ← 케어 이미지 (meno__care-img)
-        'meno-symptom-back-pain.png',      // ← 인물 이미지 (meno__woman-pc)
+        'meno-symptom-joint-pain.png',      // ← 인물 이미지 (meno__woman-pc)
     ],
     [
         '기초 대사량 저하',
@@ -27,7 +27,7 @@ $items = [
         '기초대사, 면역증진',
         "대사관리를 통해 체지방연소 가속화\n‘살 안찌는 체질’로 변화",
         'meno-symptom-belly-fat.webp',      // ← 케어 이미지
-        'menopause-woman.png',    // ← 인물 이미지
+        'meno-symptom-stomach-pain.png',    // ← 인물 이미지
     ],
     [
         '여성호르몬 감소',

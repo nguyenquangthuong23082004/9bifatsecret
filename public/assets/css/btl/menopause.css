@@ -38,6 +38,18 @@
    clip-path: inset(0 0 20px 0);
 }
 
+/* Ảnh nhân vật toàn thân: giữ đúng tỉ lệ thu nhỏ như menopause-woman
+   (PC 371x394 → MO 184x201, hệ số ~0.51) để nhân vật to tương đương. */
+.meno__woman-pc[src$="meno-symptom-joint-pain.png"] {
+   width: 147px;
+   height: 271px;
+}
+
+.meno__woman-pc[src$="meno-symptom-stomach-pain.png"] {
+   width: 184px;
+   height: 256px;
+}
+
 .accordion-btl {
    list-style: none;
    margin: 0;
