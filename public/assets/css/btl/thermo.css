@@ -117,14 +117,17 @@
     border-style: solid;
 }
 
-/* --- top row (503:181): body 60px, text right-aligned, tail bottom-right --- */
+/* --- top row (503:181): body 60px, tail bottom-right.
+   Width follows the text so left/right padding stays identical on every
+   bubble; anchored by their right edge so the tail column doesn't move. --- */
 .thermo .bubble--a,
 .thermo .bubble--b,
 .thermo .bubble--c {
     height: 60px;
     border-radius: 30px;
-    justify-content: flex-end;
-    padding-right: 22px;
+    justify-content: center;
+    width: auto;
+    padding: 0 22px;
 }
 
 .thermo .bubble--a::after,
@@ -135,31 +138,22 @@
 }
 
 .thermo .bubble--a {
-    left: 27px;
+    right: 179px;
     top: 0;
-    width: 169px;
-}
-
-.thermo .bubble--a::after {
-    right: 36.5px;
 }
 
 .thermo .bubble--b {
-    left: 206px;
+    right: 26px;
     top: 30px;
-    width: 143px;
-}
-
-.thermo .bubble--b::after {
-    right: 34px;
 }
 
 .thermo .bubble--c {
-    left: 26px;
+    right: 164px;
     top: 95px;
-    width: 185px;
 }
 
+.thermo .bubble--a::after,
+.thermo .bubble--b::after,
 .thermo .bubble--c::after {
     right: 34px;
 }
@@ -170,8 +164,9 @@
 .thermo .bubble--f {
     height: 63px;
     border-radius: 31.5px;
-    justify-content: flex-start;
-    padding-left: 24px;
+    justify-content: center;
+    width: auto;
+    padding: 0 24px;
 }
 
 .thermo .bubble--d::after,
@@ -185,19 +180,16 @@
 .thermo .bubble--d {
     left: 24px;
     top: 602px;
-    width: 149px;
 }
 
 .thermo .bubble--e {
     left: 193px;
     top: 584px;
-    width: 158px;
 }
 
 .thermo .bubble--f {
     left: 144px;
     top: 674px;
-    width: 162px;
 }
 
 /* ---------- kcal claim ---------- */
