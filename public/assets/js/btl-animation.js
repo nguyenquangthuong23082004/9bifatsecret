@@ -418,7 +418,10 @@
       { sel: '.turn__dots .dot', anim: 'anim-down', stagger: 0.08 },
       { sel: '.ba-card--before', anim: 'anim-left', delay: 0.18 },
       { sel: '.ba-card--after', anim: 'anim-right', delay: 0.3 },
-      { sel: '.ba-card__label', anim: 'anim-down', delay: 0.25 },
+      // anim-fade như .turn__badge: nhãn BEFORE/AFTER được đặt bằng
+      // position:absolute trong card đang animate, mọi anim có dịch chuyển đều
+      // bị .btl-anim.in-view ghi đè transform → chữ rơi sai chỗ (cả mobile & PC).
+      { sel: '.ba-card__label', anim: 'anim-fade', delay: 0.25 },
       // anim-fade chứ KHÔNG phải anim-scale: badge tự canh giữa bằng
       // transform: translateX(-50%), mà mọi anim có dịch chuyển đều bị rule
       // .btl-anim.in-view ghi đè TOÀN BỘ transform (translate(0,0) scale(1))

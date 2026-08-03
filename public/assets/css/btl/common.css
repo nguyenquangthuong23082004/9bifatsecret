@@ -64,7 +64,7 @@ body{ margin:0; background:#fff; color:var(--c-ink); font-family:var(--f-body); 
 .sec-head{ display:flex; flex-direction:column; gap:20px; align-items:center; text-align:center; }
 .sec-head--left{ align-items:flex-start; text-align:left; gap:16px; }
 .sec-head__label{ font-size:14px; letter-spacing:-.28px; color:var(--c-ink-2); }
-.sec-head__title{ font-family:var(--f-title); font-weight:700; font-size:30px; letter-spacing:-.6px; color:var(--c-ink); }
+.sec-head__title{ font-family:var(--f-title); font-weight:900; font-size:30px; letter-spacing:-.6px; color:var(--c-ink); }
 .sec-head__title .accent{ color:var(--c-primary); }
 .sec-head__title--rose .line1{ color:var(--c-primary); }
 

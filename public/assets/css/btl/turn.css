@@ -127,12 +127,15 @@
     object-fit: cover;
 }
 
-/* Slide 4 BEFORE (turn-s4-before-censored.jpg): ảnh gốc 2160x2880 là toàn cảnh
-   quán nên contain để hở 2 mép. Trên mobile cho ảnh phủ kín khung và neo vào
-   nhân vật (dưới, hơi lệch phải) giống crop bên PC. Chỉ đúng ảnh này. */
+/* Slide 4 BEFORE (turn-s4-before-censored.jpg): crop đúng theo fill của Figma
+   591:65 (w 148.53% / h 188.79% / left -24.37% / top -88.79% của khung 306x321).
+   Tỉ lệ 148.53/188.79 giữ nguyên 3:4 của ảnh gốc 2160x2880 nên không méo. */
 .turn-slide--4 .ba-card--before .ba-card__photo img.is-contain {
     object-fit: cover;
-    object-position: 54% 100%;
+    width: 148.53%;
+    height: 188.79%;
+    left: -24.37%;
+    top: -88.79%;
 }
 
 .ba-card__react {
