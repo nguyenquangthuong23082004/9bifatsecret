@@ -2305,7 +2305,12 @@
         position: absolute;
         left: 44%;
         top: 44%;
-        transform: translate(-50%, -50%);
+        /* transform:none — toạ độ 44%/44% được canh mắt trong lúc animation
+           đang ép transform về translate(0,0). Nay badge chuyển sang anim-fade
+           (không đụng transform nữa) nên phải tự tắt translate ở đây, không thì
+           badge lùi lên-trái đúng nửa kích thước của nó. Đồng thời chặn luôn
+           translateX(-50%) kế thừa từ turn.css (bản mobile). */
+        transform: none;
         z-index: 5;
     }
 
