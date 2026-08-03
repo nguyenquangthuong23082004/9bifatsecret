@@ -38,7 +38,7 @@ $tabs = ['집중관리', '체형관리', '부분관리', '페이스 다이어트
                 <img src="<?= $img('program-shape.png') ?>" alt="체형관리 프로그램 – 상하체 균형 다이어트" loading="lazy">
             </div>
         </div>
-        <p class="program__desc">상세비만, 하체비만 등 상하의 균형을 이루기 위한 다이어트</p>
+        <p class="program__desc">상세비만, 하체비만 등 상하의 균형을 <br class="only-mo"> 이루기 위한 다이어트</p>
     </div>
 
     <!-- 03_부분관리 (464:269) -->
@@ -71,7 +71,7 @@ $tabs = ['집중관리', '체형관리', '부분관리', '페이스 다이어트
                 </div>
             </div>
         </div>
-        <p class="program__desc">감량후 처진 얼굴에 탄력을 보충하는 페이스리프팅 프로그램</p>
+        <p class="program__desc">감량후 처진 얼굴에 탄력을 보충하는 <br class="only-mo"> 페이스리프팅 프로그램</p>
     </div>
 
     <!-- 05_갱년기다이어트 (464:275) -->
