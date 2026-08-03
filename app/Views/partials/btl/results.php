@@ -155,7 +155,7 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
             <?php $shot('res-c2-after.png', 87.9, 205.57, 10.5, -19.09, '예비신부 상체관리 비포 애프터') ?>
         </div>
         <p class="ba-caption">본식 2개월전 승모근 + 팔뚝살 집중관리</p>
-        <p class="ba-desc">효과는 확실한데 다운타임은 적어 본식 전 <br class="only-mo">긴급 상체관리에 너무 좋네요.</p>
+        <p class="ba-desc">효과는 확실한데 다운타임은 적어 본식 전&nbsp;<br class="only-mo">긴급 상체관리에 너무 좋네요.</p>
     </div>
 
     <!-- ============ CASE 03 (516:427) ============ -->
