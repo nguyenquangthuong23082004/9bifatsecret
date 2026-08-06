@@ -6,7 +6,7 @@ $img = fn($f) => base_url('assets/images/btl/' . $f);
 $chips = [
     ['emoji-sunglasses.png', '#체온 업 다이어트 원조'],
     ['emoji-heart.png',      '#모든 관리에 기본포함'],
-    ['emoji-smile.png',      '#따로 지불이 필요한 타사와 비교불가'],
+    ['emoji-smile.png',      '#별도 지불이 필요한 타사와 비교불가'],
 ];
 ?>
 <!-- 11. Thermo diet (체온 다이어트) -->

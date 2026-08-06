@@ -48,7 +48,7 @@ $stars = fn(int $n) => '<span class="stars">' . str_repeat($star, $n) . '</span>
                 </tr>
                 <tr>
                     <th scope="row">체질변화</th>
-                    <td colspan="3" class="td-desc">근본원인 미해결 (본래의 체질 개선없이 그대로 유지)</td>
+                    <td colspan="3" class="td-desc">근본원인 미해결 (본래의 체질개선없음)</td>
                     <td class="bitiel">살 안찌는 체질로 변화</td>
                 </tr>
                 <tr>

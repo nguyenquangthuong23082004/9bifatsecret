@@ -311,7 +311,7 @@
 /* zoom thumb + measurement chip (부분관리) */
 .ba-zoom {
     position: absolute;
-    right: -14px;
+    right: 0px;
     top: 11px;
     width: 80px;
     display: flex;
@@ -344,6 +344,8 @@
 }
 
 .ba-zoom em {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -391,6 +393,20 @@
     border-radius: 12px;
     overflow: hidden;
     background: #f1f1f1;
+}
+
+.case__shot--c3>img.is-ghost-60 {
+    width: 35%;
+    height: 155%;
+    left: 16.5%;
+    top: 2%;
+}
+
+.case__shot--c3>img:not(.is-ghost-60) {
+    width: 34.5%;
+    height: 158%;
+    left: 50%;
+    top: 2%;
 }
 
 /* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */

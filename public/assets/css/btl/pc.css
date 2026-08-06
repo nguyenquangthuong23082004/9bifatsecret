@@ -2171,17 +2171,17 @@
     .btl .results .case__shot--c2>img:not(.is-ghost-20) {}
 
     .btl .results .case__shot--c3>img.is-ghost-60 {
-        width: 37.5% !important;
-        height: 153.4% !important;
-        left: 16.5% !important;
-        top: -1.7% !important;
+        width: 30%;
+        height: 124%;
+        left: 21.25%;
+        top: 2%;
     }
 
     .btl .results .case__shot--c3>img:not(.is-ghost-60) {
-        width: 38% !important;
-        height: 162.8% !important;
-        left: 50.4% !important;
-        top: 0% !important;
+        width: 29.5%;
+        height: 128%;
+        left: 54.5%;
+        top: 2%;
     }
 
     .ba-card--after .ba-card__photo img.is-contain {
