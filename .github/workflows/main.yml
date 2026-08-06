@@ -12,25 +12,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: 🚀 Incremental Deploy to Cafe24
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: 🚀 Incremental SFTP Deploy to Cafe24
+        uses: wangyucode/sftp-upload-action@v2
         with:
-          server: ${{ secrets.SFTP_HOST }}
+          host: ${{ secrets.SFTP_HOST }}
           username: ${{ secrets.SFTP_USER }}
           password: ${{ secrets.SFTP_PASS }}
           port: ${{ secrets.SFTP_PORT }}
-          protocol: ftps
-          server-dir: ${{ secrets.SFTP_REMOTE_PATH }}/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            .github/**
-            README.md
-            Dockerfile
-            docker/**
-            docker-compose.yml
-            scratch_db.php
-            db_check.txt
+          localDir: '.'
+          remoteDir: ${{ secrets.SFTP_REMOTE_PATH }}
+          exclude: '.git, .git/**, .github, .github/**, README.md, Dockerfile, docker, docker/**, docker-compose.yml, scratch_db.php, db_check.txt'
