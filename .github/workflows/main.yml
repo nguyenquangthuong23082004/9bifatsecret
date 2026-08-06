@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.SFTP_PASS }}
           port: ${{ secrets.SFTP_PORT }}
           protocol: ftps
-          server-dir: ${{ secrets.SFTP_REMOTE_PATH }}
+          server-dir: ${{ secrets.SFTP_REMOTE_PATH }}/
           exclude: |
             **/.git*
             **/.git*/**
