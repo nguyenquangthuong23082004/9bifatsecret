@@ -139,6 +139,7 @@
                 $isProfile = $isActive('AdmMaster/profile');
                 $isFaq = $isPath('AdmMaster/bbs/faq');
                 $isPolicy = $isPath('AdmMaster/bbs/policy');
+                $isStats = $isActive('AdmMaster/stats');
                 $isBoardParent = $isInquiry1 || $isFaq;
                 ?>
                 <div class="nav flex-column" id="sidebarAccordion">
@@ -171,6 +172,13 @@
                     <div class="nav-item">
                         <a class="nav-link <?= $isPolicy ? 'active' : '' ?>" href="<?= base_url('AdmMaster/bbs/policy') ?>">
                             <i class="bi bi-file-earmark-text"></i> 약관/방침 관리
+                        </a>
+                    </div>
+
+                    <!-- 통계관리 -->
+                    <div class="nav-item">
+                        <a class="nav-link <?= $isStats ? 'active' : '' ?>" href="<?= base_url('AdmMaster/stats') ?>">
+                            <i class="bi bi-bar-chart-line"></i> 통계관리
                         </a>
                     </div>
 

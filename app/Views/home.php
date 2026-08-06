@@ -22,4 +22,5 @@
 <?= $this->include('partials/btl/turn') ?>
 <?= $this->include('partials/btl/faq') ?>
 <?= $this->include('partials/btl/contact') ?>
+<?= $this->include('partials/btl/popups') ?>
 <?= $this->endSection() ?>

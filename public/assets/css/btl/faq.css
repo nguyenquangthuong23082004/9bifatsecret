@@ -13,11 +13,11 @@
 }
 
 .faq__head .sec-head__label {
-    color: #fff;
+    color: #fff !important;
 }
 
 .faq__head .sec-head__title {
-    color: #fff;
+    color: #fff !important;
 }
 
 .faq__list {

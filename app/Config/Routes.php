@@ -17,6 +17,7 @@ $routes->get('contact', 'Sub::contact');
 $routes->get('privacy', 'Home::privacy');
 $routes->get('privacy-policy-content', 'Home::getPrivacyPolicy');
 $routes->get('terms', 'Home::terms');
+$routes->get('popup/view/(:num)', 'Home::popupView/$1');
 
 // Policy 페이지 (동적 DB 조회)
 // $routes->get('policy', 'PolicyFront::view/privacy');
@@ -120,6 +121,9 @@ $routes->group('AdmMaster', ['namespace' => 'App\Controllers\AdmMaster', 'filter
     // Profile
     $routes->get('profile', 'Profile::index');
     $routes->post('profile/update', 'Profile::update');
+
+    // Stats Management
+    $routes->get('stats', 'Stats::index');
 
     // Goods
     $routes->get('goods', 'Goods::index');

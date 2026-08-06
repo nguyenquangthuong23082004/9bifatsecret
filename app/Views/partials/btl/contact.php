@@ -3,7 +3,7 @@
    POSTs to /consult (no controller yet — wire up when the endpoint exists). */
 $fields = [
     ['name',   '성함',     'text', '이름을 입력해주세요.'],
-    ['age',    '나이',     'text', '출생연도로 입력해주세요.(예 : 82년생)'],
+    ['age',    '나이',     'text', '출생연도 2자리를 입력해주세요.(예 : 82)'],
     ['region', '거주지역', 'text', '거주지역을 입력해주세요.(예 : 부산 연제구 연산동)'],
     ['phone',  '연락처',   'tel',  '‘ - ’ 번호만 입력해주세요.'],
 ];
@@ -17,12 +17,25 @@ $fields = [
 
     <form class="contact__form" action="<?= base_url('consult') ?>" method="post" onsubmit="return validateConsultForm(this)" novalidate>
         <?= csrf_field() ?>
+        
+        <!-- Honeypot anti-spam field -->
+        <div style="display:none !important; position:absolute !important; left:-9999px !important;">
+            <label for="c-email_address">이메일 주소</label>
+            <input type="text" name="email_address" id="c-email_address" autocomplete="off" tabindex="-1">
+        </div>
+
         <div class="contact__fields">
             <?php foreach ($fields as [$name, $label, $type, $ph]): ?>
             <div class="field">
                 <label class="field__label" for="c-<?= $name ?>"><?= esc($label) ?></label>
                 <input class="field__input" id="c-<?= $name ?>" type="<?= $type ?>" name="<?= $name ?>"
-                       placeholder="<?= esc($ph) ?>">
+                       placeholder="<?= esc($ph) ?>"
+                       <?php if ($name === 'age'): ?>
+                           inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                       <?php elseif ($name === 'phone'): ?>
+                           oninput="this.value = this.value.replace(/[^0-9\-]/g, '')"
+                       <?php endif; ?>
+                >
             </div>
             <?php endforeach; ?>
         </div>

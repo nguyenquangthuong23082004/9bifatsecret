@@ -157,20 +157,100 @@ class Home extends BaseController
         }
     }
 
+    private function logVisit()
+    {
+        $db = \Config\Database::connect();
+        
+        $db->query("CREATE TABLE IF NOT EXISTS tbl_visits (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            device VARCHAR(10) NOT NULL,
+            ip_address VARCHAR(45) NOT NULL,
+            device_sig VARCHAR(255) NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )");
+
+        // Safely add column if it was created without device_sig previously
+        try {
+            $db->query("ALTER TABLE tbl_visits ADD COLUMN device_sig VARCHAR(255) NOT NULL AFTER ip_address");
+        } catch (\Throwable $e) {
+            // Already exists or handled
+        }
+
+        $agent = $this->request->getUserAgent();
+        $device = $agent->isMobile() ? 'mobile' : 'pc';
+        $ip = $this->request->getIPAddress();
+        
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $deviceSig = '';
+        if (preg_match('/\((.*?)\)/', $userAgent, $matches)) {
+            $deviceSig = $matches[1];
+        } else {
+            $deviceSig = $userAgent;
+        }
+        $deviceSig = substr(trim($deviceSig), 0, 255);
+
+        // Check if there is already a visit logged for this IP and device signature today
+        $todayStart = date('Y-m-d 00:00:00');
+        $todayEnd = date('Y-m-d 23:59:59');
+
+        $exists = $db->table('tbl_visits')
+            ->where('ip_address', $ip)
+            ->where('device_sig', $deviceSig)
+            ->where('created_at >=', $todayStart)
+            ->where('created_at <=', $todayEnd)
+            ->countAllResults();
+
+        if ($exists === 0) {
+            $db->table('tbl_visits')->insert([
+                'device' => $device,
+                'ip_address' => $ip,
+                'device_sig' => $deviceSig
+            ]);
+        }
+    }
+
     public function index()
     {
         $bbsModel = new \App\Models\BbsModel();
         $configModel = new \App\Models\BbsConfigModel();
 
         $this->checkAndSeed($bbsModel, $configModel);
+        $this->logVisit();
 
         $faqs = $bbsModel->where('code', 'faq')
                          ->orderBy('onum', 'DESC')
                          ->orderBy('bbs_idx', 'DESC')
                          ->findAll();
 
+        // Fetch active popups
+        $now = date('Y-m-d H:i:s');
+        $popupModel = new \App\Models\PopupModel();
+        $popups = $popupModel->groupStart()
+            ->where('status', 'B') // Forced active
+            ->orGroupStart()
+                ->where('status', 'A') // Automatic schedule
+                ->where("CONCAT(P_STARTDAY, ' ', P_START_HH, ':', P_START_MM, ':00') <=", $now)
+                ->where("CONCAT(P_ENDDAY, ' ', P_END_HH, ':', P_END_MM, ':59') >=", $now)
+            ->groupEnd()
+        ->groupEnd()
+        ->where('P_TYPES', 'kr')
+        ->findAll();
+
         return view('home', [
-            'faqs' => $faqs
+            'faqs' => $faqs,
+            'popups' => $popups
+        ]);
+    }
+
+    public function popupView($id)
+    {
+        $popupModel = new \App\Models\PopupModel();
+        $popup = $popupModel->find($id);
+        if (!$popup) {
+            return "존재하지 않는 팝업입니다.";
+        }
+        return view('popup_view', [
+            'popup' => $popup
         ]);
     }
 
@@ -428,6 +508,36 @@ class Home extends BaseController
 
     public function submitConsult()
     {
+        // 1. Honeypot check (anti-spam bot)
+        $honeypot = $this->request->getPost('email_address');
+        if (!empty($honeypot)) {
+            // Silently block spambots by pretending the submission succeeded
+            return $this->response->setBody("
+            <script>
+                alert('1:1 무료컨설팅 예약 신청이 완료되었습니다.');
+                window.location.href = '" . base_url() . "';
+            </script>
+            ")->setHeader('Content-Type', 'text/html');
+        }
+
+        // 2. IP Rate Limit check (max 5 submissions per hour per IP)
+        $ip = $this->request->getIPAddress();
+        $db = \Config\Database::connect();
+        $oneHourAgo = date('Y-m-d H:i:s', strtotime('-1 hour'));
+        $spamCount = $db->table('tbl_contents')
+            ->where('ip_address', $ip)
+            ->where('regdate >=', $oneHourAgo)
+            ->countAllResults();
+
+        if ($spamCount >= 5) {
+            return $this->response->setBody("
+            <script>
+                alert('단기간 내에 너무 많은 예약 신청이 감지되었습니다. 잠시 후 다시 시도해 주세요.');
+                window.history.back();
+            </script>
+            ")->setHeader('Content-Type', 'text/html');
+        }
+
         $validation = \Config\Services::validation();
         $validation->setRules([
             'name'   => 'required',
@@ -451,6 +561,16 @@ class Home extends BaseController
         $age = $this->request->getPost('age');
         $region = $this->request->getPost('region');
         $agree = $this->request->getPost('agree');
+
+        // 3. Server-side numeric validation for Age
+        if (!is_numeric($age)) {
+            return $this->response->setBody("
+            <script>
+                alert('나이 필드에는 숫자만 입력 가능합니다.');
+                window.history.back();
+            </script>
+            ")->setHeader('Content-Type', 'text/html');
+        }
 
         $inquiryModel = new \App\Models\InquiryModel();
 
