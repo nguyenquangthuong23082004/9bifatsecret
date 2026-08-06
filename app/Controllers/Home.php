@@ -176,6 +176,14 @@ class Home extends BaseController
             // Already exists or handled
         }
 
+        // Safely add visitor_id column for cookie tracking
+        try {
+            $db->query("ALTER TABLE tbl_visits ADD COLUMN visitor_id VARCHAR(50) NULL AFTER id");
+            $db->query("ALTER TABLE tbl_visits ADD INDEX (visitor_id)");
+        } catch (\Throwable $e) {
+            // Already exists or handled
+        }
+
         $agent = $this->request->getUserAgent();
         $device = $agent->isMobile() ? 'mobile' : 'pc';
         $ip = $this->request->getIPAddress();
@@ -189,19 +197,43 @@ class Home extends BaseController
         }
         $deviceSig = substr(trim($deviceSig), 0, 255);
 
-        // Check if there is already a visit logged for this IP and device signature today
+        // Get or set cookie for tracking physical devices
+        $visitorId = $_COOKIE['visitor_uuid'] ?? '';
+        $isFirstVisit = false;
+        if (empty($visitorId)) {
+            $visitorId = uniqid('v_', true);
+            setcookie('visitor_uuid', $visitorId, time() + (365 * 24 * 60 * 60), '/');
+            $isFirstVisit = true;
+        }
+
         $todayStart = date('Y-m-d 00:00:00');
         $todayEnd = date('Y-m-d 23:59:59');
 
-        $exists = $db->table('tbl_visits')
-            ->where('ip_address', $ip)
-            ->where('device_sig', $deviceSig)
-            ->where('created_at >=', $todayStart)
-            ->where('created_at <=', $todayEnd)
-            ->countAllResults();
+        if ($isFirstVisit) {
+            // First time load: check both cookie ID and IP + device_sig
+            $exists = $db->table('tbl_visits')
+                ->groupStart()
+                    ->where('visitor_id', $visitorId)
+                    ->orGroupStart()
+                        ->where('ip_address', $ip)
+                        ->where('device_sig', $deviceSig)
+                        ->where('created_at >=', $todayStart)
+                        ->where('created_at <=', $todayEnd)
+                    ->groupEnd()
+                ->groupEnd()
+                ->countAllResults();
+        } else {
+            // Returning visitor: check strictly by visitor_id cookie
+            $exists = $db->table('tbl_visits')
+                ->where('visitor_id', $visitorId)
+                ->where('created_at >=', $todayStart)
+                ->where('created_at <=', $todayEnd)
+                ->countAllResults();
+        }
 
         if ($exists === 0) {
             $db->table('tbl_visits')->insert([
+                'visitor_id' => $visitorId,
                 'device' => $device,
                 'ip_address' => $ip,
                 'device_sig' => $deviceSig

@@ -412,14 +412,15 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <tr>
                                     <td><?= $num-- ?></td>
                                     <td>
-                                        <?php if ($row['device'] === 'pc'): ?>
-                                            <span class="badge bg-primary bg-opacity-10 text-primary px-2.5 py-1.5 rounded-pill">
-                                                <i class="bi bi-laptop me-0.5"></i> PC
-                                            </span>
+                                        <?php 
+                                        $devType = strtolower(trim($row['device'] ?? ''));
+                                        if ($devType === 'pc'): 
+                                        ?>
+                                            <span class="badge bg-primary">PC</span>
+                                        <?php elseif ($devType === 'mobile'): ?>
+                                            <span class="badge bg-success">MOBILE</span>
                                         <?php else: ?>
-                                            <span class="badge bg-success bg-opacity-10 text-success px-2.5 py-1.5 rounded-pill">
-                                                <i class="bi bi-phone me-0.5"></i> MOB
-                                            </span>
+                                            <span class="badge bg-secondary">UNKNOWN</span>
                                         <?php endif; ?>
                                     </td>
                                     <td><code><?= esc($row['ip_address']) ?></code></td>
