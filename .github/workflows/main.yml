@@ -13,6 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Clean workspace (remove Git and non-prod files)
+        run: |
+          rm -rf .git
+          rm -rf .github
+          rm -f .gitignore
+          rm -f README.md
+          rm -f Dockerfile
+          rm -rf docker
+          rm -f docker-compose.yml
+          rm -f scratch_db.php
+          rm -f db_check.txt
+
       - name: 🚀 Incremental SFTP Deploy to Cafe24
         uses: wangyucode/sftp-upload-action@v3
         with:
@@ -22,4 +34,4 @@ jobs:
           port: ${{ secrets.SFTP_PORT }}
           localDir: '.'
           remoteDir: ${{ secrets.SFTP_REMOTE_PATH }}
-          exclude: '.git, .git/**, .github, .github/**, README.md, Dockerfile, docker, docker/**, docker-compose.yml, scratch_db.php, db_check.txt, vendor, vendor/**, writable, writable/**, public/uploads, public/uploads/**, public/data, public/data/**'
+          exclude: 'vendor,vendor/**,writable,writable/**,public/uploads,public/uploads/**,public/data,public/data/**'
