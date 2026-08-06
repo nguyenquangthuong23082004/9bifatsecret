@@ -22,4 +22,4 @@ jobs:
           port: ${{ secrets.SFTP_PORT }}
           localDir: '.'
           remoteDir: ${{ secrets.SFTP_REMOTE_PATH }}
-          exclude: '.git, .git/**, .github, .github/**, README.md, Dockerfile, docker, docker/**, docker-compose.yml, scratch_db.php, db_check.txt'
+          exclude: '.git, .git/**, .github, .github/**, README.md, Dockerfile, docker, docker/**, docker-compose.yml, scratch_db.php, db_check.txt, vendor, vendor/**, writable, writable/**, public/uploads, public/uploads/**, public/data, public/data/**'
