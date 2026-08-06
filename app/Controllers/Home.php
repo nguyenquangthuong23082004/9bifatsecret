@@ -188,13 +188,17 @@ class Home extends BaseController
         $device = $agent->isMobile() ? 'mobile' : 'pc';
         $ip = $this->request->getIPAddress();
         
-        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
-        $deviceSig = '';
-        if (preg_match('/\((.*?)\)/', $userAgent, $matches)) {
-            $deviceSig = $matches[1];
+        // Build a clean, human-readable device signature
+        if ($agent->isBrowser()) {
+            $deviceSig = $agent->getPlatform() . ' / ' . $agent->getBrowser() . ' ' . $agent->getVersion();
+        } elseif ($agent->isMobile()) {
+            $deviceSig = $agent->getPlatform() . ' / ' . $agent->getMobile();
+        } elseif ($agent->isRobot()) {
+            $deviceSig = 'Robot: ' . $agent->getRobot();
         } else {
-            $deviceSig = $userAgent;
+            $deviceSig = $agent->getAgentString(); // Fallback to full UA string
         }
+        
         $deviceSig = substr(trim($deviceSig), 0, 255);
 
         // Get or set cookie for tracking physical devices
