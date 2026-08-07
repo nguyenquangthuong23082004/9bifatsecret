@@ -31,7 +31,7 @@
             <span class="philo__bullet" aria-hidden="true"></span>
             <div>
                 <h3><span class="ko">아름답게</span> Beautiful</h3>
-                <p>개인의 체형을 고려한 맞춤 관리로<br class="only-pc">균형 잡힌 아름다운 바디라인</p>
+                <p>개인의 체형을 고려한 맞춤 관리로<br class="only-pc"> 균형 잡힌 아름다운 바디라인</p>
             </div>
         </div>
         <div class="philo__item">
