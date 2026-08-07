@@ -12,7 +12,7 @@ $chips = [
 <!-- 11. Thermo diet (체온 다이어트) -->
 <section class="sec thermo" id="thermo">
     <div class="sec-head thermo__head">
-        <p class="sec-head__label">요요를 막고, 갱년기 지방을 녹이는 가장 확실한 방법</p>
+        <p class="sec-head__label">요요를 막고, 갱년기 지방을 녹이는 <br class="only-mo"> 가장 확실한 방법</p>
         <h2 class="sec-head__title">
             <span class="line1">대사 <em>UP</em>, 감량속도 <em>UP</em></span><br class="only-mo">
             <span class="line22">체온 다이어트</span>
