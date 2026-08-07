@@ -149,9 +149,11 @@ class Inquiry extends BaseController
 
         echo "\xEF\xBB\xBF";
         echo '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
-        echo '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>';
+        echo '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
+        echo '<style>th, td { text-align: center; vertical-align: middle; }</style>';
+        echo '</head>';
         echo '<body>';
-        echo '<table border="1">';
+        echo '<table border="1" style="text-align: center;">';
         
         if ($type == 3) {
             echo '<thead><tr>';
