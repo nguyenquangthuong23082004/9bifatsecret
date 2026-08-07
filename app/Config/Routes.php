@@ -79,6 +79,7 @@ $routes->group('AdmMaster', ['namespace' => 'App\Controllers\AdmMaster', 'filter
     // Inquiry
     $routes->get('inquiry', 'Inquiry::index/1');
     $routes->get('inquiry/(:num)', 'Inquiry::index/$1');
+    $routes->get('inquiry/(:num)/excel', 'Inquiry::excel/$1');
     $routes->get('inquiry/(:num)/view/(:num)', 'Inquiry::view/$1/$2');
     $routes->get('inquiry/(:num)/delete/(:num)', 'Inquiry::delete/$1/$2');
     $routes->post('inquiry/(:num)/bulkDelete', 'Inquiry::bulkDelete/$1');

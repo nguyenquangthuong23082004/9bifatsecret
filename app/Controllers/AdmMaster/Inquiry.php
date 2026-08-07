@@ -116,4 +116,100 @@ class Inquiry extends BaseController
         $inquiryModel->delete($id);
         return redirect()->to(base_url('AdmMaster/inquiry/'.$type))->with('message', '정상적으로 삭제되었습니다.');
     }
+
+    public function excel($type = 1)
+    {
+        if ($type == 2) {
+            $inquiryModel = new \App\Models\InquiryModel2();
+            $filename = '품질검사신청서_'.date('Ymd');
+        } elseif ($type == 3) {
+            $inquiryModel = new \App\Models\InquiryModel3();
+            $filename = '고객의소리_'.date('Ymd');
+        } elseif ($type == 4) {
+            $inquiryModel = new \App\Models\InquiryModel4();
+            $filename = '고객문의_'.date('Ymd');
+        } else {
+            $inquiryModel = new \App\Models\InquiryModel();
+            $filename = '무료컨설팅예약_'.date('Ymd');
+        }
+
+        $builder = $inquiryModel->builder();
+        $search_category = $this->request->getGet('search_category');
+        $search_name = $this->request->getGet('search_name');
+
+        if (!empty($search_name) && !empty($search_category)) {
+            $builder->like($search_category, $search_name);
+        }
+
+        $list = $builder->orderBy('idx', 'DESC')->get()->getResultArray();
+
+        header("Content-Type: application/vnd.ms-excel; charset=UTF-8");
+        header("Content-Disposition: attachment; filename={$filename}.xls");
+        header("Cache-Control: max-age=0");
+
+        echo "\xEF\xBB\xBF";
+        echo '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+        echo '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>';
+        echo '<body>';
+        echo '<table border="1">';
+        
+        if ($type == 3) {
+            echo '<thead><tr>';
+            echo '<th>번호</th><th>분류</th><th>제목</th><th>작성자</th><th>연락처</th><th>방문일자</th><th>방문매장</th><th>등록일</th>';
+            echo '</tr></thead>';
+            echo '<tbody>';
+            $num = count($list);
+            $gubuns = ['01'=>'칭찬합니다', '02'=>'불만있습니다', '03'=>'창업희망', '04'=>'기타'];
+            foreach ($list as $row) {
+                $gText = $gubuns[$row['gubun'] ?? '04'] ?? '기타';
+                echo '<tr>';
+                echo '<td>'.$num--.'</td>';
+                echo '<td>'.htmlspecialchars($gText).'</td>';
+                echo '<td>'.htmlspecialchars($row['subject'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['user_name'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['user_phone'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['visit_date'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['visit_store'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['r_date'] ?? $row['regdate'] ?? '').'</td>';
+                echo '</tr>';
+            }
+            echo '</tbody>';
+        } elseif ($type == 4) {
+            echo '<thead><tr>';
+            echo '<th>번호</th><th>작성자</th><th>연락처</th><th>신청일</th>';
+            echo '</tr></thead>';
+            echo '<tbody>';
+            $num = count($list);
+            foreach ($list as $row) {
+                echo '<tr>';
+                echo '<td>'.$num--.'</td>';
+                echo '<td>'.htmlspecialchars($row['user_name'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['phone'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['r_date'] ?? $row['regdate'] ?? '').'</td>';
+                echo '</tr>';
+            }
+            echo '</tbody>';
+        } else {
+            echo '<thead><tr>';
+            echo '<th>번호</th><th>이름</th><th>휴대전화</th><th>나이</th><th>거주지역</th><th>신청일</th>';
+            echo '</tr></thead>';
+            echo '<tbody>';
+            $num = count($list);
+            foreach ($list as $row) {
+                $regdate = !empty($row['regdate']) ? date('Y-m-d H:i', strtotime($row['regdate'])) : '';
+                echo '<tr>';
+                echo '<td>'.$num--.'</td>';
+                echo '<td>'.htmlspecialchars($row['manager'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['tel'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['company'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($row['location'] ?? '').'</td>';
+                echo '<td>'.htmlspecialchars($regdate).'</td>';
+                echo '</tr>';
+            }
+            echo '</tbody>';
+        }
+        
+        echo '</table></body></html>';
+        exit;
+    }
 }

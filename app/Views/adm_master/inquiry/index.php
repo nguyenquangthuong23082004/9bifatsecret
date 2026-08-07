@@ -5,6 +5,9 @@
         <a href="javascript:CheckAll(document.getElementsByName('idx[]'), true)" class="btn btn-success">전체선택</a>
         <a href="javascript:CheckAll(document.getElementsByName('idx[]'), false)" class="btn btn-success">선택해체</a>
         <a href="javascript:SELECT_DELETE()" class="btn btn-danger">선택삭제</a>
+        <a href="<?= base_url('AdmMaster/inquiry/'.$type.'/excel') ?><?= !empty($_GET) ? '?'.http_build_query($_GET) : '' ?>" class="btn btn-outline-success">
+            <i class="bi bi-file-earmark-excel"></i> 엑셀 다운로드
+        </a>
     </div>
 <?= $this->endSection() ?>
 
