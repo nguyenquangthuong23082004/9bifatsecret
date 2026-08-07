@@ -2552,6 +2552,7 @@
         gap: 50px;
         max-width: 1200px;
         margin: 0 auto;
+        margin-top: -94px;
     }
 
     .btl .site-footer__logo {
@@ -2573,7 +2574,7 @@
         width: auto;
         max-width: none;
         margin-top: 0 !important;
-        white-space: pre-wrap;
+        /* white-space: pre-wrap; */
         text-align: left;
     }
 
@@ -2675,7 +2676,7 @@
     }
 
     .results {
-        padding: 100px 0 40px;
+        padding: 100px 0 94px;
     }
 }
 

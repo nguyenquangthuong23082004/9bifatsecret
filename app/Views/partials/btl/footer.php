@@ -1,7 +1,17 @@
 <?php
-/* 16. Site footer – Figma 529:183 (logo) + 529:184 (business info).
-   Multiple spaces between the address/phone/reg-no groups are intentional
-   (the Figma text uses them as separators) — kept via white-space:pre-wrap. */
+/* 16. Site footer – Figma mobile 529:900 (logo) + 529:901 (business info).
+
+   Bố cục theo đúng design: 3 dòng
+     1) 사이트명 · 대표
+     2) 주소 · 전화 · 사업자등록번호
+     3) copyright
+   Khoảng cách giữa các nhóm do CSS (column-gap, đơn vị em) đảm nhiệm thay cho
+   khoảng trắng cứng, nên PC (16px) và mobile (14px) đều giãn đúng tỉ lệ.
+   Dòng 2 dùng flex-wrap: khi hẹp, 사업자등록번호 tự xuống dòng như bản mobile. */
+
+$telHref = !empty($_settings['custom_phone'])
+    ? preg_replace('/[^0-9]/', '', $_settings['custom_phone'])
+    : '';
 ?>
 <!-- 16. Footer -->
 <footer class="site-footer">
@@ -10,5 +20,30 @@
     <?php else: ?>
         <img class="site-footer__logo" src="<?= base_url('assets/images/btl/logo-footer.png') ?>" alt="비티엘 플러스" width="50" height="21">
     <?php endif; ?>
-    <p class="site-footer__info"><?= esc($_settings['og_site'] ?? '') ?><?php if (!empty($_settings['email'])): ?>   이메일 : <?= esc($_settings['email']) ?><?php endif; ?><br><?php if (!empty($_settings['addr1'])): ?>주소 : <?= esc($_settings['addr1']) ?><?php endif; ?><?php if (!empty($_settings['custom_phone'])): ?>      전화 : <a href="tel:<?= preg_replace('/[^0-9]/', '', $_settings['custom_phone']) ?>"><?= esc($_settings['custom_phone']) ?></a><?php endif; ?><?php if (!empty($_settings['comnum'])): ?>      사업자등록번호 : <?= esc($_settings['comnum']) ?><?php endif; ?><br><?= esc($_settings['copyright'] ?? '') ?></p>
+    <div class="site-footer__info">
+        <p class="site-footer__row site-footer__row--name">
+            <?php if (!empty($_settings['og_site'])): ?>
+                <span class="site-footer__item"><?= esc($_settings['og_site']) ?></span>
+            <?php endif; ?>
+            <?php if (!empty($_settings['com_owner'])): ?>
+                <span class="site-footer__item">대표 : <?= esc($_settings['com_owner']) ?></span>
+            <?php endif; ?>
+        </p>
+
+        <p class="site-footer__row site-footer__row--biz">
+            <?php if (!empty($_settings['addr1'])): ?>
+                <span class="site-footer__item">주소 : <?= esc($_settings['addr1']) ?></span>
+            <?php endif; ?>
+            <?php if (!empty($_settings['custom_phone'])): ?>
+                <span class="site-footer__item">전화 : <a href="tel:<?= $telHref ?>"><?= esc($_settings['custom_phone']) ?></a></span>
+            <?php endif; ?>
+            <?php if (!empty($_settings['comnum'])): ?>
+                <span class="site-footer__item">사업자등록번호 : <?= esc($_settings['comnum']) ?></span>
+            <?php endif; ?>
+        </p>
+
+        <?php if (!empty($_settings['copyright'])): ?>
+            <p class="site-footer__row site-footer__row--copy"><?= esc($_settings['copyright']) ?></p>
+        <?php endif; ?>
+    </div>
 </footer>
