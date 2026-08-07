@@ -409,6 +409,10 @@
     top: 2%;
 }
 
+.case03 {
+    margin-bottom: 80px !important;
+}
+
 /* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */
 @media (max-width: 991.98px) {
     .case__badge {

@@ -153,6 +153,11 @@
         top: 20% !important;
         width: 90% !important;
         max-height: 60vh !important;
+
+        left: 5% !important;
+        top: 20% !important;
+        width: 73% !important;
+        max-height: 26vh !important;
     }
 }
 </style>

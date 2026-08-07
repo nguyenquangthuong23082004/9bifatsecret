@@ -159,6 +159,20 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
     </div>
 
     <!-- ============ CASE 03 (516:427) ============ -->
+
+    <div class="case case--simple case03">
+        <p class="case__who">
+            <span class="case__avatar" aria-hidden="true"></span>
+            <span class="case__badge">CASE 03</span>
+            <span class="case__name">갱년기 임 ** 님의 실제사례</span>
+        </p>
+        <div class="case__shot case__shot--c3">
+            <img class="is-ghost-60" src="<?= $img('res-c3-before.png') ?>" alt="" loading="lazy">
+            <img src="<?= $img('res-c3-after.png') ?>" alt="갱년기 복부집중관리 비포 애프터" loading="lazy">
+        </div>
+        <p class="ba-caption">전신감량 + 갱년기 복부집중관리 3개월차</p>
+        <p class="ba-desc">관절염으로 운동을 전혀 못하는데 누워서 관리 받으니 참좋네요. <br class="only-pc"> 50대 이후로 뱃살이 빠진건 처음입니다.</p>
+    </div>
 <?php
 $img = fn($f) => base_url('assets/images/btl/' . $f);
 /* 12. Results (결과로 증명) – Figma 516:446.
@@ -181,6 +195,7 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
 };
 ?>
 <!-- 12. Results (결과로 증명하는 비티엘 다이어트) -->
+<?php /*
 <section class="sec results" id="results">
     <div class="sec-head results__head">
         <p class="sec-head__label">눈바디+인바디 2중검증<br>확실한 비포 애프터</p>
@@ -334,3 +349,4 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
         <p class="ba-desc">관절염으로 운동을 전혀 못하는데 누워서 관리 받으니 참좋네요. 50대 이후로 뱃살이 빠진건 처음입니다.</p>
     </div>
 </section>
+*/ ?>
