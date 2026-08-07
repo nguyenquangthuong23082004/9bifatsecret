@@ -1909,7 +1909,7 @@
     }
 
     .btl .results {
-        padding: 80px 40px 120px 40px;
+        /* padding: 80px 40px 120px 40px; */
     }
 
     .btl .results .sec-head__label {
@@ -2543,7 +2543,7 @@
     }
 
     .btl .site-footer {
-        padding: 60px 40px;
+        padding: 40px 40px;
         background: #ffffff;
         display: flex;
         flex-direction: row;
@@ -2672,6 +2672,10 @@
     .btl .contact__agree-text {
         font-size: 18px;
         letter-spacing: -.48px;
+    }
+
+    .results {
+        padding: 100px 0 0px;
     }
 }
 
