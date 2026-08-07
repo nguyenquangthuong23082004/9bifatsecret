@@ -34,6 +34,9 @@
 
     <link rel="stylesheet" href="<?= base_url('adm_assets/_common/css/style_mazar.css') ?>" type="text/css" />
 
+    <!-- Summernote 커스텀 (반드시 summernote CSS 뒤에 위치) -->
+    <link rel="stylesheet" href="<?= base_url('adm_assets/_common/css/summernote_custom.css') ?>" type="text/css" />
+
     <script>
         // Legacy PopUp functions
         function PopUp(url, wName, width, height) {

@@ -1,0 +1,93 @@
+/**
+ * Summernote 커스텀 스타일 (0.8.20 / BS5)
+ *
+ * summernote-bs5.min.css 뒤에 로드되어야 합니다.
+ * 다른 관리자 CSS(style_mazar.css 등)와의 충돌을 막기 위해 !important 를 사용합니다.
+ * 내부 클래스(.note-*)에 의존하므로 버전 업그레이드 시 확인이 필요합니다.
+ */
+
+/* ---------- 에디터 외곽 ---------- */
+.note-editor.note-frame {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 6px !important;
+    margin-bottom: 0 !important;
+    box-shadow: none !important;
+}
+
+/* ---------- 툴바 ---------- */
+.note-editor.note-frame .note-toolbar {
+    background-color: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    padding: 6px 8px !important;
+    border-radius: 6px 6px 0 0 !important;
+}
+
+/* 버튼 그룹 사이 간격 */
+.note-editor.note-frame .note-toolbar .note-btn-group {
+    margin-right: 8px !important;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+}
+
+.note-editor.note-frame .note-toolbar .note-btn {
+    background-color: #fff !important;
+    border-color: #dee2e6 !important;
+    color: #343a40 !important;
+    padding: 4px 9px !important;
+}
+
+.note-editor.note-frame .note-toolbar .note-btn:hover {
+    background-color: #e9ecef !important;
+    border-color: #ced4da !important;
+}
+
+/* 활성 상태(굵게/기울임 등이 켜져 있을 때) */
+.note-editor.note-frame .note-toolbar .note-btn.active {
+    background-color: #dee2e6 !important;
+    border-color: #adb5bd !important;
+    box-shadow: none !important;
+}
+
+.note-editor.note-frame .note-toolbar .note-btn:focus {
+    box-shadow: none !important;
+}
+
+/* ---------- 드롭다운 ---------- */
+.note-editor.note-frame .note-dropdown-menu {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 6px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .08) !important;
+}
+
+/* ---------- 본문 입력 영역 ---------- */
+.note-editor.note-frame .note-editable {
+    background-color: #fff !important;
+    color: #212529 !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+    padding: 14px 16px !important;
+}
+
+.note-editor.note-frame .note-placeholder {
+    color: #adb5bd !important;
+    padding: 14px 16px !important;
+}
+
+/* HTML 소스 보기 */
+.note-editor.note-frame .note-codable {
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+}
+
+/* ---------- 하단 상태바(크기 조절 핸들) ---------- */
+.note-editor.note-frame .note-statusbar {
+    background-color: #f8f9fa !important;
+    border-top: 1px solid #dee2e6 !important;
+    border-radius: 0 0 6px 6px !important;
+}
+
+/* ---------- 모달 ---------- */
+.note-modal .note-modal-footer {
+    height: auto !important;
+    padding: 12px 20px !important;
+}
