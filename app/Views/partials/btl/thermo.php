@@ -4,7 +4,7 @@ $img = fn($f) => base_url('assets/images/btl/' . $f);
    Rose full-bleed section: title, 3 hashtag chips, video block with
    speech bubbles around it, then the kcal claim. */
 $chips = [
-    ['emoji-sunglasses.png', '#체온 업 다이어트 원조'],
+    ['emoji-sunglasses.png', '#체온업 다이어트의 원조'],
     ['emoji-heart.png',      '#모든 관리에 기본포함'],
     ['emoji-smile.png',      '#별도 지불이 필요한 타사와 비교불가'],
 ];

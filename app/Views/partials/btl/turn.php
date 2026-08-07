@@ -59,7 +59,7 @@ $photo = function (?array $fill) use ($img) {
 <section class="sec turn" id="turn">
     <div class="sec-head turn__head">
         <p class="sec-head__label">
-            1회 관리시 즉시효과 가능<br>
+            1회 관리시 즉시감량 가능<br>
             2주 관리시 평균 -5kg 감소<br>
             비티엘 집중감량모델 평균 -15kg 감소
         </p>
