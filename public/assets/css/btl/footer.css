@@ -1,7 +1,11 @@
 /* =========================================================
-   16. Site footer — Figma 529:183 (logo) / 529:184 (business info)
-   Logo 50x21 at (16, 18509); info text 337 wide at (16, 18545).
-   The 문의 section ends at 18479 → 30px top padding, 15px logo→text gap.
+   16. Site footer — Figma mobile 529:900 (logo) / 529:901 (business info)
+   Logo 50x21 at (16, 18509); info text 337 wide at (16, 18545) → 15px gap.
+   Text: Pretendard 14px / line-height 1.4 / -0.28px / #999, 3 dòng:
+     1) 사이트명   대표 : …
+     2) 주소 : …      전화 : …      사업자등록번호 : …
+     3) copyright
+   Khoảng trắng nhiều giữa các nhóm là cố ý (giữ bằng white-space: pre-wrap).
    ========================================================= */
 .site-footer {
     padding: 30px 16px;
@@ -20,17 +24,14 @@
     width: 337px;
     max-width: 100%;
     font-size: 14px;
-    line-height: 1.8;
+    line-height: 1.4;
     letter-spacing: -.28px;
-    color: var(--c-muted);
+    color: #999;
     white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .site-footer__info a {
     color: inherit;
-}
-
-/* ---------- Mobile: nâng toàn bộ chữ 14px lên 16px (trừ .award__label) ---------- */
-@media (max-width: 991.98px) {
-    .site-footer__info { font-size: 16px; }
+    text-decoration: none;
 }

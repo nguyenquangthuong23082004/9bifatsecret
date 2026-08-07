@@ -25,8 +25,8 @@
 /* 버튼 그룹 사이 간격 */
 .note-editor.note-frame .note-toolbar .note-btn-group {
     margin-right: 8px !important;
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
+    /* margin-top: 2px !important;
+    margin-bottom: 2px !important; */
 }
 
 .note-editor.note-frame .note-toolbar .note-btn {
