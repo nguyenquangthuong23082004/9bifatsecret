@@ -74,7 +74,7 @@ $shot = function (string $file, $w, $h, $l, $t, string $alt = '', string $cls = 
                     <div class="ba-shot"><?php $shot('res-c1-shape-after.png', 119.64, 105.92, -9.82, -5.68, '체형관리 애프터') ?></div>
                     <p class="ba-badge"><strong>-10kg</strong><span>이후</span></p>
                 </div>
-                <p class="ba-caption">-10kg부터는 없던 허리라인이 생겼어요.</p>
+                <p class="ba-caption">-10kg부터는 없던 허리라인이 생겼어요. DOWN</p>
             </div>
         </div>
 
