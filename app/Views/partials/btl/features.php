@@ -12,7 +12,7 @@
         <div class="sec-head sec-head--left">
             <p class="sec-head__label">요요ZERO 핵심 메커니즘 01</p>
             <h3 class="sec-head__title">요요 케이스별 <span class="accent">전문기기 완비</span></h3>
-            <p class="feature__desc">30여종 전문기기중 특정부위군살, 셀룰라이트,기초대사저하 등<br class="only-pc">본인 요요케이스에 맞춰 직접선택가능</p>
+            <p class="feature__desc">30여종 전문기기중 특정부위군살, 셀룰라이트, 기초대사저하 등<br class="only-pc"> 본인 요요케이스에 맞춰 직접선택가능</p>
         </div>
     </div>
 
@@ -34,7 +34,7 @@
             <div class="sec-head sec-head--left">
                 <p class="sec-head__label">요요ZERO 주요특장점 02</p>
                 <h3 class="sec-head__title">기초대사량 증진기술</h3>
-                <p class="feature__desc">체온온도를 36.5℃에 맞춰 체내해독 및 면역시스템 활성화,<br class="only-pc">기초대사량을 높여 지방연소에 최적화된 살이 찌지 않는 체질로 개선</p>
+                <p class="feature__desc">체온온도를 36.5℃에 맞춰 체내해독 및 면역시스템 활성화,<br class="only-pc"> 기초대사량을 높여 지방연소에 최적화된 살이 찌지 않는 체질로 개선</p>
             </div>
         </div>
 

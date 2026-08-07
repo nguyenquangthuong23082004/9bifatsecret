@@ -175,7 +175,7 @@
           disableOnInteraction: false,
           reverseDirection: true
         },
-        speed: 4000
+        speed: 2000
       });
     }
 

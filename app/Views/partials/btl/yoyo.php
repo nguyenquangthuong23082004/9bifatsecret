@@ -42,8 +42,8 @@ $stars = fn(int $n) => '<span class="stars">' . str_repeat($star, $n) . '</span>
                 <tr>
                     <th scope="row">주요부작용</th>
                     <td>극심한 요요<br>호르몬 교란</td>
-                    <td>불면증,우울증 손떨림등</td>
-                    <td>피부탄력저하,유착<br>피부괴사 등</td>
+                    <td>불면증, 우울증 손떨림등</td>
+                    <td>피부탄력저하, 유착<br>피부괴사 등</td>
                     <td class="bitiel">없음</td>
                 </tr>
                 <tr>
